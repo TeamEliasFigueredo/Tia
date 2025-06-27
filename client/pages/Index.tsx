@@ -311,17 +311,15 @@ export default function Index() {
                 <DropdownMenuContent className="z-50">
                   <DropdownMenuLabel>Plan Management</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => openModal("currentPlan")}>
+                  <DropdownMenuItem onClick={() => openModal("test")}>
                     <Package className="mr-2 h-4 w-4" />
                     Current Plan
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => openModal("availablePackages")}
-                  >
+                  <DropdownMenuItem onClick={() => openModal("test")}>
                     <CreditCard className="mr-2 h-4 w-4" />
                     Available Packages
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => openModal("viewBills")}>
+                  <DropdownMenuItem onClick={() => openModal("test")}>
                     <Receipt className="mr-2 h-4 w-4" />
                     View Bills
                   </DropdownMenuItem>
