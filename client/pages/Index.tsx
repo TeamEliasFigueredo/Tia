@@ -269,6 +269,15 @@ export default function Index() {
     });
   };
 
+  // Modal helper functions
+  const openModal = (modalName: keyof typeof modals) => {
+    setModals((prev) => ({ ...prev, [modalName]: true }));
+  };
+
+  const closeModal = (modalName: keyof typeof modals) => {
+    setModals((prev) => ({ ...prev, [modalName]: false }));
+  };
+
   const toggleDatabase = (databaseId: string) => {
     setSelectedDatabase(selectedDatabase === databaseId ? null : databaseId);
   };
@@ -473,7 +482,7 @@ export default function Index() {
                                 </span>
                               </div>
                               <div className="text-xs text-gray-400 mt-1">
-                                {doc.type} • {doc.pages} pages • {doc.size}
+                                {doc.type} �� {doc.pages} pages • {doc.size}
                               </div>
                               <div className="flex space-x-1 mt-1">
                                 <Button
