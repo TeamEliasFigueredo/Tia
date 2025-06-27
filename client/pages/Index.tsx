@@ -291,7 +291,7 @@ export default function Index() {
               <Button
                 variant="ghost"
                 className="text-gray-700 hover:text-blue-600 flex items-center gap-2"
-                onClick={() => openModal("teams")}
+                onClick={() => openModal("test")}
               >
                 <Users className="h-4 w-4" />
                 Teams
