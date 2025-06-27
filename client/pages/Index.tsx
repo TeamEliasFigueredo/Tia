@@ -32,6 +32,8 @@ import {
   Download,
   Move,
   Highlight,
+  Play,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,7 +59,9 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useTranslation, Language } from "@/lib/i18n";
 
 // Import modals
 import { UserProfileModal } from "@/components/modals/UserProfileModal";
@@ -109,10 +113,13 @@ export default function Index() {
   const [showColumn1, setShowColumn1] = useState(false);
   const [showColumn2, setShowColumn2] = useState(false);
   const [fontSize, setFontSize] = useState(16);
-  const [language, setLanguage] = useState("en");
-  const [theme, setTheme] = useState("light");
+  const [language, setLanguage] = useState<Language>("en");
+  const [theme, setTheme] = useState<"light" | "dark" | "auto">("light");
 
-  // Modal states - Fixed to prevent menu issues
+  // Get translations
+  const t = useTranslation(language);
+
+  // Modal states - Fixed with better cleanup
   const [modals, setModals] = useState({
     userProfile: false,
     security: false,
@@ -123,8 +130,12 @@ export default function Index() {
     teams: false,
   });
 
-  // User state (for admin check)
+  // User state
   const [isAdmin] = useState(true);
+
+  // Processing state
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingProgress, setProcessingProgress] = useState(0);
 
   // Enhanced data state
   const [databases, setDatabases] = useState<Database[]>([
@@ -232,6 +243,7 @@ export default function Index() {
     fromDbId: string;
   } | null>(null);
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [chatDragOver, setChatDragOver] = useState(false);
 
   // File upload refs
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -245,17 +257,22 @@ export default function Index() {
     allowAnalytics: false,
   });
 
-  // Fixed modal helper functions to prevent menu issues
+  // Fixed modal helper functions with proper event handling
   const openModal = useCallback((modalName: keyof typeof modals) => {
     setModals((prev) => ({ ...prev, [modalName]: true }));
   }, []);
 
   const closeModal = useCallback((modalName: keyof typeof modals) => {
     setModals((prev) => ({ ...prev, [modalName]: false }));
-    // Force a small delay to ensure proper cleanup
+    // Force re-render to ensure menus work properly
     setTimeout(() => {
-      // This ensures dropdown menus remain functional after modal closure
-    }, 100);
+      const dropdowns = document.querySelectorAll(
+        "[data-radix-dropdown-menu-trigger]",
+      );
+      dropdowns.forEach((dropdown) => {
+        dropdown.removeAttribute("data-state");
+      });
+    }, 50);
   }, []);
 
   // Enhanced search functionality
@@ -323,7 +340,7 @@ export default function Index() {
   };
 
   const deleteDatabase = (dbId: string) => {
-    if (confirm("Are you sure you want to delete this database?")) {
+    if (confirm(t.confirmDelete)) {
       setDatabases((prev) => prev.filter((db) => db.id !== dbId));
       if (selectedDatabase === dbId) {
         setSelectedDatabase(null);
@@ -348,7 +365,7 @@ export default function Index() {
   };
 
   const deleteDocument = (dbId: string, docId: string) => {
-    if (confirm("Are you sure you want to delete this document?")) {
+    if (confirm(t.confirmDelete)) {
       setDatabases((prev) =>
         prev.map((db) =>
           db.id === dbId
@@ -385,7 +402,25 @@ export default function Index() {
     setEditingDocument(null);
   };
 
-  // File upload functions
+  // Process documents function
+  const processDocuments = async () => {
+    setIsProcessing(true);
+    setProcessingProgress(0);
+
+    // Simulate processing with progress
+    const interval = setInterval(() => {
+      setProcessingProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsProcessing(false);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  };
+
+  // Enhanced file upload functions with proper drag and drop
   const handleFileUpload = (files: FileList | null, targetDbId: string) => {
     if (!files) return;
 
@@ -421,12 +456,12 @@ export default function Index() {
   const handleChatFileUpload = (files: FileList | null) => {
     if (!files) return;
 
-    let myDocsDb = databases.find((db) => db.name === "My Documents");
+    let myDocsDb = databases.find((db) => db.name === t.myDocuments);
 
     if (!myDocsDb) {
       const newMyDocsDb: Database = {
         id: "my-docs-" + Date.now(),
-        name: "My Documents",
+        name: t.myDocuments,
         size: "0 MB",
         documentCount: 0,
         createdDate: new Date().toISOString().split("T")[0],
@@ -441,31 +476,39 @@ export default function Index() {
     handleFileUpload(files, myDocsDb.id);
   };
 
-  // Drag and drop functions
+  // Enhanced drag and drop functions
   const handleDragStart = (docId: string, fromDbId: string) => {
     setDraggedDocument({ docId, fromDbId });
   };
 
-  const handleDragOver = (e: React.DragEvent, dbId: string) => {
+  const handleDragOver = (e: React.DragEvent, dbId?: string) => {
     e.preventDefault();
-    setDragOver(dbId);
+    if (dbId) {
+      setDragOver(dbId);
+    }
   };
 
-  const handleDrop = (e: React.DragEvent, toDbId: string) => {
+  const handleDrop = (e: React.DragEvent, toDbId?: string) => {
     e.preventDefault();
     setDragOver(null);
 
-    if (!draggedDocument || draggedDocument.fromDbId === toDbId) return;
+    // Handle file drops
+    if (e.dataTransfer.files.length > 0 && toDbId) {
+      handleFileUpload(e.dataTransfer.files, toDbId);
+      return;
+    }
+
+    // Handle document moves
+    if (!draggedDocument || !toDbId || draggedDocument.fromDbId === toDbId)
+      return;
 
     const { docId, fromDbId } = draggedDocument;
 
-    // Find the document to move
     const sourceDb = databases.find((db) => db.id === fromDbId);
     const docToMove = sourceDb?.documents.find((doc) => doc.id === docId);
 
     if (!docToMove) return;
 
-    // Move document between databases
     setDatabases((prev) =>
       prev.map((db) => {
         if (db.id === fromDbId) {
@@ -489,6 +532,25 @@ export default function Index() {
     );
 
     setDraggedDocument(null);
+  };
+
+  // Chat drag and drop
+  const handleChatDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setChatDragOver(true);
+  };
+
+  const handleChatDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setChatDragOver(false);
+  };
+
+  const handleChatDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setChatDragOver(false);
+    if (e.dataTransfer.files.length > 0) {
+      handleChatFileUpload(e.dataTransfer.files);
+    }
   };
 
   // Chat functions
@@ -517,7 +579,7 @@ export default function Index() {
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: "bot",
-        content: `I understand you're asking about "${currentMessage}". Based on the documents in your database, here's what I found. You can find more details in the Employee Handbook [doc1] and Security Guidelines [doc2].`,
+        content: `I understand you're asking about "${currentMessage}". Based on the documents in your database, here's what I found. You can find more details in the Employee Handbook and Security Guidelines.`,
         timestamp: new Date().toISOString(),
         documentReferences: ["doc1", "doc2"],
       };
@@ -525,7 +587,6 @@ export default function Index() {
       const updatedMessages = [...newMessages, botMessage];
       setChatMessages(updatedMessages);
 
-      // Update current chat with bot response
       setSavedChats((prev) =>
         prev.map((chat) =>
           chat.id === currentChatId
@@ -553,8 +614,8 @@ export default function Index() {
 
   const handleSaveConversation = () => {
     const chatName =
-      prompt("Enter a name for this chat session:") ||
-      `Chat ${savedChats.length + 1}`;
+      prompt(`${t.chatSessionName}:`) ||
+      `${t.chatSessionName} ${savedChats.length + 1}`;
 
     const newChat: SavedChat = {
       id: Date.now().toString(),
@@ -579,7 +640,6 @@ export default function Index() {
     const updatedMessages = chatMessages.filter((m) => m.id !== messageId);
     setChatMessages(updatedMessages);
 
-    // Update current saved chat
     setSavedChats((prev) =>
       prev.map((chat) =>
         chat.id === currentChatId
@@ -621,20 +681,34 @@ export default function Index() {
     );
   };
 
+  // Apply theme
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
   return (
     <div
-      className="h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50"
+      className={cn(
+        "h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50",
+        theme === "dark" && "dark:from-gray-900 dark:to-gray-800",
+      )}
       style={{ fontSize: `${fontSize}px` }}
     >
-      {/* Header */}
-      <header className="bg-white shadow-lg border-b-2 border-blue-100 px-6 py-4 flex items-center justify-between relative z-50">
+      {/* Reduced Header Height */}
+      <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-blue-100 dark:border-blue-800 px-6 py-2 flex items-center justify-between relative z-50">
         <div className="flex items-center space-x-6">
           {/* Company Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">S</span>
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold">S</span>
             </div>
-            <span className="text-lg font-semibold text-gray-800">Softia</span>
+            <span className="text-lg font-semibold text-gray-800 dark:text-white">
+              Softia
+            </span>
           </div>
 
           <Separator orientation="vertical" className="h-6" />
@@ -644,22 +718,22 @@ export default function Index() {
             {isAdmin && (
               <Button
                 variant="ghost"
-                className="text-gray-700 hover:text-blue-600 flex items-center gap-2"
+                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 flex items-center gap-2"
                 onClick={() => openModal("teams")}
               >
                 <Users className="h-4 w-4" />
-                Teams
+                {t.teams}
               </Button>
             )}
 
             {isAdmin && (
-              <DropdownMenu>
+              <DropdownMenu key="your-plan-dropdown">
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-gray-700 hover:text-blue-600"
+                    className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
                   >
-                    Your Plan
+                    {t.yourPlan}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="z-50">
@@ -667,17 +741,17 @@ export default function Index() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => openModal("currentPlan")}>
                     <Package className="mr-2 h-4 w-4" />
-                    Current Plan
+                    {t.currentPlan}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => openModal("availablePackages")}
                   >
                     <CreditCard className="mr-2 h-4 w-4" />
-                    Available Packages
+                    {t.availablePackages}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => openModal("viewBills")}>
                     <Receipt className="mr-2 h-4 w-4" />
-                    View Bills
+                    {t.viewBills}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -687,8 +761,10 @@ export default function Index() {
 
         {/* User Profile */}
         <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-600">John Doe</span>
-          <DropdownMenu>
+          <span className="text-sm text-gray-600 dark:text-gray-300">
+            John Doe
+          </span>
+          <DropdownMenu key="user-profile-dropdown">
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all">
                 <AvatarImage src="" />
@@ -698,24 +774,24 @@ export default function Index() {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="z-50">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => openModal("userProfile")}>
                 <User className="mr-2 h-4 w-4" />
-                Profile
+                {t.profile}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => openModal("security")}>
                 <Shield className="mr-2 h-4 w-4" />
-                Security
+                {t.security}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => openModal("terms")}>
                 <FileCheck className="mr-2 h-4 w-4" />
-                Terms of Use
+                {t.termsOfUse}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600">
                 <LogOut className="mr-2 h-4 w-4" />
-                Log out
+                {t.logOut}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -727,18 +803,18 @@ export default function Index() {
         {/* Column 1 - Enhanced Database Management */}
         <div
           className={cn(
-            "bg-white border-r-2 border-blue-100 transition-all duration-300 shadow-lg",
+            "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg",
             showColumn1 ? "w-80" : "w-0 overflow-hidden",
           )}
         >
           {showColumn1 && (
             <div className="h-full flex flex-col">
               {/* Column 1 Header */}
-              <div className="p-4 border-b bg-gray-50">
+              <div className="p-4 border-b bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-semibold text-gray-800 flex items-center">
+                  <h2 className="font-semibold text-gray-800 dark:text-white flex items-center">
                     <Database className="mr-2 h-5 w-5 text-blue-600" />
-                    Databases
+                    {t.databases}
                   </h2>
                   <Button
                     variant="ghost"
@@ -752,7 +828,7 @@ export default function Index() {
                 {/* New Database Input */}
                 <div className="mt-2 flex gap-2">
                   <Input
-                    placeholder="Database name"
+                    placeholder={t.databaseName}
                     value={newDatabaseName}
                     onChange={(e) => setNewDatabaseName(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && createDatabase()}
@@ -763,6 +839,34 @@ export default function Index() {
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
+
+                {/* Process Documents */}
+                <div className="mt-2 flex gap-2">
+                  <Button
+                    onClick={processDocuments}
+                    disabled={isProcessing}
+                    size="sm"
+                    className="flex-1"
+                  >
+                    {isProcessing ? (
+                      <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                    ) : (
+                      <Play className="mr-2 h-3 w-3" />
+                    )}
+                    {t.processDocuments}
+                  </Button>
+                </div>
+
+                {/* Processing Progress */}
+                {isProcessing && (
+                  <div className="mt-2">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span>{t.processing}</span>
+                      <span>{processingProgress}%</span>
+                    </div>
+                    <Progress value={processingProgress} className="h-2" />
+                  </div>
+                )}
               </div>
 
               {/* Database List */}
@@ -774,7 +878,7 @@ export default function Index() {
                       className={cn(
                         "border rounded-lg p-3 hover:shadow-md transition-all",
                         dragOver === database.id &&
-                          "border-blue-400 bg-blue-50",
+                          "border-blue-400 bg-blue-50 dark:bg-blue-900/20",
                       )}
                       onDragOver={(e) => handleDragOver(e, database.id)}
                       onDrop={(e) => handleDrop(e, database.id)}
@@ -831,7 +935,7 @@ export default function Index() {
                       </div>
 
                       <div className="text-xs text-gray-500 mt-1">
-                        {database.documentCount} documents • {database.size}
+                        {database.documentCount} {t.documents} • {database.size}
                       </div>
 
                       {/* Documents List */}
@@ -841,9 +945,9 @@ export default function Index() {
                             <div
                               key={doc.id}
                               className={cn(
-                                "p-2 rounded border cursor-pointer hover:bg-blue-50 transition-colors text-xs",
+                                "p-2 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-xs",
                                 selectedDocument?.id === doc.id &&
-                                  "bg-blue-100 border-blue-300",
+                                  "bg-blue-100 border-blue-300 dark:bg-blue-900/30",
                               )}
                               draggable
                               onDragStart={() =>
@@ -910,13 +1014,17 @@ export default function Index() {
                                 </div>
                               </div>
                               <div className="text-xs text-gray-400 mt-1">
-                                {doc.type} • {doc.pages} pages • {doc.size}
+                                {doc.type} • {doc.pages} {t.pages} • {doc.size}
                               </div>
                             </div>
                           ))}
 
-                          {/* Add Document Section */}
-                          <div className="border-2 border-dashed border-gray-300 rounded p-3 hover:border-blue-400 transition-colors">
+                          {/* Fixed Add Document Section with Drag & Drop */}
+                          <div
+                            className="border-2 border-dashed border-gray-300 rounded p-3 hover:border-blue-400 transition-colors"
+                            onDragOver={(e) => handleDragOver(e, database.id)}
+                            onDrop={(e) => handleDrop(e, database.id)}
+                          >
                             <input
                               ref={fileInputRef}
                               type="file"
@@ -933,10 +1041,10 @@ export default function Index() {
                               onClick={() => fileInputRef.current?.click()}
                             >
                               <Plus className="mr-1 h-3 w-3" />
-                              Add Document
+                              {t.addDocument}
                             </Button>
                             <p className="text-xs text-gray-500 mt-1 text-center">
-                              Or drag & drop files here
+                              {t.dragDropFiles}
                             </p>
                           </div>
                         </div>
@@ -952,18 +1060,18 @@ export default function Index() {
         {/* Column 2 - Enhanced Document Viewer */}
         <div
           className={cn(
-            "bg-white border-r-2 border-blue-100 transition-all duration-300 shadow-lg",
+            "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg",
             showColumn2 ? "w-96" : "w-0 overflow-hidden",
           )}
         >
           {showColumn2 && (
             <div className="h-full flex flex-col">
               {/* Column 2 Header */}
-              <div className="p-4 border-b bg-gray-50">
+              <div className="p-4 border-b bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-semibold text-gray-800 flex items-center">
+                  <h2 className="font-semibold text-gray-800 dark:text-white flex items-center">
                     <FileText className="mr-2 h-5 w-5 text-blue-600" />
-                    Document Viewer
+                    {t.documentViewer}
                   </h2>
                   <Button
                     variant="ghost"
@@ -980,7 +1088,8 @@ export default function Index() {
                       {selectedDocument.name}
                     </div>
                     <div className="text-xs text-gray-500">
-                      Page {currentDocumentPage} of {selectedDocument.pages}
+                      {t.page} {currentDocumentPage} {t.of}{" "}
+                      {selectedDocument.pages}
                     </div>
                   </div>
                 )}
@@ -990,7 +1099,7 @@ export default function Index() {
                   <div className="relative flex-1">
                     <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
                     <Input
-                      placeholder="Search in document..."
+                      placeholder={t.searchInDocument}
                       value={documentSearchQuery}
                       onChange={(e) => setDocumentSearchQuery(e.target.value)}
                       className="pl-8 h-8 text-xs"
@@ -1040,7 +1149,7 @@ export default function Index() {
 
               {/* Document Controls */}
               {selectedDocument && (
-                <div className="p-3 border-b bg-gray-50 flex items-center justify-between">
+                <div className="p-3 border-b bg-gray-50 dark:bg-gray-700 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="outline"
@@ -1119,21 +1228,22 @@ export default function Index() {
                         transformOrigin: "top left",
                       }}
                     >
-                      <div className="bg-white p-6 rounded border shadow-sm min-h-96">
-                        <div className="text-gray-800 leading-relaxed">
+                      <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
+                        <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
                           {renderHighlightedText(
                             selectedDocument.content,
                             documentSearchQuery,
                           )}
                         </div>
                         <div className="mt-8 text-center text-gray-400 text-sm">
-                          Page {currentDocumentPage} of {selectedDocument.pages}
+                          {t.page} {currentDocumentPage} {t.of}{" "}
+                          {selectedDocument.pages}
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-400">
-                      Select a document to view its content
+                      {t.selectDocument}
                     </div>
                   )}
                 </div>
@@ -1144,7 +1254,7 @@ export default function Index() {
 
         {/* Column 3 - Enhanced Chat Interface */}
         <div
-          className="flex-1 flex flex-col bg-white shadow-lg"
+          className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg"
           style={{ width: showColumn1 || showColumn2 ? "55%" : "100%" }}
         >
           {/* Column 3 Header */}
@@ -1171,7 +1281,7 @@ export default function Index() {
                     <Eye className="h-4 w-4" />
                   </Button>
                 )}
-                <h2 className="font-semibold">Chat with Tia</h2>
+                <h2 className="font-semibold">{t.chatWithTia}</h2>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -1179,7 +1289,7 @@ export default function Index() {
                 <div className="relative">
                   <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    placeholder="Search chat..."
+                    placeholder={t.searchChat}
                     className="pl-8 bg-white/10 border-white/20 text-white placeholder:text-white/70 w-48"
                     value={chatSearchQuery}
                     onChange={(e) => setChatSearchQuery(e.target.value)}
@@ -1187,14 +1297,14 @@ export default function Index() {
                 </div>
 
                 {/* Enhanced Saved Chats */}
-                <DropdownMenu>
+                <DropdownMenu key="saved-chats-dropdown">
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-white hover:bg-white/20"
                     >
-                      Saved Chats
+                      {t.savedChats}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="z-50">
@@ -1219,13 +1329,13 @@ export default function Index() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSaveConversation}>
                       <Save className="mr-2 h-4 w-4" />
-                      Save Current
+                      {t.saveCurrent}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
                 {/* Enhanced Settings */}
-                <DropdownMenu>
+                <DropdownMenu key="settings-dropdown">
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
@@ -1236,13 +1346,18 @@ export default function Index() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="z-50 w-64">
-                    <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                    <DropdownMenuLabel>{t.settings}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
 
                     {/* Language Selection */}
                     <div className="p-2">
-                      <Label className="text-sm font-medium">Language</Label>
-                      <Select value={language} onValueChange={setLanguage}>
+                      <Label className="text-sm font-medium">
+                        {t.language}
+                      </Label>
+                      <Select
+                        value={language}
+                        onValueChange={(value: Language) => setLanguage(value)}
+                      >
                         <SelectTrigger className="w-full mt-1">
                           <SelectValue />
                         </SelectTrigger>
@@ -1259,7 +1374,7 @@ export default function Index() {
                     {/* Font Size */}
                     <div className="p-2">
                       <Label className="text-sm font-medium">
-                        Font Size: {fontSize}px
+                        {t.fontSize}: {fontSize}px
                       </Label>
                       <Slider
                         value={[fontSize]}
@@ -1275,15 +1390,22 @@ export default function Index() {
 
                     {/* Theme Selection */}
                     <div className="p-2">
-                      <Label className="text-sm font-medium">Appearance</Label>
-                      <Select value={theme} onValueChange={setTheme}>
+                      <Label className="text-sm font-medium">
+                        {t.appearance}
+                      </Label>
+                      <Select
+                        value={theme}
+                        onValueChange={(value: "light" | "dark" | "auto") =>
+                          setTheme(value)
+                        }
+                      >
                         <SelectTrigger className="w-full mt-1">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="auto">Auto</SelectItem>
+                          <SelectItem value="light">{t.light}</SelectItem>
+                          <SelectItem value="dark">{t.dark}</SelectItem>
+                          <SelectItem value="auto">{t.auto}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -1293,11 +1415,11 @@ export default function Index() {
                     {/* Privacy Settings */}
                     <div className="p-2 space-y-3">
                       <Label className="text-sm font-medium">
-                        Privacy Settings
+                        {t.privacySettings}
                       </Label>
 
                       <div className="flex items-center justify-between">
-                        <Label className="text-xs">Share usage data</Label>
+                        <Label className="text-xs">{t.shareUsage}</Label>
                         <Switch
                           checked={privacySettings.shareUsage}
                           onCheckedChange={(checked) =>
@@ -1310,7 +1432,7 @@ export default function Index() {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <Label className="text-xs">Save chat history</Label>
+                        <Label className="text-xs">{t.saveHistory}</Label>
                         <Switch
                           checked={privacySettings.saveHistory}
                           onCheckedChange={(checked) =>
@@ -1323,7 +1445,7 @@ export default function Index() {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <Label className="text-xs">Allow analytics</Label>
+                        <Label className="text-xs">{t.allowAnalytics}</Label>
                         <Switch
                           checked={privacySettings.allowAnalytics}
                           onCheckedChange={(checked) =>
@@ -1341,82 +1463,83 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Enhanced Chat Messages */}
+          {/* Optimized Chat Messages */}
           <ScrollArea className="flex-1">
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-3">
               {filteredMessages.map((message) => (
                 <div
                   key={message.id}
                   className={cn(
-                    "flex items-start space-x-3",
+                    "flex items-start space-x-2",
                     message.type === "user" ? "justify-end" : "justify-start",
                   )}
                 >
                   {message.type === "bot" && (
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-xs">Tia</span>
+                    <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-xs">T</span>
                     </div>
                   )}
 
                   <div
                     className={cn(
-                      "max-w-lg rounded-lg p-4 shadow-md relative",
+                      "max-w-lg rounded-lg p-3 shadow-md relative text-sm leading-relaxed",
                       message.type === "user"
-                        ? "bg-blue-600 text-white ml-12"
-                        : "bg-gray-100 text-gray-800",
+                        ? "bg-blue-600 text-white ml-8"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
                     )}
                   >
-                    <div className="mb-2">
-                      {message.content
-                        .split(/(\[doc\d+\])/)
-                        .map((part, index) => {
-                          if (part.match(/\[doc\d+\]/)) {
-                            const docId = part.slice(1, -1);
-                            return (
-                              <button
-                                key={index}
-                                onClick={() => handleDocumentReference(docId)}
-                                className="text-blue-600 underline hover:text-blue-800 font-medium mx-1 bg-blue-100 px-1 py-0.5 rounded"
-                              >
-                                {part}
-                              </button>
-                            );
-                          }
-                          return part;
-                        })}
+                    <div className="mb-1">
+                      {message.type === "bot" ? (
+                        <div>
+                          <div>
+                            {message.content.split(". References:")[0]}.
+                          </div>
+                          {message.documentReferences &&
+                            message.documentReferences.length > 0 && (
+                              <div className="mt-2 pt-2 border-t border-gray-300 dark:border-gray-600">
+                                <div className="text-xs font-semibold mb-1">
+                                  {t.references}:
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {message.documentReferences.map(
+                                    (docId, index) => (
+                                      <button
+                                        key={index}
+                                        onClick={() =>
+                                          handleDocumentReference(docId)
+                                        }
+                                        className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-medium text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded"
+                                      >
+                                        [{docId}]
+                                      </button>
+                                    ),
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                        </div>
+                      ) : (
+                        message.content
+                      )}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs opacity-70">
+                    <div className="flex items-center justify-between text-xs opacity-70 mt-1">
                       <span>{formatTimestamp(message.timestamp)}</span>
-                      <div className="flex gap-1">
-                        {message.type === "user" && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-5 w-5 p-0 text-white/70 hover:text-white hover:bg-white/20"
-                            onClick={() => deleteChatMessage(message.id)}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        )}
-                        {message.type === "bot" && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-5 w-5 p-0 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
-                            onClick={() => deleteChatMessage(message.id)}
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        )}
-                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 opacity-50 hover:opacity-100"
+                        onClick={() => deleteChatMessage(message.id)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
 
                   {message.type === "user" && (
-                    <Avatar className="flex-shrink-0">
+                    <Avatar className="flex-shrink-0 w-6 h-6">
                       <AvatarFallback className="bg-blue-600 text-white text-xs">
-                        JD
+                        J
                       </AvatarFallback>
                     </Avatar>
                   )}
@@ -1426,11 +1549,19 @@ export default function Index() {
             </div>
           </ScrollArea>
 
-          {/* Enhanced Chat Input */}
-          <div className="p-4 border-t bg-gray-50">
+          {/* Enhanced Chat Input with Drag & Drop */}
+          <div
+            className={cn(
+              "p-4 border-t bg-gray-50 dark:bg-gray-700 transition-colors",
+              chatDragOver && "bg-blue-50 dark:bg-blue-900/20 border-blue-300",
+            )}
+            onDragOver={handleChatDragOver}
+            onDragLeave={handleChatDragLeave}
+            onDrop={handleChatDrop}
+          >
             <div className="flex space-x-3">
               <Textarea
-                placeholder="Ask Tia a question..."
+                placeholder={t.askQuestion}
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 onKeyDown={(e) => {
@@ -1439,12 +1570,13 @@ export default function Index() {
                     handleSendMessage();
                   }
                 }}
-                className="flex-1 min-h-[60px] resize-none"
+                className="flex-1 min-h-[50px] resize-none"
               />
               <div className="flex flex-col space-y-2">
                 <Button
                   onClick={handleSendMessage}
                   className="bg-blue-600 hover:bg-blue-700"
+                  size="sm"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
@@ -1461,7 +1593,7 @@ export default function Index() {
                   variant="outline"
                   size="sm"
                   onClick={() => chatFileInputRef.current?.click()}
-                  title="Upload documents to My Documents"
+                  title={`${t.uploadFiles} ${t.myDocuments}`}
                 >
                   <Upload className="h-4 w-4" />
                 </Button>
@@ -1475,30 +1607,33 @@ export default function Index() {
                 </Button>
               </div>
             </div>
+            {chatDragOver && (
+              <div className="text-center text-blue-600 text-sm mt-2">
+                {t.dragDropHere}
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Enhanced Footer */}
-      <footer className="bg-gray-800 text-white py-4 px-6 border-t-4 border-blue-600">
+      {/* Reduced Footer Height */}
+      <footer className="bg-gray-800 text-white py-2 px-6 border-t-4 border-blue-600">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             {/* Tia Brand in Footer */}
-            <div className="flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg shadow-lg">
-              <div className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center">
+            <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded shadow-lg">
+              <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
                 <span className="font-bold text-xs">Tia</span>
               </div>
               <div>
-                <div className="font-semibold text-sm">Tia</div>
+                <div className="font-semibold text-xs">Tia</div>
                 <div className="text-xs opacity-90">v2.1.0</div>
               </div>
             </div>
-            <p className="text-sm text-gray-300">
-              Tia es una creación de Softia.ca
-            </p>
+            <p className="text-xs text-gray-300">{t.footerText}</p>
           </div>
           <div className="text-xs text-gray-400">
-            © 2024 Softia.ca - All rights reserved
+            © 2024 Softia.ca - {t.rightsReserved}
           </div>
         </div>
       </footer>
