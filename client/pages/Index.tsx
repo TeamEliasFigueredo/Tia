@@ -104,6 +104,10 @@ export default function Index() {
     userProfile: false,
     security: false,
     terms: false,
+    currentPlan: false,
+    availablePackages: false,
+    viewBills: false,
+    teams: false,
   });
 
   // User state (for admin check)
