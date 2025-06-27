@@ -350,15 +350,15 @@ export default function Index() {
             <DropdownMenuContent align="end" className="z-50">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => openModal("test")}>
+              <DropdownMenuItem onClick={() => openModal("userProfile")}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openModal("test")}>
+              <DropdownMenuItem onClick={() => openModal("security")}>
                 <Shield className="mr-2 h-4 w-4" />
                 Security
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openModal("test")}>
+              <DropdownMenuItem onClick={() => openModal("terms")}>
                 <FileCheck className="mr-2 h-4 w-4" />
                 Terms of Use
               </DropdownMenuItem>
