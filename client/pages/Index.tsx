@@ -49,6 +49,10 @@ import { TestModal } from "@/components/modals/TestModal";
 import { UserProfileModal } from "@/components/modals/UserProfileModal";
 import { SecurityModal } from "@/components/modals/SecurityModal";
 import { TermsModal } from "@/components/modals/TermsModal";
+import { CurrentPlanModal } from "@/components/modals/CurrentPlanModal";
+import { AvailablePackagesModal } from "@/components/modals/AvailablePackagesModal";
+import { ViewBillsModal } from "@/components/modals/ViewBillsModal";
+import { TeamsModal } from "@/components/modals/TeamsModal";
 
 interface Database {
   id: string;
