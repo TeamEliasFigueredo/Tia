@@ -93,13 +93,7 @@ export default function Index() {
 
   // Modal states
   const [modals, setModals] = useState({
-    userProfile: false,
-    security: false,
-    terms: false,
-    currentPlan: false,
-    availablePackages: false,
-    viewBills: false,
-    teams: false,
+    test: false,
   });
 
   // User state (for admin check)
