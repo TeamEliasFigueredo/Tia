@@ -855,7 +855,6 @@ export default function Index() {
       </footer>
 
       {/* Modal Components */}
-      <TestModal isOpen={modals.test} onClose={() => closeModal("test")} />
       <UserProfileModal
         isOpen={modals.userProfile}
         onClose={() => closeModal("userProfile")}
@@ -865,6 +864,19 @@ export default function Index() {
         onClose={() => closeModal("security")}
       />
       <TermsModal isOpen={modals.terms} onClose={() => closeModal("terms")} />
+      <CurrentPlanModal
+        isOpen={modals.currentPlan}
+        onClose={() => closeModal("currentPlan")}
+      />
+      <AvailablePackagesModal
+        isOpen={modals.availablePackages}
+        onClose={() => closeModal("availablePackages")}
+      />
+      <ViewBillsModal
+        isOpen={modals.viewBills}
+        onClose={() => closeModal("viewBills")}
+      />
+      <TeamsModal isOpen={modals.teams} onClose={() => closeModal("teams")} />
     </div>
   );
 }
