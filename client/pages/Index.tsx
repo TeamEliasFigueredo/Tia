@@ -45,7 +45,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 // Import modals
-import { TestModal } from "@/components/modals/TestModal";
 import { UserProfileModal } from "@/components/modals/UserProfileModal";
 import { SecurityModal } from "@/components/modals/SecurityModal";
 import { TermsModal } from "@/components/modals/TermsModal";
