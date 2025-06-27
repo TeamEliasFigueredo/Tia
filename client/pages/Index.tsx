@@ -636,12 +636,7 @@ export default function Index() {
                     <Eye className="h-4 w-4" />
                   </Button>
                 )}
-                <h2 className="font-semibold flex items-center">
-                  <div className="w-8 h-8 bg-white/20 rounded-md flex items-center justify-center mr-3">
-                    <span className="font-bold text-sm">Tia</span>
-                  </div>
-                  Chat with Tia
-                </h2>
+                <h2 className="font-semibold">Chat with Tia</h2>
               </div>
 
               <div className="flex items-center space-x-2">
