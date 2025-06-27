@@ -299,48 +299,47 @@ export default function Index() {
 
           {/* Navigation */}
           <nav className="flex items-center space-x-6">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  Teams
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-50">
-                <DropdownMenuItem>Development Team</DropdownMenuItem>
-                <DropdownMenuItem>Marketing Team</DropdownMenuItem>
-                <DropdownMenuItem>Sales Team</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                className="text-gray-700 hover:text-blue-600 flex items-center gap-2"
+                onClick={() => openModal("teams")}
+              >
+                <Users className="h-4 w-4" />
+                Teams
+              </Button>
+            )}
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  Your Plan
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-50">
-                <DropdownMenuLabel>Plan Management</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Package className="mr-2 h-4 w-4" />
-                  Current Plan
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Available Packages
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Receipt className="mr-2 h-4 w-4" />
-                  View Bills
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {isAdmin && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-gray-700 hover:text-blue-600"
+                  >
+                    Your Plan
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="z-50">
+                  <DropdownMenuLabel>Plan Management</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => openModal("currentPlan")}>
+                    <Package className="mr-2 h-4 w-4" />
+                    Current Plan
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => openModal("availablePackages")}
+                  >
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Available Packages
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => openModal("viewBills")}>
+                    <Receipt className="mr-2 h-4 w-4" />
+                    View Bills
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </nav>
         </div>
 
@@ -482,7 +481,7 @@ export default function Index() {
                                 </span>
                               </div>
                               <div className="text-xs text-gray-400 mt-1">
-                                {doc.type} �� {doc.pages} pages • {doc.size}
+                                {doc.type} • {doc.pages} pages • {doc.size}
                               </div>
                               <div className="flex space-x-1 mt-1">
                                 <Button
