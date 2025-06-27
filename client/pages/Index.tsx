@@ -829,8 +829,27 @@ export default function Index() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-3 px-6 text-center border-t-4 border-blue-600">
-        <p className="text-sm">Tia es una creación de Softia.ca</p>
+      <footer className="bg-gray-800 text-white py-4 px-6 border-t-4 border-blue-600">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            {/* Tia Brand in Footer */}
+            <div className="flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg shadow-lg">
+              <div className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center">
+                <span className="font-bold text-xs">Tia</span>
+              </div>
+              <div>
+                <div className="font-semibold text-sm">Tia</div>
+                <div className="text-xs opacity-90">v2.1.0</div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-300">
+              Tia es una creación de Softia.ca
+            </p>
+          </div>
+          <div className="text-xs text-gray-400">
+            © 2024 Softia.ca - All rights reserved
+          </div>
+        </div>
       </footer>
     </div>
   );
