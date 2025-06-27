@@ -343,54 +343,40 @@ export default function Index() {
           </nav>
         </div>
 
-        {/* Tia Branding & User */}
-        <div className="flex items-center space-x-6">
-          {/* Tia Brand */}
-          <div className="flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg shadow-lg">
-            <div className="w-8 h-8 bg-white/20 rounded-md flex items-center justify-center">
-              <span className="font-bold text-sm">Tia</span>
-            </div>
-            <div>
-              <div className="font-semibold text-sm">Tia</div>
-              <div className="text-xs opacity-90">v2.1.0</div>
-            </div>
-          </div>
-
-          {/* User Profile */}
-          <div className="flex items-center space-x-3">
-            <span className="text-sm text-gray-600">John Doe</span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-blue-600 text-white font-semibold">
-                    JD
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="z-50">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Shield className="mr-2 h-4 w-4" />
-                  Security
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <FileCheck className="mr-2 h-4 w-4" />
-                  Terms of Use
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+        {/* User Profile */}
+        <div className="flex items-center space-x-3">
+          <span className="text-sm text-gray-600">John Doe</span>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all">
+                <AvatarImage src="" />
+                <AvatarFallback className="bg-blue-600 text-white font-semibold">
+                  JD
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="z-50">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => openModal("userProfile")}>
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openModal("security")}>
+                <Shield className="mr-2 h-4 w-4" />
+                Security
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openModal("terms")}>
+                <FileCheck className="mr-2 h-4 w-4" />
+                Terms of Use
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600">
+                <LogOut className="mr-2 h-4 w-4" />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
