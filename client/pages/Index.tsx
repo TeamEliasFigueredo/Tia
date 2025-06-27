@@ -346,15 +346,15 @@ export default function Index() {
             <DropdownMenuContent align="end" className="z-50">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => openModal("userProfile")}>
+              <DropdownMenuItem onClick={() => openModal("test")}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openModal("security")}>
+              <DropdownMenuItem onClick={() => openModal("test")}>
                 <Shield className="mr-2 h-4 w-4" />
                 Security
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openModal("terms")}>
+              <DropdownMenuItem onClick={() => openModal("test")}>
                 <FileCheck className="mr-2 h-4 w-4" />
                 Terms of Use
               </DropdownMenuItem>
