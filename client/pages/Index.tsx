@@ -97,6 +97,20 @@ export default function Index() {
   const [language, setLanguage] = useState("en");
   const [theme, setTheme] = useState("light");
 
+  // Modal states
+  const [modals, setModals] = useState({
+    userProfile: false,
+    security: false,
+    terms: false,
+    currentPlan: false,
+    availablePackages: false,
+    viewBills: false,
+    teams: false,
+  });
+
+  // User state (for admin check)
+  const [isAdmin] = useState(true); // Set to true for demo purposes
+
   // Data state
   const [databases, setDatabases] = useState<Database[]>([
     {
