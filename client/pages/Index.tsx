@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Search,
   Plus,
@@ -27,6 +27,11 @@ import {
   Package,
   Receipt,
   Users,
+  Upload,
+  X,
+  Download,
+  Move,
+  Highlight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +47,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 // Import modals
@@ -93,11 +108,11 @@ export default function Index() {
   // Layout state
   const [showColumn1, setShowColumn1] = useState(false);
   const [showColumn2, setShowColumn2] = useState(false);
-  const [fontSize, setFontSize] = useState("medium");
+  const [fontSize, setFontSize] = useState(16);
   const [language, setLanguage] = useState("en");
   const [theme, setTheme] = useState("light");
 
-  // Modal states
+  // Modal states - Fixed to prevent menu issues
   const [modals, setModals] = useState({
     userProfile: false,
     security: false,
@@ -109,9 +124,9 @@ export default function Index() {
   });
 
   // User state (for admin check)
-  const [isAdmin] = useState(true); // Set to true for demo purposes
+  const [isAdmin] = useState(true);
 
-  // Data state
+  // Enhanced data state
   const [databases, setDatabases] = useState<Database[]>([
     {
       id: "1",
@@ -129,7 +144,8 @@ export default function Index() {
           pages: 45,
           createdDate: "2024-01-10",
           addedDate: "2024-01-15",
-          content: "This is the employee handbook content...",
+          content:
+            "This comprehensive employee handbook outlines company policies, procedures, and guidelines for all staff members. It covers workplace conduct, benefits, time-off policies, and professional development opportunities. Section 1: Introduction to Company Culture. Our company values integrity, innovation, and collaboration. We believe in creating an inclusive environment where every employee can thrive. Section 2: Code of Conduct. All employees are expected to maintain professional behavior at all times. This includes respectful communication, punctuality, and adherence to company policies.",
         },
         {
           id: "doc2",
@@ -139,7 +155,8 @@ export default function Index() {
           pages: 32,
           createdDate: "2024-01-12",
           addedDate: "2024-01-16",
-          content: "Security guidelines and protocols...",
+          content:
+            "Security guidelines and protocols for maintaining information security and data protection within the organization. This document covers password policies, data handling procedures, and incident response protocols. Password Requirements: Minimum 12 characters, mix of uppercase, lowercase, numbers, and special characters. Two-factor authentication is mandatory for all accounts.",
         },
       ],
     },
@@ -159,27 +176,34 @@ export default function Index() {
           pages: 78,
           createdDate: "2024-01-08",
           addedDate: "2024-01-11",
-          content: "Complete API documentation...",
+          content:
+            "Complete API documentation including endpoints, authentication methods, request/response formats, and integration examples for developers. REST API Endpoints: GET /api/users - Retrieve user list. POST /api/users - Create new user. PUT /api/users/{id} - Update user. DELETE /api/users/{id} - Delete user. Authentication: Bearer token required in Authorization header.",
         },
       ],
     },
   ]);
 
+  // Document state
   const [selectedDatabase, setSelectedDatabase] = useState<string | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(
     null,
   );
   const [currentDocumentPage, setCurrentDocumentPage] = useState(1);
   const [documentZoom, setDocumentZoom] = useState(100);
+  const [documentSearchQuery, setDocumentSearchQuery] = useState("");
+  const [documentSearchResults, setDocumentSearchResults] = useState<number[]>(
+    [],
+  );
+  const [currentSearchResult, setCurrentSearchResult] = useState(0);
 
-  // Chat state
+  // Enhanced chat state
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: "1",
       type: "bot",
       content:
         "Hello! I'm Tia, your AI assistant. How can I help you today? I can search through your company documents and provide relevant information.",
-      timestamp: "2024-01-22T10:00:00",
+      timestamp: new Date().toISOString(),
       documentReferences: [],
     },
   ]);
@@ -187,24 +211,287 @@ export default function Index() {
   const [savedChats, setSavedChats] = useState<SavedChat[]>([
     {
       id: "1",
-      name: "Chat Session 1",
+      name: "Welcome Session",
       messages: chatMessages,
       createdDate: "2024-01-22",
     },
   ]);
   const [currentChatId, setCurrentChatId] = useState("1");
   const [chatSearchQuery, setChatSearchQuery] = useState("");
+  const [filteredMessages, setFilteredMessages] = useState(chatMessages);
 
+  // Editing states
+  const [editingDatabase, setEditingDatabase] = useState<string | null>(null);
+  const [editingDocument, setEditingDocument] = useState<string | null>(null);
+  const [newDatabaseName, setNewDatabaseName] = useState("");
+  const [newDocumentName, setNewDocumentName] = useState("");
+
+  // Drag and drop states
+  const [draggedDocument, setDraggedDocument] = useState<{
+    docId: string;
+    fromDbId: string;
+  } | null>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null);
+
+  // File upload refs
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatFileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  // Settings states
+  const [privacySettings, setPrivacySettings] = useState({
+    shareUsage: true,
+    saveHistory: true,
+    allowAnalytics: false,
+  });
+
+  // Fixed modal helper functions to prevent menu issues
+  const openModal = useCallback((modalName: keyof typeof modals) => {
+    setModals((prev) => ({ ...prev, [modalName]: true }));
+  }, []);
+
+  const closeModal = useCallback((modalName: keyof typeof modals) => {
+    setModals((prev) => ({ ...prev, [modalName]: false }));
+    // Force a small delay to ensure proper cleanup
+    setTimeout(() => {
+      // This ensures dropdown menus remain functional after modal closure
+    }, 100);
+  }, []);
+
+  // Enhanced search functionality
+  useEffect(() => {
+    if (chatSearchQuery.trim()) {
+      const filtered = chatMessages.filter((message) =>
+        message.content.toLowerCase().includes(chatSearchQuery.toLowerCase()),
+      );
+      setFilteredMessages(filtered);
+    } else {
+      setFilteredMessages(chatMessages);
+    }
+  }, [chatSearchQuery, chatMessages]);
+
+  // Document search functionality
+  const searchInDocument = useCallback(() => {
+    if (!selectedDocument || !documentSearchQuery.trim()) {
+      setDocumentSearchResults([]);
+      return;
+    }
+
+    const content = selectedDocument.content.toLowerCase();
+    const query = documentSearchQuery.toLowerCase();
+    const results: number[] = [];
+    let index = content.indexOf(query);
+
+    while (index !== -1) {
+      results.push(index);
+      index = content.indexOf(query, index + 1);
+    }
+
+    setDocumentSearchResults(results);
+    setCurrentSearchResult(0);
+  }, [selectedDocument, documentSearchQuery]);
+
+  useEffect(() => {
+    searchInDocument();
+  }, [searchInDocument]);
+
+  // Auto-scroll chat
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [chatMessages]);
+  }, [filteredMessages]);
 
+  // Database management functions
+  const createDatabase = () => {
+    if (!newDatabaseName.trim()) return;
+
+    const newDb: Database = {
+      id: Date.now().toString(),
+      name: newDatabaseName,
+      size: "0 MB",
+      documentCount: 0,
+      createdDate: new Date().toISOString().split("T")[0],
+      lastModified: new Date().toISOString().split("T")[0],
+      documents: [],
+    };
+
+    setDatabases((prev) => [...prev, newDb]);
+    setNewDatabaseName("");
+  };
+
+  const deleteDatabase = (dbId: string) => {
+    if (confirm("Are you sure you want to delete this database?")) {
+      setDatabases((prev) => prev.filter((db) => db.id !== dbId));
+      if (selectedDatabase === dbId) {
+        setSelectedDatabase(null);
+        setSelectedDocument(null);
+      }
+    }
+  };
+
+  const renameDatabase = (dbId: string, newName: string) => {
+    setDatabases((prev) =>
+      prev.map((db) =>
+        db.id === dbId
+          ? {
+              ...db,
+              name: newName,
+              lastModified: new Date().toISOString().split("T")[0],
+            }
+          : db,
+      ),
+    );
+    setEditingDatabase(null);
+  };
+
+  const deleteDocument = (dbId: string, docId: string) => {
+    if (confirm("Are you sure you want to delete this document?")) {
+      setDatabases((prev) =>
+        prev.map((db) =>
+          db.id === dbId
+            ? {
+                ...db,
+                documents: db.documents.filter((doc) => doc.id !== docId),
+                documentCount: db.documentCount - 1,
+                lastModified: new Date().toISOString().split("T")[0],
+              }
+            : db,
+        ),
+      );
+
+      if (selectedDocument?.id === docId) {
+        setSelectedDocument(null);
+      }
+    }
+  };
+
+  const renameDocument = (dbId: string, docId: string, newName: string) => {
+    setDatabases((prev) =>
+      prev.map((db) =>
+        db.id === dbId
+          ? {
+              ...db,
+              documents: db.documents.map((doc) =>
+                doc.id === docId ? { ...doc, name: newName } : doc,
+              ),
+              lastModified: new Date().toISOString().split("T")[0],
+            }
+          : db,
+      ),
+    );
+    setEditingDocument(null);
+  };
+
+  // File upload functions
+  const handleFileUpload = (files: FileList | null, targetDbId: string) => {
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      const newDoc: Document = {
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+        name: file.name,
+        type: file.type.includes("pdf") ? "PDF" : "Document",
+        size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
+        pages: Math.floor(Math.random() * 50) + 1,
+        createdDate: new Date().toISOString().split("T")[0],
+        addedDate: new Date().toISOString().split("T")[0],
+        content: `Content of ${file.name}. This is a placeholder for the actual document content that would be extracted from the uploaded file.`,
+      };
+
+      setDatabases((prev) =>
+        prev.map((db) =>
+          db.id === targetDbId
+            ? {
+                ...db,
+                documents: [...db.documents, newDoc],
+                documentCount: db.documentCount + 1,
+                size: `${parseFloat(db.size) + parseFloat(newDoc.size)}MB`,
+                lastModified: new Date().toISOString().split("T")[0],
+              }
+            : db,
+        ),
+      );
+    });
+  };
+
+  // Chat file upload with auto-create "My Documents" database
+  const handleChatFileUpload = (files: FileList | null) => {
+    if (!files) return;
+
+    let myDocsDb = databases.find((db) => db.name === "My Documents");
+
+    if (!myDocsDb) {
+      const newMyDocsDb: Database = {
+        id: "my-docs-" + Date.now(),
+        name: "My Documents",
+        size: "0 MB",
+        documentCount: 0,
+        createdDate: new Date().toISOString().split("T")[0],
+        lastModified: new Date().toISOString().split("T")[0],
+        documents: [],
+      };
+
+      setDatabases((prev) => [...prev, newMyDocsDb]);
+      myDocsDb = newMyDocsDb;
+    }
+
+    handleFileUpload(files, myDocsDb.id);
+  };
+
+  // Drag and drop functions
+  const handleDragStart = (docId: string, fromDbId: string) => {
+    setDraggedDocument({ docId, fromDbId });
+  };
+
+  const handleDragOver = (e: React.DragEvent, dbId: string) => {
+    e.preventDefault();
+    setDragOver(dbId);
+  };
+
+  const handleDrop = (e: React.DragEvent, toDbId: string) => {
+    e.preventDefault();
+    setDragOver(null);
+
+    if (!draggedDocument || draggedDocument.fromDbId === toDbId) return;
+
+    const { docId, fromDbId } = draggedDocument;
+
+    // Find the document to move
+    const sourceDb = databases.find((db) => db.id === fromDbId);
+    const docToMove = sourceDb?.documents.find((doc) => doc.id === docId);
+
+    if (!docToMove) return;
+
+    // Move document between databases
+    setDatabases((prev) =>
+      prev.map((db) => {
+        if (db.id === fromDbId) {
+          return {
+            ...db,
+            documents: db.documents.filter((doc) => doc.id !== docId),
+            documentCount: db.documentCount - 1,
+            lastModified: new Date().toISOString().split("T")[0],
+          };
+        }
+        if (db.id === toDbId) {
+          return {
+            ...db,
+            documents: [...db.documents, docToMove],
+            documentCount: db.documentCount + 1,
+            lastModified: new Date().toISOString().split("T")[0],
+          };
+        }
+        return db;
+      }),
+    );
+
+    setDraggedDocument(null);
+  };
+
+  // Chat functions
   const handleSendMessage = () => {
     if (!currentMessage.trim()) return;
 
@@ -215,31 +502,48 @@ export default function Index() {
       timestamp: new Date().toISOString(),
     };
 
-    setChatMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...chatMessages, userMessage];
+    setChatMessages(newMessages);
+
+    // Update current chat
+    setSavedChats((prev) =>
+      prev.map((chat) =>
+        chat.id === currentChatId ? { ...chat, messages: newMessages } : chat,
+      ),
+    );
 
     // Simulate bot response
     setTimeout(() => {
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: "bot",
-        content: `I understand you're asking about "${currentMessage}". Based on the documents in your database, here's what I found. [doc1] [doc2]`,
+        content: `I understand you're asking about "${currentMessage}". Based on the documents in your database, here's what I found. You can find more details in the Employee Handbook [doc1] and Security Guidelines [doc2].`,
         timestamp: new Date().toISOString(),
         documentReferences: ["doc1", "doc2"],
       };
-      setChatMessages((prev) => [...prev, botMessage]);
+
+      const updatedMessages = [...newMessages, botMessage];
+      setChatMessages(updatedMessages);
+
+      // Update current chat with bot response
+      setSavedChats((prev) =>
+        prev.map((chat) =>
+          chat.id === currentChatId
+            ? { ...chat, messages: updatedMessages }
+            : chat,
+        ),
+      );
     }, 1500);
 
     setCurrentMessage("");
   };
 
   const handleDocumentReference = (docId: string) => {
-    // Find document in databases
     for (const database of databases) {
       const doc = database.documents.find((d) => d.id === docId);
       if (doc) {
         setSelectedDocument(doc);
         setShowColumn2(true);
-        // Highlight document in Column 1
         setSelectedDatabase(database.id);
         setShowColumn1(true);
         break;
@@ -248,13 +552,41 @@ export default function Index() {
   };
 
   const handleSaveConversation = () => {
+    const chatName =
+      prompt("Enter a name for this chat session:") ||
+      `Chat ${savedChats.length + 1}`;
+
     const newChat: SavedChat = {
       id: Date.now().toString(),
-      name: `Chat Session ${savedChats.length + 1}`,
+      name: chatName,
       messages: chatMessages,
       createdDate: new Date().toISOString().split("T")[0],
     };
+
     setSavedChats((prev) => [...prev, newChat]);
+    setCurrentChatId(newChat.id);
+  };
+
+  const loadSavedChat = (chatId: string) => {
+    const chat = savedChats.find((c) => c.id === chatId);
+    if (chat) {
+      setChatMessages(chat.messages);
+      setCurrentChatId(chatId);
+    }
+  };
+
+  const deleteChatMessage = (messageId: string) => {
+    const updatedMessages = chatMessages.filter((m) => m.id !== messageId);
+    setChatMessages(updatedMessages);
+
+    // Update current saved chat
+    setSavedChats((prev) =>
+      prev.map((chat) =>
+        chat.id === currentChatId
+          ? { ...chat, messages: updatedMessages }
+          : chat,
+      ),
+    );
   };
 
   const formatTimestamp = (timestamp: string) => {
@@ -269,21 +601,31 @@ export default function Index() {
     });
   };
 
-  // Modal helper functions
-  const openModal = (modalName: keyof typeof modals) => {
-    setModals((prev) => ({ ...prev, [modalName]: true }));
-  };
-
-  const closeModal = (modalName: keyof typeof modals) => {
-    setModals((prev) => ({ ...prev, [modalName]: false }));
-  };
-
   const toggleDatabase = (databaseId: string) => {
     setSelectedDatabase(selectedDatabase === databaseId ? null : databaseId);
   };
 
+  // Render highlighted text
+  const renderHighlightedText = (text: string, searchQuery: string) => {
+    if (!searchQuery) return text;
+
+    const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
+    return parts.map((part, index) =>
+      part.toLowerCase() === searchQuery.toLowerCase() ? (
+        <mark key={index} className="bg-yellow-300">
+          {part}
+        </mark>
+      ) : (
+        part
+      ),
+    );
+  };
+
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
+    <div
+      className="h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50"
+      style={{ fontSize: `${fontSize}px` }}
+    >
       {/* Header */}
       <header className="bg-white shadow-lg border-b-2 border-blue-100 px-6 py-4 flex items-center justify-between relative z-50">
         <div className="flex items-center space-x-6">
@@ -382,7 +724,7 @@ export default function Index() {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Column 1 - Database Management */}
+        {/* Column 1 - Enhanced Database Management */}
         <div
           className={cn(
             "bg-white border-r-2 border-blue-100 transition-all duration-300 shadow-lg",
@@ -406,35 +748,83 @@ export default function Index() {
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                 </div>
-                <Button className="w-full mt-2" size="sm">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Database
-                </Button>
+
+                {/* New Database Input */}
+                <div className="mt-2 flex gap-2">
+                  <Input
+                    placeholder="Database name"
+                    value={newDatabaseName}
+                    onChange={(e) => setNewDatabaseName(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && createDatabase()}
+                    className="flex-1"
+                    size="sm"
+                  />
+                  <Button onClick={createDatabase} size="sm">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               {/* Database List */}
               <ScrollArea className="flex-1">
-                <div className="p-4 space-y-3">
+                <div className="p-2 space-y-2">
                   {databases.map((database) => (
                     <div
                       key={database.id}
-                      className="border rounded-lg p-3 hover:shadow-md transition-shadow"
+                      className={cn(
+                        "border rounded-lg p-3 hover:shadow-md transition-all",
+                        dragOver === database.id &&
+                          "border-blue-400 bg-blue-50",
+                      )}
+                      onDragOver={(e) => handleDragOver(e, database.id)}
+                      onDrop={(e) => handleDrop(e, database.id)}
                     >
                       <div
                         className="flex items-center justify-between cursor-pointer"
                         onClick={() => toggleDatabase(database.id)}
                       >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 flex-1">
                           <Database className="h-4 w-4 text-blue-500" />
-                          <span className="font-medium text-sm">
-                            {database.name}
-                          </span>
+                          {editingDatabase === database.id ? (
+                            <Input
+                              value={database.name}
+                              onChange={(e) =>
+                                renameDatabase(database.id, e.target.value)
+                              }
+                              onBlur={() => setEditingDatabase(null)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") setEditingDatabase(null);
+                                if (e.key === "Escape")
+                                  setEditingDatabase(null);
+                              }}
+                              autoFocus
+                              className="h-6 text-sm"
+                            />
+                          ) : (
+                            <span className="font-medium text-sm">
+                              {database.name}
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center space-x-1">
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingDatabase(database.id);
+                            }}
+                          >
                             <Edit3 className="h-3 w-3" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteDatabase(database.id);
+                            }}
+                          >
                             <Trash2 className="h-3 w-3" />
                           </Button>
                         </div>
@@ -446,55 +836,109 @@ export default function Index() {
 
                       {/* Documents List */}
                       {selectedDatabase === database.id && (
-                        <div className="mt-3 ml-4 space-y-2 border-l-2 border-blue-100 pl-3">
+                        <div className="mt-3 space-y-1">
                           {database.documents.map((doc) => (
                             <div
                               key={doc.id}
                               className={cn(
-                                "p-2 rounded border cursor-pointer hover:bg-blue-50 transition-colors",
+                                "p-2 rounded border cursor-pointer hover:bg-blue-50 transition-colors text-xs",
                                 selectedDocument?.id === doc.id &&
                                   "bg-blue-100 border-blue-300",
                               )}
+                              draggable
+                              onDragStart={() =>
+                                handleDragStart(doc.id, database.id)
+                              }
                               onClick={() => {
                                 setSelectedDocument(doc);
                                 setShowColumn2(true);
                               }}
                             >
-                              <div className="flex items-center space-x-2">
-                                <FileText className="h-3 w-3 text-gray-500" />
-                                <span className="text-xs font-medium">
-                                  {doc.name}
-                                </span>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2 flex-1">
+                                  <FileText className="h-3 w-3 text-gray-500" />
+                                  {editingDocument === doc.id ? (
+                                    <Input
+                                      value={doc.name}
+                                      onChange={(e) =>
+                                        renameDocument(
+                                          database.id,
+                                          doc.id,
+                                          e.target.value,
+                                        )
+                                      }
+                                      onBlur={() => setEditingDocument(null)}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter")
+                                          setEditingDocument(null);
+                                        if (e.key === "Escape")
+                                          setEditingDocument(null);
+                                      }}
+                                      autoFocus
+                                      className="h-5 text-xs"
+                                      onClick={(e) => e.stopPropagation()}
+                                    />
+                                  ) : (
+                                    <span className="font-medium truncate">
+                                      {doc.name}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex space-x-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-5 w-5 p-0"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditingDocument(doc.id);
+                                    }}
+                                  >
+                                    <Edit3 className="h-2 w-2" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-5 w-5 p-0"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      deleteDocument(database.id, doc.id);
+                                    }}
+                                  >
+                                    <Trash2 className="h-2 w-2" />
+                                  </Button>
+                                </div>
                               </div>
                               <div className="text-xs text-gray-400 mt-1">
                                 {doc.type} • {doc.pages} pages • {doc.size}
                               </div>
-                              <div className="flex space-x-1 mt-1">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-6 px-1"
-                                >
-                                  <Edit3 className="h-3 w-3" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-6 px-1"
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </Button>
-                              </div>
                             </div>
                           ))}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full"
-                          >
-                            <Plus className="mr-1 h-3 w-3" />
-                            Add Document
-                          </Button>
+
+                          {/* Add Document Section */}
+                          <div className="border-2 border-dashed border-gray-300 rounded p-3 hover:border-blue-400 transition-colors">
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              multiple
+                              className="hidden"
+                              onChange={(e) =>
+                                handleFileUpload(e.target.files, database.id)
+                              }
+                            />
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full text-xs"
+                              onClick={() => fileInputRef.current?.click()}
+                            >
+                              <Plus className="mr-1 h-3 w-3" />
+                              Add Document
+                            </Button>
+                            <p className="text-xs text-gray-500 mt-1 text-center">
+                              Or drag & drop files here
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -505,7 +949,7 @@ export default function Index() {
           )}
         </div>
 
-        {/* Column 2 - Document Viewer */}
+        {/* Column 2 - Enhanced Document Viewer */}
         <div
           className={cn(
             "bg-white border-r-2 border-blue-100 transition-all duration-300 shadow-lg",
@@ -540,17 +984,81 @@ export default function Index() {
                     </div>
                   </div>
                 )}
+
+                {/* Document Search */}
+                <div className="mt-2 flex gap-2">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
+                    <Input
+                      placeholder="Search in document..."
+                      value={documentSearchQuery}
+                      onChange={(e) => setDocumentSearchQuery(e.target.value)}
+                      className="pl-8 h-8 text-xs"
+                    />
+                  </div>
+                  {documentSearchResults.length > 0 && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-gray-500">
+                        {currentSearchResult + 1}/{documentSearchResults.length}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() =>
+                          setCurrentSearchResult(
+                            Math.max(0, currentSearchResult - 1),
+                          )
+                        }
+                        disabled={currentSearchResult <= 0}
+                      >
+                        <ChevronLeft className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() =>
+                          setCurrentSearchResult(
+                            Math.min(
+                              documentSearchResults.length - 1,
+                              currentSearchResult + 1,
+                            ),
+                          )
+                        }
+                        disabled={
+                          currentSearchResult >=
+                          documentSearchResults.length - 1
+                        }
+                      >
+                        <ChevronRight className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Document Controls */}
               {selectedDocument && (
                 <div className="p-3 border-b bg-gray-50 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setDocumentZoom(Math.max(50, documentZoom - 10))
+                      }
+                    >
                       <ZoomOut className="h-3 w-3" />
                     </Button>
                     <span className="text-xs">{documentZoom}%</span>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setDocumentZoom(Math.min(200, documentZoom + 10))
+                      }
+                    >
                       <ZoomIn className="h-3 w-3" />
                     </Button>
                   </div>
@@ -559,21 +1067,39 @@ export default function Index() {
                       variant="outline"
                       size="sm"
                       disabled={currentDocumentPage <= 1}
+                      onClick={() =>
+                        setCurrentDocumentPage(
+                          Math.max(1, currentDocumentPage - 1),
+                        )
+                      }
                     >
                       <ChevronLeft className="h-3 w-3" />
                     </Button>
                     <Input
                       className="w-12 h-7 text-xs text-center"
                       value={currentDocumentPage}
-                      onChange={(e) =>
-                        setCurrentDocumentPage(Number(e.target.value))
-                      }
+                      onChange={(e) => {
+                        const page = Math.max(
+                          1,
+                          Math.min(
+                            selectedDocument.pages,
+                            parseInt(e.target.value) || 1,
+                          ),
+                        );
+                        setCurrentDocumentPage(page);
+                      }}
                     />
                     <Button
                       variant="outline"
                       size="sm"
-                      disabled={
-                        currentDocumentPage >= (selectedDocument?.pages || 1)
+                      disabled={currentDocumentPage >= selectedDocument.pages}
+                      onClick={() =>
+                        setCurrentDocumentPage(
+                          Math.min(
+                            selectedDocument.pages,
+                            currentDocumentPage + 1,
+                          ),
+                        )
                       }
                     >
                       <ChevronRight className="h-3 w-3" />
@@ -586,13 +1112,22 @@ export default function Index() {
               <ScrollArea className="flex-1">
                 <div className="p-4">
                   {selectedDocument ? (
-                    <div className="prose prose-sm max-w-none">
-                      <div className="bg-gray-100 p-4 rounded border-2 border-dashed border-gray-300 min-h-96">
-                        <p className="text-gray-600">
-                          {selectedDocument.content}
-                        </p>
-                        <div className="mt-8 text-center text-gray-400">
-                          [Document content would be displayed here]
+                    <div
+                      className="prose prose-sm max-w-none"
+                      style={{
+                        transform: `scale(${documentZoom / 100})`,
+                        transformOrigin: "top left",
+                      }}
+                    >
+                      <div className="bg-white p-6 rounded border shadow-sm min-h-96">
+                        <div className="text-gray-800 leading-relaxed">
+                          {renderHighlightedText(
+                            selectedDocument.content,
+                            documentSearchQuery,
+                          )}
+                        </div>
+                        <div className="mt-8 text-center text-gray-400 text-sm">
+                          Page {currentDocumentPage} of {selectedDocument.pages}
                         </div>
                       </div>
                     </div>
@@ -607,7 +1142,7 @@ export default function Index() {
           )}
         </div>
 
-        {/* Column 3 - Chat Interface */}
+        {/* Column 3 - Enhanced Chat Interface */}
         <div
           className="flex-1 flex flex-col bg-white shadow-lg"
           style={{ width: showColumn1 || showColumn2 ? "55%" : "100%" }}
@@ -640,7 +1175,7 @@ export default function Index() {
               </div>
 
               <div className="flex items-center space-x-2">
-                {/* Chat Search */}
+                {/* Enhanced Chat Search */}
                 <div className="relative">
                   <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -651,7 +1186,7 @@ export default function Index() {
                   />
                 </div>
 
-                {/* Saved Chats */}
+                {/* Enhanced Saved Chats */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -663,12 +1198,22 @@ export default function Index() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="z-50">
+                    <DropdownMenuLabel>Chat Sessions</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
                     {savedChats.map((chat) => (
                       <DropdownMenuItem
                         key={chat.id}
-                        onClick={() => setCurrentChatId(chat.id)}
+                        onClick={() => loadSavedChat(chat.id)}
+                        className={
+                          currentChatId === chat.id ? "bg-blue-50" : ""
+                        }
                       >
-                        {chat.name}
+                        <div className="flex flex-col">
+                          <span>{chat.name}</span>
+                          <span className="text-xs text-gray-500">
+                            {chat.createdDate}
+                          </span>
+                        </div>
                       </DropdownMenuItem>
                     ))}
                     <DropdownMenuSeparator />
@@ -679,7 +1224,7 @@ export default function Index() {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Settings */}
+                {/* Enhanced Settings */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -690,36 +1235,116 @@ export default function Index() {
                       <Settings className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="z-50">
+                  <DropdownMenuContent align="end" className="z-50 w-64">
                     <DropdownMenuLabel>Settings</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Globe className="mr-2 h-4 w-4" />
-                      Change Language
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Type className="mr-2 h-4 w-4" />
-                      Adjust Font Size
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Palette className="mr-2 h-4 w-4" />
-                      Customize Appearance
-                    </DropdownMenuItem>
+
+                    {/* Language Selection */}
+                    <div className="p-2">
+                      <Label className="text-sm font-medium">Language</Label>
+                      <Select value={language} onValueChange={setLanguage}>
+                        <SelectTrigger className="w-full mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">English</SelectItem>
+                          <SelectItem value="es">Español</SelectItem>
+                          <SelectItem value="fr">Français</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Shield className="mr-2 h-4 w-4" />
-                      Privacy Settings
-                    </DropdownMenuItem>
+
+                    {/* Font Size */}
+                    <div className="p-2">
+                      <Label className="text-sm font-medium">
+                        Font Size: {fontSize}px
+                      </Label>
+                      <Slider
+                        value={[fontSize]}
+                        onValueChange={(value) => setFontSize(value[0])}
+                        max={24}
+                        min={12}
+                        step={1}
+                        className="mt-2"
+                      />
+                    </div>
+
+                    <DropdownMenuSeparator />
+
+                    {/* Theme Selection */}
+                    <div className="p-2">
+                      <Label className="text-sm font-medium">Appearance</Label>
+                      <Select value={theme} onValueChange={setTheme}>
+                        <SelectTrigger className="w-full mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">Light</SelectItem>
+                          <SelectItem value="dark">Dark</SelectItem>
+                          <SelectItem value="auto">Auto</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <DropdownMenuSeparator />
+
+                    {/* Privacy Settings */}
+                    <div className="p-2 space-y-3">
+                      <Label className="text-sm font-medium">
+                        Privacy Settings
+                      </Label>
+
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs">Share usage data</Label>
+                        <Switch
+                          checked={privacySettings.shareUsage}
+                          onCheckedChange={(checked) =>
+                            setPrivacySettings((prev) => ({
+                              ...prev,
+                              shareUsage: checked,
+                            }))
+                          }
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs">Save chat history</Label>
+                        <Switch
+                          checked={privacySettings.saveHistory}
+                          onCheckedChange={(checked) =>
+                            setPrivacySettings((prev) => ({
+                              ...prev,
+                              saveHistory: checked,
+                            }))
+                          }
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs">Allow analytics</Label>
+                        <Switch
+                          checked={privacySettings.allowAnalytics}
+                          onCheckedChange={(checked) =>
+                            setPrivacySettings((prev) => ({
+                              ...prev,
+                              allowAnalytics: checked,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
             </div>
           </div>
 
-          {/* Chat Messages */}
+          {/* Enhanced Chat Messages */}
           <ScrollArea className="flex-1">
             <div className="p-6 space-y-6">
-              {chatMessages.map((message) => (
+              {filteredMessages.map((message) => (
                 <div
                   key={message.id}
                   className={cn(
@@ -735,7 +1360,7 @@ export default function Index() {
 
                   <div
                     className={cn(
-                      "max-w-lg rounded-lg p-4 shadow-md",
+                      "max-w-lg rounded-lg p-4 shadow-md relative",
                       message.type === "user"
                         ? "bg-blue-600 text-white ml-12"
                         : "bg-gray-100 text-gray-800",
@@ -751,7 +1376,7 @@ export default function Index() {
                               <button
                                 key={index}
                                 onClick={() => handleDocumentReference(docId)}
-                                className="text-blue-600 underline hover:text-blue-800 font-medium mx-1"
+                                className="text-blue-600 underline hover:text-blue-800 font-medium mx-1 bg-blue-100 px-1 py-0.5 rounded"
                               >
                                 {part}
                               </button>
@@ -763,20 +1388,28 @@ export default function Index() {
 
                     <div className="flex items-center justify-between text-xs opacity-70">
                       <span>{formatTimestamp(message.timestamp)}</span>
-                      {message.type === "user" && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-5 w-5 p-0 text-white/70 hover:text-white hover:bg-white/20"
-                          onClick={() =>
-                            setChatMessages((prev) =>
-                              prev.filter((m) => m.id !== message.id),
-                            )
-                          }
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      )}
+                      <div className="flex gap-1">
+                        {message.type === "user" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-5 w-5 p-0 text-white/70 hover:text-white hover:bg-white/20"
+                            onClick={() => deleteChatMessage(message.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        )}
+                        {message.type === "bot" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-5 w-5 p-0 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                            onClick={() => deleteChatMessage(message.id)}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -793,7 +1426,7 @@ export default function Index() {
             </div>
           </ScrollArea>
 
-          {/* Chat Input */}
+          {/* Enhanced Chat Input */}
           <div className="p-4 border-t bg-gray-50">
             <div className="flex space-x-3">
               <Textarea
@@ -815,6 +1448,24 @@ export default function Index() {
                 >
                   <Send className="h-4 w-4" />
                 </Button>
+
+                {/* Chat File Upload */}
+                <input
+                  ref={chatFileInputRef}
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleChatFileUpload(e.target.files)}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => chatFileInputRef.current?.click()}
+                  title="Upload documents to My Documents"
+                >
+                  <Upload className="h-4 w-4" />
+                </Button>
+
                 <Button
                   variant="outline"
                   size="sm"
@@ -828,7 +1479,7 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Enhanced Footer */}
       <footer className="bg-gray-800 text-white py-4 px-6 border-t-4 border-blue-600">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
