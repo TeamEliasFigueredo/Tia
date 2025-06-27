@@ -853,42 +853,28 @@ export default function Index() {
       </footer>
 
       {/* Modal Components */}
-      {modals.userProfile && (
-        <UserProfileModal
-          isOpen={modals.userProfile}
-          onClose={() => closeModal("userProfile")}
-        />
-      )}
-      {modals.security && (
-        <SecurityModal
-          isOpen={modals.security}
-          onClose={() => closeModal("security")}
-        />
-      )}
-      {modals.terms && (
-        <TermsModal isOpen={modals.terms} onClose={() => closeModal("terms")} />
-      )}
-      {modals.currentPlan && (
-        <CurrentPlanModal
-          isOpen={modals.currentPlan}
-          onClose={() => closeModal("currentPlan")}
-        />
-      )}
-      {modals.availablePackages && (
-        <AvailablePackagesModal
-          isOpen={modals.availablePackages}
-          onClose={() => closeModal("availablePackages")}
-        />
-      )}
-      {modals.viewBills && (
-        <ViewBillsModal
-          isOpen={modals.viewBills}
-          onClose={() => closeModal("viewBills")}
-        />
-      )}
-      {modals.teams && (
-        <TeamsModal isOpen={modals.teams} onClose={() => closeModal("teams")} />
-      )}
+      <UserProfileModal
+        isOpen={modals.userProfile}
+        onClose={() => closeModal("userProfile")}
+      />
+      <SecurityModal
+        isOpen={modals.security}
+        onClose={() => closeModal("security")}
+      />
+      <TermsModal isOpen={modals.terms} onClose={() => closeModal("terms")} />
+      <CurrentPlanModal
+        isOpen={modals.currentPlan}
+        onClose={() => closeModal("currentPlan")}
+      />
+      <AvailablePackagesModal
+        isOpen={modals.availablePackages}
+        onClose={() => closeModal("availablePackages")}
+      />
+      <ViewBillsModal
+        isOpen={modals.viewBills}
+        onClose={() => closeModal("viewBills")}
+      />
+      <TeamsModal isOpen={modals.teams} onClose={() => closeModal("teams")} />
     </div>
   );
 }
