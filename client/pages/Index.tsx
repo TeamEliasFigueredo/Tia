@@ -846,6 +846,15 @@ export default function Index() {
 
       {/* Modal Components */}
       <TestModal isOpen={modals.test} onClose={() => closeModal("test")} />
+      <UserProfileModal
+        isOpen={modals.userProfile}
+        onClose={() => closeModal("userProfile")}
+      />
+      <SecurityModal
+        isOpen={modals.security}
+        onClose={() => closeModal("security")}
+      />
+      <TermsModal isOpen={modals.terms} onClose={() => closeModal("terms")} />
     </div>
   );
 }
