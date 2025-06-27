@@ -26,6 +26,7 @@ import {
   CreditCard,
   Package,
   Receipt,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+
+// Import modals
+import { UserProfileModal } from "@/components/modals/UserProfileModal";
+import { SecurityModal } from "@/components/modals/SecurityModal";
+import { TermsModal } from "@/components/modals/TermsModal";
+import { CurrentPlanModal } from "@/components/modals/CurrentPlanModal";
+import { AvailablePackagesModal } from "@/components/modals/AvailablePackagesModal";
+import { ViewBillsModal } from "@/components/modals/ViewBillsModal";
+import { TeamsModal } from "@/components/modals/TeamsModal";
 
 interface Database {
   id: string;
