@@ -168,10 +168,12 @@ const DatabasePanel = memo<DatabasePanelProps>(
       });
     }, []);
 
-    const processDocuments = useCallback(async () => {
-      // Simulate processing
-      console.log("Processing documents...");
-    }, []);
+    // Calculate unprocessed documents count
+    const unprocessedDocsCount = databases.reduce(
+      (count, db) =>
+        count + db.documents.filter((doc) => !doc.isProcessed).length,
+      0,
+    );
 
     const getFileTypeIcon = (fileType: Document["fileType"]) => {
       switch (fileType) {
@@ -222,31 +224,39 @@ const DatabasePanel = memo<DatabasePanelProps>(
               </Button>
             </div>
 
-            {/* Process Documents */}
-            <div className="mt-2 flex gap-2">
-              <Button
-                onClick={processDocuments}
-                disabled={processing.isProcessing}
-                size="sm"
-                className="flex-1"
-              >
-                {processing.isProcessing ? (
-                  <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                ) : (
-                  <Play className="mr-2 h-3 w-3" />
-                )}
-                {t.processDocuments}
-              </Button>
-            </div>
+            {/* Process Documents - Only show when there are unprocessed documents */}
+            {unprocessedDocsCount > 0 && (
+              <div className="mt-2 flex gap-2">
+                <Button
+                  onClick={onDragHandlers.processDocuments}
+                  disabled={processing.isProcessing}
+                  size="sm"
+                  className="flex-1"
+                >
+                  {processing.isProcessing ? (
+                    <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                  ) : (
+                    <Play className="mr-2 h-3 w-3" />
+                  )}
+                  {t.processDocuments} ({unprocessedDocsCount})
+                </Button>
+              </div>
+            )}
 
-            {/* Processing Progress */}
+            {/* Enhanced Processing Progress */}
             {processing.isProcessing && (
               <div className="mt-2">
                 <div className="flex justify-between text-xs mb-1">
                   <span>{t.processing}</span>
-                  <span>{processing.progress}%</span>
+                  <span>
+                    {processing.processedDocuments}/
+                    {processing.documentsToProcess}
+                  </span>
                 </div>
                 <Progress value={processing.progress} className="h-2" />
+                <div className="text-xs text-gray-500 mt-1 text-center">
+                  {processing.progress}% complete
+                </div>
               </div>
             )}
           </div>
