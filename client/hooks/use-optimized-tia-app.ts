@@ -23,7 +23,7 @@ export interface Document {
   content: string;
   fileType: "PDF" | "Word" | "Excel" | "PowerPoint" | "Image" | "Text";
   isProcessed?: boolean;
-  processingStatus?: "pending" | "processing" | "completed" | "error";
+  processingStatus?: keyof typeof PROCESSING_STATUS;
 }
 
 export interface ChatMessage {
