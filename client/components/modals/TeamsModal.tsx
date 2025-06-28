@@ -639,25 +639,179 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-lg font-semibold">
-                    Select Team to Manage:
+                    Team Members Management
                   </Label>
-                  <Select
-                    value={selectedTeamId || ""}
-                    onValueChange={setSelectedTeamId}
-                  >
-                    <SelectTrigger className="w-64 mt-2">
-                      <SelectValue placeholder="Choose a team" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {teams.map((team) => (
-                        <SelectItem key={team.id} value={team.id}>
-                          {team.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Add new members and manage team administrator roles
+                  </p>
                 </div>
+                <Button
+                  onClick={() => setShowAddMember(true)}
+                  className="flex items-center gap-2"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  Add New Member
+                </Button>
               </div>
+
+              {/* Add Member Form */}
+              {showAddMember && (
+                <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
+                  <h3 className="font-semibold mb-4 flex items-center gap-2">
+                    <UserPlus className="h-4 w-4" />
+                    Add New Team Member
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input
+                        id="firstName"
+                        value={newMemberForm.firstName}
+                        onChange={(e) => setNewMemberForm(prev => ({
+                          ...prev,
+                          firstName: e.target.value
+                        }))}
+                        placeholder="Enter first name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        value={newMemberForm.lastName}
+                        onChange={(e) => setNewMemberForm(prev => ({
+                          ...prev,
+                          lastName: e.target.value
+                        }))}
+                        placeholder="Enter last name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={newMemberForm.email}
+                        onChange={(e) => setNewMemberForm(prev => ({
+                          ...prev,
+                          email: e.target.value
+                        }))}
+                        placeholder="Enter email address"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="role">Role</Label>
+                      <Select
+                        value={newMemberForm.role}
+                        onValueChange={(value) => setNewMemberForm(prev => ({
+                          ...prev,
+                          role: value
+                        }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="member">Member</SelectItem>
+                          <SelectItem value="admin">Team Administrator</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button onClick={addNewMember} disabled={!newMemberForm.email || !newMemberForm.firstName || !newMemberForm.lastName}>
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Add Member
+                    </Button>
+                    <Button variant="outline" onClick={() => setShowAddMember(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Members List */}
+              <div className="border rounded-lg overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Member</TableHead>
+                      <TableHead>Role</TableHead>
+                      <TableHead>Teams</TableHead>
+                      <TableHead>Last Active</TableHead>
+                      <TableHead>Admin Status</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {teamMembers.map((member) => (
+                      <TableRow key={member.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-8 w-8">
+                              <AvatarFallback className="bg-blue-600 text-white text-xs">
+                                {member.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-medium">{member.name}</div>
+                              <div className="text-sm text-gray-500">{member.email}</div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={`${getRoleBadgeColor(member.role)} text-white`}
+                          >
+                            {member.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap gap-1">
+                            {member.teams.slice(0, 2).map(teamId => {
+                              const team = teams.find(t => t.id === teamId);
+                              return team ? (
+                                <Badge key={teamId} variant="outline" className="text-xs">
+                                  {team.name}
+                                </Badge>
+                              ) : null;
+                            })}
+                            {member.teams.length > 2 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{member.teams.length - 2} more
+                              </Badge>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm text-gray-500">
+                          {member.lastActive}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Switch
+                              checked={member.isAdmin}
+                              onCheckedChange={() => toggleMemberAdmin(member.id)}
+                            />
+                            <span className="text-sm">
+                              {member.isAdmin ? "Admin" : "Member"}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="sm">
+                            <Edit3 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          )}
 
               {selectedTeam && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
