@@ -125,12 +125,35 @@ const DocumentViewer = memo<DocumentViewerProps>(
           case "Word":
             return (
               <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded border shadow-sm min-h-96">
-                <div className="flex items-center gap-2 mb-4">
-                  <FileText className="h-5 w-5 text-blue-500" />
-                  <span className="font-semibold">Word Document</span>
+                <div className="flex items-center gap-2 mb-6 pb-4 border-b border-blue-200">
+                  <FileText className="h-6 w-6 text-blue-500" />
+                  <div className="flex-1">
+                    <h2 className="font-bold text-lg text-gray-900 dark:text-white">
+                      {document.name}
+                    </h2>
+                    <p className="text-sm text-blue-600">
+                      Page {currentPage} of {document.pages} • Word Document
+                    </p>
+                  </div>
                 </div>
-                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
-                  {renderHighlightedText(document.content, searchQuery)}
+
+                {/* Word document simulation */}
+                <div className="bg-white dark:bg-gray-900 p-8 rounded-lg border border-blue-200 mb-4 min-h-[500px]">
+                  <div className="prose prose-blue max-w-none">
+                    <div className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
+                      {renderHighlightedText(document.content, searchQuery)}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Word metadata */}
+                <div className="text-xs text-blue-600 border-t border-blue-200 pt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>Size: {document.size}</div>
+                    <div>Created: {document.createdDate}</div>
+                    <div>Type: {document.type}</div>
+                    <div>Added: {document.addedDate}</div>
+                  </div>
                 </div>
               </div>
             );
