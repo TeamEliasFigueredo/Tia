@@ -116,7 +116,32 @@ const DocumentViewer = memo<DocumentViewerProps>(
                   <FileSpreadsheet className="h-5 w-5 text-green-500" />
                   <span className="font-semibold">Excel Spreadsheet</span>
                 </div>
-                <div className="grid grid-cols-3 gap-2 mb-4">
+                {/* Sample Excel-like table view */}
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border-collapse border border-green-300">
+                    <thead>
+                      <tr className="bg-green-100">
+                        <th className="border border-green-300 px-3 py-2 text-left">Column A</th>
+                        <th className="border border-green-300 px-3 py-2 text-left">Column B</th>
+                        <th className="border border-green-300 px-3 py-2 text-left">Column C</th>
+                        <th className="border border-green-300 px-3 py-2 text-left">Column D</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.from({ length: 10 }, (_, i) => (
+                        <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-green-25"}>
+                          <td className="border border-green-300 px-3 py-2">Data {i + 1}A</td>
+                          <td className="border border-green-300 px-3 py-2">Data {i + 1}B</td>
+                          <td className="border border-green-300 px-3 py-2">Data {i + 1}C</td>
+                          <td className="border border-green-300 px-3 py-2">Data {i + 1}D</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
                   <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
                     Task
                   </div>
