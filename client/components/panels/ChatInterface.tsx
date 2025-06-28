@@ -148,6 +148,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
             chat.id === chatState.currentChatId
               ? { ...chat, messages: updatedMessages }
               : chat,
+          ),
         );
       }, 1500);
 
@@ -168,7 +169,13 @@ const ChatInterface = memo<ChatInterfaceProps>(
 
       onSavedChatsAction((prev) => [...prev, newChat]);
       onChatAction((prev) => ({ ...prev, currentChatId: newChat.id }));
-    }, [chatState.messages, onChatAction, onSavedChatsAction, savedChats.length, t.chatSessionName]);
+    }, [
+      chatState.messages,
+      onChatAction,
+      onSavedChatsAction,
+      savedChats.length,
+      t.chatSessionName,
+    ]);
 
     const loadSavedChat = useCallback(
       (chatId: string) => {
@@ -199,7 +206,12 @@ const ChatInterface = memo<ChatInterfaceProps>(
           ),
         );
       },
-      [chatState.messages, chatState.currentChatId, onChatAction, onSavedChatsAction],
+      [
+        chatState.messages,
+        chatState.currentChatId,
+        onChatAction,
+        onSavedChatsAction,
+      ],
     );
 
     const formatTimestamp = useCallback((timestamp: string) => {
@@ -221,7 +233,12 @@ const ChatInterface = memo<ChatInterfaceProps>(
     return (
       <div
         className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg"
-        style={{ width: columnStates.showColumn1 || columnStates.showColumn2 ? "55%" : "100%" }}
+        style={{
+          width:
+            columnStates.showColumn1 || columnStates.showColumn2
+              ? "55%"
+              : "100%",
+        }}
       >
         {/* Header */}
         <div className="p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
