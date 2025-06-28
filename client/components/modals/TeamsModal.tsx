@@ -86,6 +86,17 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   const [activeTab, setActiveTab] = useState<
     "teams" | "members" | "permissions"
   >("teams");
+
+  // New member creation state
+  const [newMemberForm, setNewMemberForm] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    role: "member",
+    teams: [] as string[],
+  });
+  const [showAddMember, setShowAddMember] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
