@@ -233,3 +233,5 @@ export function SecurityModal({ isOpen, onClose }: SecurityModalProps) {
     </Dialog>
   );
 }
+
+export default SecurityModal;

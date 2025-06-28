@@ -137,3 +137,5 @@ export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
     </Dialog>
   );
 }
+
+export default UserProfileModal;

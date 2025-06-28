@@ -846,3 +846,5 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     </Dialog>
   );
 }
+
+export default TeamsModal;

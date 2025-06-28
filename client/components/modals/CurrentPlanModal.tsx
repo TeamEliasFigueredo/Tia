@@ -444,3 +444,5 @@ export function CurrentPlanModal({ isOpen, onClose }: CurrentPlanModalProps) {
     </Dialog>
   );
 }
+
+export default CurrentPlanModal;

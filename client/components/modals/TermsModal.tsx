@@ -132,3 +132,5 @@ export function TermsModal({ isOpen, onClose }: TermsModalProps) {
     </Dialog>
   );
 }
+
+export default TermsModal;

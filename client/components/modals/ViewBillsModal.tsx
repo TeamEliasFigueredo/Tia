@@ -289,3 +289,5 @@ export function ViewBillsModal({ isOpen, onClose }: ViewBillsModalProps) {
     </Dialog>
   );
 }
+
+export default ViewBillsModal;

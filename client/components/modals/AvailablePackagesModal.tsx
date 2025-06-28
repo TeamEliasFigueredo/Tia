@@ -191,3 +191,5 @@ export function AvailablePackagesModal({
     </Dialog>
   );
 }
+
+export default AvailablePackagesModal;
