@@ -72,6 +72,8 @@ export default function Index() {
           addedDate: new Date().toISOString().split("T")[0],
           content: `Content of ${file.name}. This is a placeholder for the actual document content that would be extracted from the uploaded file. The file type is ${fileType} and contains structured information relevant to your organization.`,
           fileType,
+          isProcessed: false,
+          processingStatus: "pending" as const,
         };
 
         setDatabases((prev) =>
