@@ -9,17 +9,6 @@ import ChatInterface from "@/components/panels/ChatInterface";
 import TiaFooter from "@/components/layout/TiaFooter";
 import ModalContainer from "@/components/modals/ModalContainer";
 
-// Loading skeleton component
-const LoadingSkeleton = React.memo(() => (
-  <div className="animate-pulse">
-    <div className="h-16 bg-gray-200 dark:bg-gray-700 mb-4"></div>
-    <div className="flex space-x-4">
-      <div className="w-80 h-96 bg-gray-200 dark:bg-gray-700 rounded"></div>
-      <div className="flex-1 h-96 bg-gray-200 dark:bg-gray-700 rounded"></div>
-    </div>
-  </div>
-));
-
 export default function Index() {
   const {
     layout,
