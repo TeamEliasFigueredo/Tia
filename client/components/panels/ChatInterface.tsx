@@ -100,6 +100,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
     onToggleColumns,
     onFileUpload,
     onDragHandlers,
+    onSelectDocumentReference,
     t,
   }) => {
     const chatEndRef = useRef<HTMLDivElement>(null);
