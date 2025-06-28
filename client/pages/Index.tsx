@@ -163,6 +163,7 @@ export default function Index() {
             handleFileUpload(e.dataTransfer.files, dbId);
           }
         },
+        processDocuments: actions.processDocuments,
       },
       t,
     }),
