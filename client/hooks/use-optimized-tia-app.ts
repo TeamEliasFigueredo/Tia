@@ -21,6 +21,8 @@ export interface Document {
   addedDate: string;
   content: string;
   fileType: "PDF" | "Word" | "Excel" | "PowerPoint" | "Image" | "Text";
+  isProcessed?: boolean;
+  processingStatus?: "pending" | "processing" | "completed" | "error";
 }
 
 export interface ChatMessage {
@@ -484,6 +486,8 @@ export function useOptimizedTiaApp() {
   const [processing, setProcessing] = useState({
     isProcessing: false,
     progress: 0,
+    documentsToProcess: 0,
+    processedDocuments: 0,
   });
 
   // Memoized computed values
