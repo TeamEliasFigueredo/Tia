@@ -121,19 +121,38 @@ const DocumentViewer = memo<DocumentViewerProps>(
                   <table className="min-w-full border-collapse border border-green-300">
                     <thead>
                       <tr className="bg-green-100">
-                        <th className="border border-green-300 px-3 py-2 text-left">Column A</th>
-                        <th className="border border-green-300 px-3 py-2 text-left">Column B</th>
-                        <th className="border border-green-300 px-3 py-2 text-left">Column C</th>
-                        <th className="border border-green-300 px-3 py-2 text-left">Column D</th>
+                        <th className="border border-green-300 px-3 py-2 text-left">
+                          Column A
+                        </th>
+                        <th className="border border-green-300 px-3 py-2 text-left">
+                          Column B
+                        </th>
+                        <th className="border border-green-300 px-3 py-2 text-left">
+                          Column C
+                        </th>
+                        <th className="border border-green-300 px-3 py-2 text-left">
+                          Column D
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {Array.from({ length: 10 }, (_, i) => (
-                        <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-green-25"}>
-                          <td className="border border-green-300 px-3 py-2">Data {i + 1}A</td>
-                          <td className="border border-green-300 px-3 py-2">Data {i + 1}B</td>
-                          <td className="border border-green-300 px-3 py-2">Data {i + 1}C</td>
-                          <td className="border border-green-300 px-3 py-2">Data {i + 1}D</td>
+                        <tr
+                          key={i}
+                          className={i % 2 === 0 ? "bg-white" : "bg-green-25"}
+                        >
+                          <td className="border border-green-300 px-3 py-2">
+                            Data {i + 1}A
+                          </td>
+                          <td className="border border-green-300 px-3 py-2">
+                            Data {i + 1}B
+                          </td>
+                          <td className="border border-green-300 px-3 py-2">
+                            Data {i + 1}C
+                          </td>
+                          <td className="border border-green-300 px-3 py-2">
+                            Data {i + 1}D
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -142,23 +161,53 @@ const DocumentViewer = memo<DocumentViewerProps>(
                 <div className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
                   {renderHighlightedText(document.content, searchQuery)}
                 </div>
-                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
-                    Task
-                  </div>
-                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
-                    Status
-                  </div>
-                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
-                    Date
-                  </div>
-                  <div className="p-2">Design Phase</div>
-                  <div className="p-2">Complete</div>
-                  <div className="p-2">2024-01-15</div>
-                  <div className="p-2">Development</div>
-                  <div className="p-2">In Progress</div>
-                  <div className="p-2">2024-01-20</div>
+              </div>
+            );
+          case "PowerPoint":
+            return (
+              <div className="bg-orange-50 dark:bg-orange-900/20 p-6 rounded border shadow-sm min-h-96">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileImage className="h-5 w-5 text-orange-500" />
+                  <span className="font-semibold">PowerPoint Presentation</span>
                 </div>
-                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                {/* Slide preview */}
+                <div className="bg-white border-2 border-orange-200 rounded-lg p-8 mb-4 text-center aspect-video flex items-center justify-center">
+                  <div className="text-center">
+                    <h3 className="text-xl font-bold mb-4">
+                      Slide {currentPage}
+                    </h3>
+                    <div className="text-gray-600 leading-relaxed">
+                      {renderHighlightedText(
+                        `Slide content for page ${currentPage}. ${document.content.substring(0, 200)}...`,
+                        searchQuery,
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-gray-600 dark:text-gray-300 text-sm">
+                  Full presentation content:{" "}
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
+              </div>
+            );
+          case "Image":
+            return (
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded border shadow-sm min-h-96">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileImage className="h-5 w-5 text-purple-500" />
+                  <span className="font-semibold">Image Document</span>
+                </div>
+                {/* Image placeholder */}
+                <div className="bg-white border-2 border-purple-200 rounded-lg p-8 mb-4 text-center aspect-video flex items-center justify-center">
+                  <div className="text-center">
+                    <FileImage className="h-16 w-16 text-purple-400 mx-auto mb-4" />
+                    <p className="text-gray-500">Image Preview</p>
+                    <p className="text-sm text-gray-400 mt-2">
+                      {document.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-gray-600 dark:text-gray-300 text-sm">
                   {renderHighlightedText(document.content, searchQuery)}
                 </div>
               </div>
