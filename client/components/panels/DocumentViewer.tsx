@@ -1,0 +1,314 @@
+import React, { memo, useCallback } from "react";
+import {
+  FileText,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  ZoomIn,
+  ZoomOut,
+  FileImage,
+  FileSpreadsheet,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { Document } from "@/hooks/use-optimized-tia-app";
+import { Translations } from "@/lib/i18n";
+import { useDocumentSearch } from "@/hooks/use-optimized-tia-app";
+
+interface DocumentViewerProps {
+  isVisible: boolean;
+  selectedDocument: Document | null;
+  currentPage: number;
+  zoom: number;
+  onToggleVisibility: () => void;
+  onPageChange: (page: number) => void;
+  onZoomChange: (zoom: number) => void;
+  t: Translations;
+}
+
+const DocumentViewer = memo<DocumentViewerProps>(
+  ({
+    isVisible,
+    selectedDocument,
+    currentPage,
+    zoom,
+    onToggleVisibility,
+    onPageChange,
+    onZoomChange,
+    t,
+  }) => {
+    const {
+      searchQuery,
+      setSearchQuery,
+      searchResults,
+      currentResult,
+      navigateResults,
+    } = useDocumentSearch(selectedDocument);
+
+    const getFileTypeIcon = (fileType: Document["fileType"]) => {
+      switch (fileType) {
+        case "PDF":
+          return <FileText className="h-5 w-5 text-red-500" />;
+        case "Word":
+          return <FileText className="h-5 w-5 text-blue-500" />;
+        case "Excel":
+          return <FileSpreadsheet className="h-5 w-5 text-green-500" />;
+        case "PowerPoint":
+          return <FileImage className="h-5 w-5 text-orange-500" />;
+        case "Image":
+          return <FileImage className="h-5 w-5 text-purple-500" />;
+        default:
+          return <FileText className="h-5 w-5 text-gray-500" />;
+      }
+    };
+
+    const renderHighlightedText = useCallback(
+      (text: string, searchQuery: string) => {
+        if (!searchQuery) return text;
+
+        const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
+        return parts.map((part, index) =>
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark key={index} className="bg-yellow-300">
+              {part}
+            </mark>
+          ) : (
+            part
+          ),
+        );
+      },
+      [],
+    );
+
+    const renderDocumentContent = useCallback(
+      (document: Document) => {
+        switch (document.fileType) {
+          case "PDF":
+            return (
+              <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileText className="h-5 w-5 text-red-500" />
+                  <span className="font-semibold">PDF Document</span>
+                </div>
+                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
+              </div>
+            );
+          case "Word":
+            return (
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded border shadow-sm min-h-96">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileText className="h-5 w-5 text-blue-500" />
+                  <span className="font-semibold">Word Document</span>
+                </div>
+                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
+              </div>
+            );
+          case "Excel":
+            return (
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded border shadow-sm min-h-96">
+                <div className="flex items-center gap-2 mb-4">
+                  <FileSpreadsheet className="h-5 w-5 text-green-500" />
+                  <span className="font-semibold">Excel Spreadsheet</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                    Task
+                  </div>
+                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                    Status
+                  </div>
+                  <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                    Date
+                  </div>
+                  <div className="p-2">Design Phase</div>
+                  <div className="p-2">Complete</div>
+                  <div className="p-2">2024-01-15</div>
+                  <div className="p-2">Development</div>
+                  <div className="p-2">In Progress</div>
+                  <div className="p-2">2024-01-20</div>
+                </div>
+                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
+              </div>
+            );
+          default:
+            return (
+              <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
+                <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+                  {renderHighlightedText(document.content, searchQuery)}
+                </div>
+              </div>
+            );
+        }
+      },
+      [searchQuery, renderHighlightedText],
+    );
+
+    if (!isVisible) return null;
+
+    return (
+      <div className="w-96 bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg">
+        <div className="h-full flex flex-col">
+          {/* Header */}
+          <div className="p-4 border-b bg-gray-50 dark:bg-gray-700">
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-gray-800 dark:text-white flex items-center">
+                <FileText className="mr-2 h-5 w-5 text-blue-600" />
+                {t.documentViewer}
+              </h2>
+              <Button variant="ghost" size="sm" onClick={onToggleVisibility}>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {selectedDocument && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
+                  {getFileTypeIcon(selectedDocument.fileType)}
+                  <div className="text-sm font-medium">
+                    {selectedDocument.name}
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500">
+                  {t.page} {currentPage} {t.of} {selectedDocument.pages}
+                </div>
+              </div>
+            )}
+
+            {/* Document Search */}
+            <div className="mt-2 flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
+                <Input
+                  placeholder={t.searchInDocument}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8 h-8 text-xs"
+                />
+              </div>
+              {searchResults.length > 0 && (
+                <div className="flex items-center gap-1">
+                  <span className="text-xs text-gray-500">
+                    {currentResult + 1}/{searchResults.length}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                    onClick={() => navigateResults("prev")}
+                    disabled={searchResults.length === 0}
+                  >
+                    <ChevronLeft className="h-3 w-3" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                    onClick={() => navigateResults("next")}
+                    disabled={searchResults.length === 0}
+                  >
+                    <ChevronRight className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Document Controls */}
+          {selectedDocument && (
+            <div className="p-3 border-b bg-gray-50 dark:bg-gray-700 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onZoomChange(Math.max(50, zoom - 10))}
+                >
+                  <ZoomOut className="h-3 w-3" />
+                </Button>
+                <span className="text-xs">{zoom}%</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onZoomChange(Math.min(200, zoom + 10))}
+                >
+                  <ZoomIn className="h-3 w-3" />
+                </Button>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage <= 1}
+                  onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+                >
+                  <ChevronLeft className="h-3 w-3" />
+                </Button>
+                <Input
+                  className="w-12 h-7 text-xs text-center"
+                  value={currentPage}
+                  onChange={(e) => {
+                    const page = Math.max(
+                      1,
+                      Math.min(
+                        selectedDocument.pages,
+                        parseInt(e.target.value) || 1,
+                      ),
+                    );
+                    onPageChange(page);
+                  }}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage >= selectedDocument.pages}
+                  onClick={() =>
+                    onPageChange(
+                      Math.min(selectedDocument.pages, currentPage + 1),
+                    )
+                  }
+                >
+                  <ChevronRight className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Document Content */}
+          <ScrollArea className="flex-1">
+            <div className="p-4">
+              {selectedDocument ? (
+                <div
+                  className="max-w-none"
+                  style={{
+                    transform: `scale(${zoom / 100})`,
+                    transformOrigin: "top left",
+                  }}
+                >
+                  {renderDocumentContent(selectedDocument)}
+                  <div className="mt-8 text-center text-gray-400 text-sm">
+                    {t.page} {currentPage} {t.of} {selectedDocument.pages}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400">
+                  {t.selectDocument}
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    );
+  },
+);
+
+DocumentViewer.displayName = "DocumentViewer";
+
+export default DocumentViewer;
