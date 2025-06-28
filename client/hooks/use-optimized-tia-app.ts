@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Language } from "@/lib/i18n";
+import { PROCESSING_STATUS } from "@/constants/document-constants";
 
 export interface Database {
   id: string;
