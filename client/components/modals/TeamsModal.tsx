@@ -66,6 +66,7 @@ interface TeamMember {
   avatar?: string;
   lastActive: string;
   teams: string[];
+  isAdmin: boolean;
 }
 
 interface DatabasePermission {
