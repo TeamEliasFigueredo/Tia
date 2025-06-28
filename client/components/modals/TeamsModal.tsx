@@ -55,7 +55,7 @@ interface Team {
   memberCount: number;
   createdDate: string;
   adminId: string;
-  members: TeamMember[];
+  members: string[];
 }
 
 interface TeamMember {
@@ -98,19 +98,20 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   });
   const [showAddMember, setShowAddMember] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Team and member state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
-  const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [newTeamName, setNewTeamName] = useState("");
   const [newTeamDescription, setNewTeamDescription] = useState("");
+  const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
 
-  // Mock data
   const [teams, setTeams] = useState<Team[]>([
     {
       id: "1",
       name: "Development Team",
-      description: "Software development and engineering",
-      memberCount: 8,
+      description: "Software development and engineering team",
+      memberCount: 4,
       createdDate: "2024-01-15",
       adminId: "1",
       members: ["1", "2", "3"],
@@ -118,8 +119,8 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     {
       id: "2",
       name: "Marketing Team",
-      description: "Marketing and communications",
-      memberCount: 5,
+      description: "Marketing and content creation team",
+      memberCount: 3,
       createdDate: "2024-01-18",
       adminId: "2",
       members: ["2", "4", "5"],
@@ -127,7 +128,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     {
       id: "3",
       name: "Sales Team",
-      description: "Sales and customer relations",
+      description: "Sales and business development team",
       memberCount: 6,
       createdDate: "2024-01-20",
       adminId: "3",
@@ -214,6 +215,14 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
           canDelete: false,
           canManage: false,
         },
+        {
+          databaseId: "db3",
+          databaseName: "Marketing Materials",
+          canRead: true,
+          canWrite: false,
+          canDelete: false,
+          canManage: false,
+        },
       ],
     },
     {
@@ -223,6 +232,43 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
           databaseId: "db1",
           databaseName: "Company Policies",
           canRead: true,
+          canWrite: false,
+          canDelete: false,
+          canManage: false,
+        },
+        {
+          databaseId: "db2",
+          databaseName: "Technical Documentation",
+          canRead: true,
+          canWrite: false,
+          canDelete: false,
+          canManage: false,
+        },
+        {
+          databaseId: "db3",
+          databaseName: "Marketing Materials",
+          canRead: true,
+          canWrite: true,
+          canDelete: true,
+          canManage: true,
+        },
+      ],
+    },
+    {
+      teamId: "3",
+      permissions: [
+        {
+          databaseId: "db1",
+          databaseName: "Company Policies",
+          canRead: true,
+          canWrite: false,
+          canDelete: false,
+          canManage: false,
+        },
+        {
+          databaseId: "db2",
+          databaseName: "Technical Documentation",
+          canRead: false,
           canWrite: false,
           canDelete: false,
           canManage: false,
@@ -252,7 +298,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       return;
     }
 
-    const newMember = {
+    const newMember: TeamMember = {
       id: Date.now().toString(),
       name: `${newMemberForm.firstName} ${newMemberForm.lastName}`,
       email: newMemberForm.email,
@@ -394,68 +440,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     return isAdmin || team.adminId === currentUserId;
   };
 
-  const handlePermissionChange = (
-    teamId: string,
-    databaseId: string,
-    permission: keyof DatabasePermission,
-    value: boolean,
-  ) => {
-    setTeamPermissions((prev) =>
-      prev.map((tp) =>
-        tp.teamId === teamId
-          ? {
-              ...tp,
-              permissions: tp.permissions.map((db) =>
-                db.databaseId === databaseId
-                  ? { ...db, [permission]: value }
-                  : db,
-              ),
-            }
-          : tp,
-      ),
-    );
-  };
-
-  const addMemberToTeam = (teamId: string, memberId: string) => {
-    setTeams((prev) =>
-      prev.map((team) =>
-        team.id === teamId
-          ? {
-              ...team,
-              members: [...team.members, memberId],
-              memberCount: team.memberCount + 1,
-            }
-          : team,
-      ),
-    );
-  };
-
-  const removeMemberFromTeam = (teamId: string, memberId: string) => {
-    setTeams((prev) =>
-      prev.map((team) =>
-        team.id === teamId
-          ? {
-              ...team,
-              members: team.members.filter((id) => id !== memberId),
-              memberCount: team.memberCount - 1,
-            }
-          : team,
-      ),
-    );
-  };
-
-  const getTeamMembers = (teamId: string) => {
-    const team = teams.find((t) => t.id === teamId);
-    if (!team) return [];
-    return teamMembers.filter((member) => team.members.includes(member.id));
-  };
-
-  const getAvailableMembers = (teamId: string) => {
-    const team = teams.find((t) => t.id === teamId);
-    if (!team) return [];
-    return teamMembers.filter((member) => !team.members.includes(member.id));
-  };
-
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case "Admin":
@@ -474,9 +458,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   );
 
   const selectedTeam = teams.find((t) => t.id === selectedTeamId);
-  const selectedTeamPermissions = teamPermissions.find(
-    (tp) => tp.teamId === selectedTeamId,
-  );
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -520,10 +501,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
           {/* Teams Tab */}
           {activeTab === "teams" && (
             <div className="space-y-4">
-              {/* Search and Create Team */}
               <div className="flex items-center justify-between">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <div className="relative flex-1 max-w-sm">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <Input
                     placeholder="Search teams..."
                     value={searchQuery}
@@ -531,26 +511,46 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                     className="pl-10"
                   />
                 </div>
-                {isAdmin && (
-                  <div className="flex gap-2">
+                <Button
+                  onClick={() => {
+                    /* Add new team logic */
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Team
+                </Button>
+              </div>
+
+              {/* Create New Team Form */}
+              <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
+                <h3 className="font-semibold mb-4">Create New Team</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="teamName">Team Name</Label>
                     <Input
-                      placeholder="Team name"
+                      id="teamName"
                       value={newTeamName}
                       onChange={(e) => setNewTeamName(e.target.value)}
-                      className="w-40"
+                      placeholder="Enter team name"
                     />
+                  </div>
+                  <div>
+                    <Label htmlFor="teamDescription">Description</Label>
                     <Input
-                      placeholder="Description"
+                      id="teamDescription"
                       value={newTeamDescription}
                       onChange={(e) => setNewTeamDescription(e.target.value)}
-                      className="w-48"
+                      placeholder="Enter team description"
                     />
-                    <Button onClick={createTeam} className="bg-blue-600">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Create Team
-                    </Button>
                   </div>
-                )}
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <Button onClick={createTeam} disabled={!newTeamName.trim()}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Team
+                  </Button>
+                </div>
               </div>
 
               {/* Teams Grid */}
@@ -561,25 +561,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                     className="border rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      {editingTeamId === team.id ? (
-                        <Input
-                          value={team.name}
-                          onChange={(e) =>
-                            updateTeam(team.id, { name: e.target.value })
-                          }
-                          onBlur={() => setEditingTeamId(null)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") setEditingTeamId(null);
-                          }}
-                          autoFocus
-                          className="text-lg font-semibold"
-                        />
-                      ) : (
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          {team.name}
-                        </h3>
-                      )}
-
+                      <h3 className="font-semibold text-lg">{team.name}</h3>
                       {canManageTeam(team) && (
                         <div className="flex gap-1">
                           <Button
@@ -667,10 +649,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Input
                         id="firstName"
                         value={newMemberForm.firstName}
-                        onChange={(e) => setNewMemberForm(prev => ({
-                          ...prev,
-                          firstName: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setNewMemberForm((prev) => ({
+                            ...prev,
+                            firstName: e.target.value,
+                          }))
+                        }
                         placeholder="Enter first name"
                       />
                     </div>
@@ -679,10 +663,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Input
                         id="lastName"
                         value={newMemberForm.lastName}
-                        onChange={(e) => setNewMemberForm(prev => ({
-                          ...prev,
-                          lastName: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setNewMemberForm((prev) => ({
+                            ...prev,
+                            lastName: e.target.value,
+                          }))
+                        }
                         placeholder="Enter last name"
                       />
                     </div>
@@ -692,10 +678,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                         id="email"
                         type="email"
                         value={newMemberForm.email}
-                        onChange={(e) => setNewMemberForm(prev => ({
-                          ...prev,
-                          email: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setNewMemberForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
                         placeholder="Enter email address"
                       />
                     </div>
@@ -703,27 +691,41 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Label htmlFor="role">Role</Label>
                       <Select
                         value={newMemberForm.role}
-                        onValueChange={(value) => setNewMemberForm(prev => ({
-                          ...prev,
-                          role: value
-                        }))}
+                        onValueChange={(value) =>
+                          setNewMemberForm((prev) => ({
+                            ...prev,
+                            role: value,
+                          }))
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="member">Member</SelectItem>
-                          <SelectItem value="admin">Team Administrator</SelectItem>
+                          <SelectItem value="admin">
+                            Team Administrator
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Button onClick={addNewMember} disabled={!newMemberForm.email || !newMemberForm.firstName || !newMemberForm.lastName}>
+                    <Button
+                      onClick={addNewMember}
+                      disabled={
+                        !newMemberForm.email ||
+                        !newMemberForm.firstName ||
+                        !newMemberForm.lastName
+                      }
+                    >
                       <UserPlus className="h-4 w-4 mr-2" />
                       Add Member
                     </Button>
-                    <Button variant="outline" onClick={() => setShowAddMember(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowAddMember(false)}
+                    >
                       Cancel
                     </Button>
                   </div>
@@ -758,7 +760,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                             </Avatar>
                             <div>
                               <div className="font-medium">{member.name}</div>
-                              <div className="text-sm text-gray-500">{member.email}</div>
+                              <div className="text-sm text-gray-500">
+                                {member.email}
+                              </div>
                             </div>
                           </div>
                         </TableCell>
@@ -771,10 +775,14 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-wrap gap-1">
-                            {member.teams.slice(0, 2).map(teamId => {
-                              const team = teams.find(t => t.id === teamId);
+                            {member.teams.slice(0, 2).map((teamId) => {
+                              const team = teams.find((t) => t.id === teamId);
                               return team ? (
-                                <Badge key={teamId} variant="outline" className="text-xs">
+                                <Badge
+                                  key={teamId}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
                                   {team.name}
                                 </Badge>
                               ) : null;
@@ -793,7 +801,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                           <div className="flex items-center gap-2">
                             <Switch
                               checked={member.isAdmin}
-                              onCheckedChange={() => toggleMemberAdmin(member.id)}
+                              onCheckedChange={() =>
+                                toggleMemberAdmin(member.id)
+                              }
                             />
                             <span className="text-sm">
                               {member.isAdmin ? "Admin" : "Member"}
@@ -810,149 +820,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                   </TableBody>
                 </Table>
               </div>
-            </div>
-          )}
-
-              {selectedTeam && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Current Team Members */}
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-3">
-                      Team Members ({selectedTeam.memberCount})
-                    </h3>
-                    <div className="border rounded-lg overflow-hidden">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Member</TableHead>
-                            <TableHead>Role</TableHead>
-                            <TableHead>Actions</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {getTeamMembers(selectedTeamId!).map((member) => (
-                            <TableRow key={member.id}>
-                              <TableCell>
-                                <div className="flex items-center gap-2">
-                                  <Avatar className="h-6 w-6">
-                                    <AvatarFallback className="bg-blue-600 text-white text-xs">
-                                      {member.name
-                                        .split(" ")
-                                        .map((n) => n[0])
-                                        .join("")}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <div>
-                                    <div className="font-medium text-sm">
-                                      {member.name}
-                                    </div>
-                                    <div className="text-xs text-gray-500">
-                                      {member.email}
-                                    </div>
-                                  </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge
-                                  className={getRoleBadgeColor(member.role)}
-                                >
-                                  {member.role}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                {canManageTeam(selectedTeam) &&
-                                  member.id !== selectedTeam.adminId && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() =>
-                                        removeMemberFromTeam(
-                                          selectedTeamId!,
-                                          member.id,
-                                        )
-                                      }
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </Button>
-                                  )}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </div>
-
-                  {/* Available Members to Add */}
-                  {canManageTeam(selectedTeam) && (
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-3">
-                        Add Members
-                      </h3>
-                      <div className="border rounded-lg overflow-hidden">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Available Members</TableHead>
-                              <TableHead>Role</TableHead>
-                              <TableHead>Action</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {getAvailableMembers(selectedTeamId!).map(
-                              (member) => (
-                                <TableRow key={member.id}>
-                                  <TableCell>
-                                    <div className="flex items-center gap-2">
-                                      <Avatar className="h-6 w-6">
-                                        <AvatarFallback className="bg-gray-600 text-white text-xs">
-                                          {member.name
-                                            .split(" ")
-                                            .map((n) => n[0])
-                                            .join("")}
-                                        </AvatarFallback>
-                                      </Avatar>
-                                      <div>
-                                        <div className="font-medium text-sm">
-                                          {member.name}
-                                        </div>
-                                        <div className="text-xs text-gray-500">
-                                          {member.email}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Badge
-                                      className={getRoleBadgeColor(member.role)}
-                                    >
-                                      {member.role}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() =>
-                                        addMemberToTeam(
-                                          selectedTeamId!,
-                                          member.id,
-                                        )
-                                      }
-                                    >
-                                      <Plus className="h-3 w-3" />
-                                    </Button>
-                                  </TableCell>
-                                </TableRow>
-                              ),
-                            )}
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
@@ -975,7 +842,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                 >
                   <Save className="mr-2 h-4 w-4" />
                   Save All Changes
-                  {hasUnsavedChanges && <span className="ml-2 w-2 h-2 bg-orange-400 rounded-full"></span>}
+                  {hasUnsavedChanges && (
+                    <span className="ml-2 w-2 h-2 bg-orange-400 rounded-full"></span>
+                  )}
                 </Button>
               </div>
 
@@ -1017,7 +886,10 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                           </TableHeader>
                           <TableBody>
                             {teamPerms.permissions.map((permission) => (
-                              <TableRow key={permission.databaseId} className="h-12">
+                              <TableRow
+                                key={permission.databaseId}
+                                className="h-12"
+                              >
                                 <TableCell className="py-2">
                                   <div className="flex items-center gap-2">
                                     <Database className="h-4 w-4 text-blue-500" />
@@ -1038,7 +910,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                       )
                                     }
                                     disabled={!canManageTeam(team)}
-                                    size="sm"
                                   />
                                 </TableCell>
                                 <TableCell className="text-center py-2">
@@ -1056,7 +927,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                       !permission.canRead ||
                                       !canManageTeam(team)
                                     }
-                                    size="sm"
                                   />
                                 </TableCell>
                                 <TableCell className="text-center py-2">
@@ -1074,7 +944,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                       !permission.canRead ||
                                       !canManageTeam(team)
                                     }
-                                    size="sm"
                                   />
                                 </TableCell>
                                 <TableCell className="text-center py-2">
@@ -1089,7 +958,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                       )
                                     }
                                     disabled={!canManageTeam(team)}
-                                    size="sm"
                                   />
                                 </TableCell>
                               </TableRow>
@@ -1112,15 +980,16 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                 <h4 className="font-medium text-blue-900 mb-2">
                   Permission Hierarchy:
                 </h4>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-blue-800">
+                <div className="text-sm text-blue-800 space-y-1">
                   <div>
-                    <strong>Read:</strong> View and search documents
+                    <strong>Read:</strong> View database content
                   </div>
                   <div>
-                    <strong>Write:</strong> Upload and edit documents
+                    <strong>Write:</strong> Add and edit documents (requires
+                    Read)
                   </div>
                   <div>
-                    <strong>Delete:</strong> Remove documents
+                    <strong>Delete:</strong> Remove documents (requires Read)
                   </div>
                   <div>
                     <strong>Manage:</strong> Full database control
