@@ -551,11 +551,123 @@ export function useOptimizedTiaApp() {
         })),
 
       // Processing actions
-      startProcessing: () => setProcessing({ isProcessing: true, progress: 0 }),
+      startProcessing: () =>
+        setProcessing({
+          isProcessing: true,
+          progress: 0,
+          documentsToProcess: 0,
+          processedDocuments: 0,
+        }),
       updateProgress: (progress: number) =>
         setProcessing((prev) => ({ ...prev, progress })),
       stopProcessing: () =>
-        setProcessing({ isProcessing: false, progress: 100 }),
+        setProcessing({
+          isProcessing: false,
+          progress: 100,
+          documentsToProcess: 0,
+          processedDocuments: 0,
+        }),
+
+      // Enhanced document processing
+      processDocuments: async () => {
+        const unprocessedDocs = databases.flatMap((db) =>
+          db.documents.filter((doc) => !doc.isProcessed),
+        );
+
+        if (unprocessedDocs.length === 0) return;
+
+        setProcessing({
+          isProcessing: true,
+          progress: 0,
+          documentsToProcess: unprocessedDocs.length,
+          processedDocuments: 0,
+        });
+
+        // Process documents one by one
+        for (let i = 0; i < unprocessedDocs.length; i++) {
+          const doc = unprocessedDocs[i];
+
+          // Update document status to processing
+          setDatabases((prev) =>
+            prev.map((db) => ({
+              ...db,
+              documents: db.documents.map((d) =>
+                d.id === doc.id
+                  ? { ...d, processingStatus: "processing" as const }
+                  : d,
+              ),
+            })),
+          );
+
+          // Simulate processing time
+          await new Promise((resolve) =>
+            setTimeout(resolve, 1000 + Math.random() * 2000),
+          );
+
+          // Mark as processed
+          setDatabases((prev) =>
+            prev.map((db) => ({
+              ...db,
+              documents: db.documents.map((d) =>
+                d.id === doc.id
+                  ? {
+                      ...d,
+                      isProcessed: true,
+                      processingStatus: "completed" as const,
+                      content: `Enhanced content for ${d.name}. This document has been processed and indexed for better search capabilities. The content includes detailed information about ${d.type.toLowerCase()} data with improved semantic understanding.`,
+                    }
+                  : d,
+              ),
+            })),
+          );
+
+          // Update progress
+          const processedCount = i + 1;
+          setProcessing((prev) => ({
+            ...prev,
+            progress: Math.round(
+              (processedCount / unprocessedDocs.length) * 100,
+            ),
+            processedDocuments: processedCount,
+          }));
+        }
+
+        // Complete processing
+        setTimeout(() => {
+          setProcessing({
+            isProcessing: false,
+            progress: 100,
+            documentsToProcess: 0,
+            processedDocuments: 0,
+          });
+        }, 500);
+      },
+
+      // Document reference selection from chat
+      selectDocumentByReference: (documentName: string) => {
+        for (const db of databases) {
+          const document = db.documents.find((doc) =>
+            doc.name.toLowerCase().includes(documentName.toLowerCase()),
+          );
+          if (document) {
+            setDocumentState((prev) => ({
+              ...prev,
+              selectedDocument: document,
+              selectedDatabase: db.id,
+              currentPage: 1,
+            }));
+
+            // Highlight document in database list (will be handled by UI)
+            setTimeout(() => {
+              const event = new CustomEvent("highlightDocument", {
+                detail: { documentId: document.id, databaseId: db.id },
+              });
+              window.dispatchEvent(event);
+            }, 100);
+            break;
+          }
+        }
+      },
     }),
     [],
   );
