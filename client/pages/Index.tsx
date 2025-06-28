@@ -275,29 +275,26 @@ export default function Index() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      {/* Enhanced loading states */}
-      <Suspense fallback={<LoadingSkeleton />}>
-        {/* Header */}
-        <TiaHeader {...headerProps} />
+      {/* Header */}
+      <TiaHeader {...headerProps} />
 
-        {/* Main Content */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Database Panel */}
-          <DatabasePanel {...databasePanelProps} />
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Database Panel */}
+        <DatabasePanel {...databasePanelProps} />
 
-          {/* Document Viewer */}
-          <DocumentViewer {...documentViewerProps} />
+        {/* Document Viewer */}
+        <DocumentViewer {...documentViewerProps} />
 
-          {/* Chat Interface */}
-          <ChatInterface {...chatInterfaceProps} />
-        </div>
+        {/* Chat Interface */}
+        <ChatInterface {...chatInterfaceProps} />
+      </div>
 
-        {/* Footer */}
-        <TiaFooter t={t} />
+      {/* Footer */}
+      <TiaFooter t={t} />
 
-        {/* Modals */}
-        <ModalContainer {...modalProps} />
-      </Suspense>
+      {/* Modals */}
+      <ModalContainer {...modalProps} />
 
       {/* Global loading overlay for processing */}
       {processing.isProcessing && (
