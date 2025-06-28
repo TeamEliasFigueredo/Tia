@@ -134,7 +134,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     },
   ]);
 
-  const [teamMembers] = useState<TeamMember[]>([
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
     {
       id: "1",
       name: "John Doe",
@@ -142,6 +142,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "Admin",
       lastActive: "2024-01-22",
       teams: ["1"],
+      isAdmin: true,
     },
     {
       id: "2",
@@ -150,6 +151,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "User",
       lastActive: "2024-01-21",
       teams: ["1", "2"],
+      isAdmin: false,
     },
     {
       id: "3",
@@ -158,6 +160,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "User",
       lastActive: "2024-01-20",
       teams: ["1", "3"],
+      isAdmin: false,
     },
     {
       id: "4",
@@ -166,6 +169,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "Viewer",
       lastActive: "2024-01-19",
       teams: ["2", "3"],
+      isAdmin: false,
     },
     {
       id: "5",
@@ -174,6 +178,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "User",
       lastActive: "2024-01-18",
       teams: ["2"],
+      isAdmin: false,
     },
     {
       id: "6",
@@ -182,6 +187,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       role: "User",
       lastActive: "2024-01-17",
       teams: ["3"],
+      isAdmin: false,
     },
   ]);
 
