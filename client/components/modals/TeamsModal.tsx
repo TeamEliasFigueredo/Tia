@@ -241,6 +241,121 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   const [isAdmin] = useState(true); // Current user is TIA admin
   const [currentUserId] = useState("1");
 
+  // Member management functions
+  const addNewMember = () => {
+    if (
+      !newMemberForm.email ||
+      !newMemberForm.firstName ||
+      !newMemberForm.lastName
+    ) {
+      return;
+    }
+
+    const newMember = {
+      id: Date.now().toString(),
+      name: `${newMemberForm.firstName} ${newMemberForm.lastName}`,
+      email: newMemberForm.email,
+      role: newMemberForm.role === "admin" ? "Admin" : "User",
+      lastActive: new Date().toISOString().split("T")[0],
+      teams: newMemberForm.teams,
+      isAdmin: newMemberForm.role === "admin",
+    };
+
+    setTeamMembers((prev) => [...prev, newMember]);
+    setNewMemberForm({
+      email: "",
+      firstName: "",
+      lastName: "",
+      role: "member",
+      teams: [],
+    });
+    setShowAddMember(false);
+    setHasUnsavedChanges(true);
+  };
+
+  const toggleMemberAdmin = (memberId: string) => {
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId
+          ? {
+              ...member,
+              isAdmin: !member.isAdmin,
+              role: !member.isAdmin ? "Admin" : "User",
+            }
+          : member,
+      ),
+    );
+    setHasUnsavedChanges(true);
+  };
+
+  // Enhanced permission management
+  const updateTeamPermissions = (
+    teamId: string,
+    databaseId: string,
+    permission: keyof Omit<DatabasePermission, "databaseId" | "databaseName">,
+    value: boolean,
+  ) => {
+    setTeamPermissions((prev) =>
+      prev.map((tp) =>
+        tp.teamId === teamId
+          ? {
+              ...tp,
+              permissions: tp.permissions.map((perm) =>
+                perm.databaseId === databaseId
+                  ? {
+                      ...perm,
+                      [permission]: value,
+                      // Auto-activate all permissions when Manage is enabled
+                      ...(permission === "canManage" && value
+                        ? {
+                            canRead: true,
+                            canWrite: true,
+                            canDelete: true,
+                          }
+                        : {}),
+                      // Auto-activate Manage when all other permissions are enabled
+                      ...(permission !== "canManage"
+                        ? {
+                            canManage:
+                              value &&
+                              (permission === "canRead"
+                                ? true
+                                : perm.canRead) &&
+                              (permission === "canWrite"
+                                ? true
+                                : perm.canWrite) &&
+                              (permission === "canDelete"
+                                ? true
+                                : perm.canDelete),
+                          }
+                        : {}),
+                      // Auto-deactivate Manage when any permission is disabled
+                      ...(permission !== "canManage" && !value
+                        ? {
+                            canManage: false,
+                          }
+                        : {}),
+                    }
+                  : perm,
+              ),
+            }
+          : tp,
+      ),
+    );
+    setHasUnsavedChanges(true);
+  };
+
+  const saveAllChanges = () => {
+    // Here you would typically make API calls to save changes
+    console.log("Saving all changes...", {
+      teams,
+      teamMembers,
+      teamPermissions,
+    });
+    setHasUnsavedChanges(false);
+    alert("All changes saved successfully!");
+  };
+
   // Team management functions
   const createTeam = () => {
     if (!newTeamName.trim()) return;
