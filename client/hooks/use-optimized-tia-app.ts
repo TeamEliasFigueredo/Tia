@@ -467,6 +467,22 @@ export function useOptimizedTiaApp() {
         timestamp: new Date().toISOString(),
         documentReferences: [],
       },
+      {
+        id: "2",
+        type: "user" as const,
+        content: "What are the company's security guidelines?",
+        timestamp: new Date().toISOString(),
+        documentReferences: [],
+      },
+      {
+        id: "3",
+        type: "bot" as const,
+        content:
+          "Based on the company's security documentation, here are the key security guidelines: Password requirements include a minimum of 12 characters with a mix of uppercase, lowercase, numbers, and special characters. Two-factor authentication is mandatory for all accounts. All employees must follow data handling procedures and incident response protocols as outlined in our security policies.",
+        timestamp: new Date().toISOString(),
+        documentReferences: ["Security Guidelines.docx", "Employee Handbook.pdf"],
+      },
+    ],
     ] as ChatMessage[],
     currentMessage: "",
     currentChatId: "1",
