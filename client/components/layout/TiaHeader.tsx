@@ -64,28 +64,18 @@ const TiaHeader = memo<TiaHeaderProps>(
     return (
       <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-blue-100 dark:border-blue-800 px-6 py-2 flex items-center justify-between relative z-50 transition-colors duration-200">
         <div className="flex items-center space-x-6">
-          {/* Company Logo */}
-          <div className="flex items-center space-x-3 group">
+          {/* Company Logo - clickable */}
+          <button
+            onClick={() => window.open("https://softia.ca", "_blank")}
+            className="flex items-center space-x-3 group hover:opacity-80 transition-opacity"
+          >
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
               <span className="text-white font-bold">S</span>
             </div>
             <span className="text-lg font-semibold text-gray-800 dark:text-white">
               Softia
             </span>
-          </div>
-
-          <Separator orientation="vertical" className="h-6" />
-
-          {/* Tia Branding with enhanced visual appeal */}
-          <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
-              <span className="font-bold text-xs">Tia</span>
-            </div>
-            <div>
-              <div className="font-semibold text-sm">Tia</div>
-              <div className="text-xs opacity-90">v2.1.0</div>
-            </div>
-          </div>
+          </button>
 
           <Separator orientation="vertical" className="h-6" />
 
