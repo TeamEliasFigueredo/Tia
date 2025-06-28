@@ -34,6 +34,8 @@ import {
   Highlight,
   Play,
   Loader2,
+  FileImage,
+  FileSpreadsheet,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,6 +93,7 @@ interface Document {
   createdDate: string;
   addedDate: string;
   content: string;
+  fileType: "PDF" | "Word" | "Excel" | "PowerPoint" | "Image" | "Text";
 }
 
 interface ChatMessage {
@@ -119,7 +122,7 @@ export default function Index() {
   // Get translations
   const t = useTranslation(language);
 
-  // Modal states - Fixed with better cleanup
+  // Enhanced modal states with better cleanup
   const [modals, setModals] = useState({
     userProfile: false,
     security: false,
@@ -149,7 +152,7 @@ export default function Index() {
       documents: [
         {
           id: "doc1",
-          name: "Employee Handbook",
+          name: "Employee Handbook.pdf",
           type: "PDF",
           size: "2.1 MB",
           pages: 45,
@@ -157,17 +160,19 @@ export default function Index() {
           addedDate: "2024-01-15",
           content:
             "This comprehensive employee handbook outlines company policies, procedures, and guidelines for all staff members. It covers workplace conduct, benefits, time-off policies, and professional development opportunities. Section 1: Introduction to Company Culture. Our company values integrity, innovation, and collaboration. We believe in creating an inclusive environment where every employee can thrive. Section 2: Code of Conduct. All employees are expected to maintain professional behavior at all times. This includes respectful communication, punctuality, and adherence to company policies.",
+          fileType: "PDF",
         },
         {
           id: "doc2",
-          name: "Security Guidelines",
-          type: "PDF",
+          name: "Security Guidelines.docx",
+          type: "Word",
           size: "1.8 MB",
           pages: 32,
           createdDate: "2024-01-12",
           addedDate: "2024-01-16",
           content:
             "Security guidelines and protocols for maintaining information security and data protection within the organization. This document covers password policies, data handling procedures, and incident response protocols. Password Requirements: Minimum 12 characters, mix of uppercase, lowercase, numbers, and special characters. Two-factor authentication is mandatory for all accounts.",
+          fileType: "Word",
         },
       ],
     },
@@ -181,7 +186,7 @@ export default function Index() {
       documents: [
         {
           id: "doc3",
-          name: "API Documentation",
+          name: "API Documentation.pdf",
           type: "PDF",
           size: "3.2 MB",
           pages: 78,
@@ -189,6 +194,19 @@ export default function Index() {
           addedDate: "2024-01-11",
           content:
             "Complete API documentation including endpoints, authentication methods, request/response formats, and integration examples for developers. REST API Endpoints: GET /api/users - Retrieve user list. POST /api/users - Create new user. PUT /api/users/{id} - Update user. DELETE /api/users/{id} - Delete user. Authentication: Bearer token required in Authorization header.",
+          fileType: "PDF",
+        },
+        {
+          id: "doc4",
+          name: "Project Timeline.xlsx",
+          type: "Excel",
+          size: "1.5 MB",
+          pages: 12,
+          createdDate: "2024-01-20",
+          addedDate: "2024-01-20",
+          content:
+            "Project timeline and milestone tracking spreadsheet. Contains task assignments, deadlines, progress tracking, and resource allocation for the Q1 2024 development cycle.",
+          fileType: "Excel",
         },
       ],
     },
@@ -235,15 +253,15 @@ export default function Index() {
   const [editingDatabase, setEditingDatabase] = useState<string | null>(null);
   const [editingDocument, setEditingDocument] = useState<string | null>(null);
   const [newDatabaseName, setNewDatabaseName] = useState("");
-  const [newDocumentName, setNewDocumentName] = useState("");
 
-  // Drag and drop states
+  // Enhanced drag and drop states
   const [draggedDocument, setDraggedDocument] = useState<{
     docId: string;
     fromDbId: string;
   } | null>(null);
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [chatDragOver, setChatDragOver] = useState(false);
+  const [isDraggingFiles, setIsDraggingFiles] = useState(false);
 
   // File upload refs
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -257,22 +275,36 @@ export default function Index() {
     allowAnalytics: false,
   });
 
-  // Fixed modal helper functions with proper event handling
+  // Enhanced modal helper functions with complete cleanup
   const openModal = useCallback((modalName: keyof typeof modals) => {
     setModals((prev) => ({ ...prev, [modalName]: true }));
   }, []);
 
   const closeModal = useCallback((modalName: keyof typeof modals) => {
     setModals((prev) => ({ ...prev, [modalName]: false }));
-    // Force re-render to ensure menus work properly
+
+    // Enhanced cleanup to ensure menus remain functional
     setTimeout(() => {
-      const dropdowns = document.querySelectorAll(
-        "[data-radix-dropdown-menu-trigger]",
-      );
-      dropdowns.forEach((dropdown) => {
-        dropdown.removeAttribute("data-state");
-      });
-    }, 50);
+      // Remove any stuck radix attributes
+      document
+        .querySelectorAll("[data-radix-dropdown-menu-trigger]")
+        .forEach((el) => {
+          el.removeAttribute("data-state");
+          el.removeAttribute("aria-expanded");
+        });
+
+      document
+        .querySelectorAll("[data-radix-dropdown-menu-content]")
+        .forEach((el) => {
+          if (el.getAttribute("data-state") === "closed") {
+            el.remove();
+          }
+        });
+
+      // Force re-render of dropdown components
+      const event = new Event("resize");
+      window.dispatchEvent(event);
+    }, 100);
   }, []);
 
   // Enhanced search functionality
@@ -407,7 +439,6 @@ export default function Index() {
     setIsProcessing(true);
     setProcessingProgress(0);
 
-    // Simulate processing with progress
     const interval = setInterval(() => {
       setProcessingProgress((prev) => {
         if (prev >= 100) {
@@ -420,20 +451,47 @@ export default function Index() {
     }, 200);
   };
 
-  // Enhanced file upload functions with proper drag and drop
+  // File type detection
+  const getFileType = (fileName: string): Document["fileType"] => {
+    const extension = fileName.toLowerCase().split(".").pop();
+    switch (extension) {
+      case "pdf":
+        return "PDF";
+      case "doc":
+      case "docx":
+        return "Word";
+      case "xls":
+      case "xlsx":
+        return "Excel";
+      case "ppt":
+      case "pptx":
+        return "PowerPoint";
+      case "jpg":
+      case "jpeg":
+      case "png":
+      case "gif":
+        return "Image";
+      default:
+        return "Text";
+    }
+  };
+
+  // Enhanced file upload functions with improved drag and drop
   const handleFileUpload = (files: FileList | null, targetDbId: string) => {
     if (!files) return;
 
     Array.from(files).forEach((file) => {
+      const fileType = getFileType(file.name);
       const newDoc: Document = {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         name: file.name,
-        type: file.type.includes("pdf") ? "PDF" : "Document",
+        type: fileType,
         size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
         pages: Math.floor(Math.random() * 50) + 1,
         createdDate: new Date().toISOString().split("T")[0],
         addedDate: new Date().toISOString().split("T")[0],
-        content: `Content of ${file.name}. This is a placeholder for the actual document content that would be extracted from the uploaded file.`,
+        content: `Content of ${file.name}. This is a placeholder for the actual document content that would be extracted from the uploaded file. The file type is ${fileType} and contains structured information relevant to your organization.`,
+        fileType,
       };
 
       setDatabases((prev) =>
@@ -443,7 +501,10 @@ export default function Index() {
                 ...db,
                 documents: [...db.documents, newDoc],
                 documentCount: db.documentCount + 1,
-                size: `${parseFloat(db.size) + parseFloat(newDoc.size)}MB`,
+                size: `${(
+                  parseFloat(db.size.replace(" MB", "")) +
+                  parseFloat(newDoc.size.replace(" MB", ""))
+                ).toFixed(1)} MB`,
                 lastModified: new Date().toISOString().split("T")[0],
               }
             : db,
@@ -452,7 +513,7 @@ export default function Index() {
     });
   };
 
-  // Chat file upload with auto-create "My Documents" database
+  // Enhanced chat file upload with auto-create "My Documents" database
   const handleChatFileUpload = (files: FileList | null) => {
     if (!files) return;
 
@@ -483,14 +544,25 @@ export default function Index() {
 
   const handleDragOver = (e: React.DragEvent, dbId?: string) => {
     e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingFiles(e.dataTransfer.types.includes("Files"));
     if (dbId) {
       setDragOver(dbId);
     }
   };
 
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(null);
+    setIsDraggingFiles(false);
+  };
+
   const handleDrop = (e: React.DragEvent, toDbId?: string) => {
     e.preventDefault();
+    e.stopPropagation();
     setDragOver(null);
+    setIsDraggingFiles(false);
 
     // Handle file drops
     if (e.dataTransfer.files.length > 0 && toDbId) {
@@ -503,7 +575,6 @@ export default function Index() {
       return;
 
     const { docId, fromDbId } = draggedDocument;
-
     const sourceDb = databases.find((db) => db.id === fromDbId);
     const docToMove = sourceDb?.documents.find((doc) => doc.id === docId);
 
@@ -534,19 +605,30 @@ export default function Index() {
     setDraggedDocument(null);
   };
 
-  // Chat drag and drop
+  // Enhanced chat drag and drop
   const handleChatDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    setChatDragOver(true);
+    e.stopPropagation();
+    if (e.dataTransfer.types.includes("Files")) {
+      setChatDragOver(true);
+    }
   };
 
   const handleChatDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
-    setChatDragOver(false);
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      setChatDragOver(false);
+    }
   };
 
   const handleChatDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setChatDragOver(false);
     if (e.dataTransfer.files.length > 0) {
       handleChatFileUpload(e.dataTransfer.files);
@@ -567,14 +649,12 @@ export default function Index() {
     const newMessages = [...chatMessages, userMessage];
     setChatMessages(newMessages);
 
-    // Update current chat
     setSavedChats((prev) =>
       prev.map((chat) =>
         chat.id === currentChatId ? { ...chat, messages: newMessages } : chat,
       ),
     );
 
-    // Simulate bot response
     setTimeout(() => {
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -681,6 +761,91 @@ export default function Index() {
     );
   };
 
+  // File type icon
+  const getFileTypeIcon = (fileType: Document["fileType"]) => {
+    switch (fileType) {
+      case "PDF":
+        return <FileText className="h-3 w-3 text-red-500" />;
+      case "Word":
+        return <FileText className="h-3 w-3 text-blue-500" />;
+      case "Excel":
+        return <FileSpreadsheet className="h-3 w-3 text-green-500" />;
+      case "PowerPoint":
+        return <FileImage className="h-3 w-3 text-orange-500" />;
+      case "Image":
+        return <FileImage className="h-3 w-3 text-purple-500" />;
+      default:
+        return <FileText className="h-3 w-3 text-gray-500" />;
+    }
+  };
+
+  // Enhanced document viewer for different file types
+  const renderDocumentContent = (document: Document) => {
+    switch (document.fileType) {
+      case "PDF":
+        return (
+          <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="h-5 w-5 text-red-500" />
+              <span className="font-semibold">PDF Document</span>
+            </div>
+            <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+              {renderHighlightedText(document.content, documentSearchQuery)}
+            </div>
+          </div>
+        );
+      case "Word":
+        return (
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded border shadow-sm min-h-96">
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="h-5 w-5 text-blue-500" />
+              <span className="font-semibold">Word Document</span>
+            </div>
+            <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+              {renderHighlightedText(document.content, documentSearchQuery)}
+            </div>
+          </div>
+        );
+      case "Excel":
+        return (
+          <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded border shadow-sm min-h-96">
+            <div className="flex items-center gap-2 mb-4">
+              <FileSpreadsheet className="h-5 w-5 text-green-500" />
+              <span className="font-semibold">Excel Spreadsheet</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                Task
+              </div>
+              <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                Status
+              </div>
+              <div className="bg-green-100 dark:bg-green-800 p-2 rounded font-semibold">
+                Date
+              </div>
+              <div className="p-2">Design Phase</div>
+              <div className="p-2">Complete</div>
+              <div className="p-2">2024-01-15</div>
+              <div className="p-2">Development</div>
+              <div className="p-2">In Progress</div>
+              <div className="p-2">2024-01-20</div>
+            </div>
+            <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+              {renderHighlightedText(document.content, documentSearchQuery)}
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
+            <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
+              {renderHighlightedText(document.content, documentSearchQuery)}
+            </div>
+          </div>
+        );
+    }
+  };
+
   // Apply theme
   useEffect(() => {
     if (theme === "dark") {
@@ -698,7 +863,7 @@ export default function Index() {
       )}
       style={{ fontSize: `${fontSize}px` }}
     >
-      {/* Reduced Header Height */}
+      {/* Header with Tia Icon */}
       <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-blue-100 dark:border-blue-800 px-6 py-2 flex items-center justify-between relative z-50">
         <div className="flex items-center space-x-6">
           {/* Company Logo */}
@@ -709,6 +874,19 @@ export default function Index() {
             <span className="text-lg font-semibold text-gray-800 dark:text-white">
               Softia
             </span>
+          </div>
+
+          <Separator orientation="vertical" className="h-6" />
+
+          {/* Tia Branding in Header */}
+          <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded shadow-lg">
+            <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
+              <span className="font-bold text-xs">Tia</span>
+            </div>
+            <div>
+              <div className="font-semibold text-sm">Tia</div>
+              <div className="text-xs opacity-90">v2.1.0</div>
+            </div>
           </div>
 
           <Separator orientation="vertical" className="h-6" />
@@ -727,7 +905,7 @@ export default function Index() {
             )}
 
             {isAdmin && (
-              <DropdownMenu key="your-plan-dropdown">
+              <DropdownMenu key={`your-plan-dropdown-${Date.now()}`}>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
@@ -764,7 +942,7 @@ export default function Index() {
           <span className="text-sm text-gray-600 dark:text-gray-300">
             John Doe
           </span>
-          <DropdownMenu key="user-profile-dropdown">
+          <DropdownMenu key={`user-profile-dropdown-${Date.now()}`}>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all">
                 <AvatarImage src="" />
@@ -800,7 +978,7 @@ export default function Index() {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Column 1 - Enhanced Database Management */}
+        {/* Column 1 - Enhanced Database Management with Working Drag & Drop */}
         <div
           className={cn(
             "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg",
@@ -879,8 +1057,10 @@ export default function Index() {
                         "border rounded-lg p-3 hover:shadow-md transition-all",
                         dragOver === database.id &&
                           "border-blue-400 bg-blue-50 dark:bg-blue-900/20",
+                        isDraggingFiles && "border-dashed border-blue-400",
                       )}
                       onDragOver={(e) => handleDragOver(e, database.id)}
+                      onDragLeave={handleDragLeave}
                       onDrop={(e) => handleDrop(e, database.id)}
                     >
                       <div
@@ -960,7 +1140,7 @@ export default function Index() {
                             >
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2 flex-1">
-                                  <FileText className="h-3 w-3 text-gray-500" />
+                                  {getFileTypeIcon(doc.fileType)}
                                   {editingDocument === doc.id ? (
                                     <Input
                                       value={doc.name}
@@ -1019,32 +1199,46 @@ export default function Index() {
                             </div>
                           ))}
 
-                          {/* Fixed Add Document Section with Drag & Drop */}
+                          {/* Enhanced Add Document Section with Working Drag & Drop */}
                           <div
-                            className="border-2 border-dashed border-gray-300 rounded p-3 hover:border-blue-400 transition-colors"
+                            className={cn(
+                              "border-2 border-dashed border-gray-300 rounded p-3 transition-all",
+                              "hover:border-blue-400 hover:bg-blue-50/50",
+                              dragOver === database.id &&
+                                "border-blue-500 bg-blue-100 dark:bg-blue-900/30",
+                            )}
                             onDragOver={(e) => handleDragOver(e, database.id)}
+                            onDragLeave={handleDragLeave}
                             onDrop={(e) => handleDrop(e, database.id)}
                           >
                             <input
-                              ref={fileInputRef}
                               type="file"
                               multiple
                               className="hidden"
+                              id={`file-upload-${database.id}`}
                               onChange={(e) =>
                                 handleFileUpload(e.target.files, database.id)
                               }
+                              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.txt"
                             />
                             <Button
                               variant="outline"
                               size="sm"
                               className="w-full text-xs"
-                              onClick={() => fileInputRef.current?.click()}
+                              onClick={() =>
+                                document
+                                  .getElementById(`file-upload-${database.id}`)
+                                  ?.click()
+                              }
                             >
                               <Plus className="mr-1 h-3 w-3" />
                               {t.addDocument}
                             </Button>
                             <p className="text-xs text-gray-500 mt-1 text-center">
                               {t.dragDropFiles}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1 text-center">
+                              PDF, Word, Excel, PowerPoint, Images
                             </p>
                           </div>
                         </div>
@@ -1057,7 +1251,7 @@ export default function Index() {
           )}
         </div>
 
-        {/* Column 2 - Enhanced Document Viewer */}
+        {/* Column 2 - Enhanced Document Viewer with Multi-format Support */}
         <div
           className={cn(
             "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg",
@@ -1084,8 +1278,11 @@ export default function Index() {
 
                 {selectedDocument && (
                   <div className="mt-2">
-                    <div className="text-sm font-medium">
-                      {selectedDocument.name}
+                    <div className="flex items-center gap-2">
+                      {getFileTypeIcon(selectedDocument.fileType)}
+                      <div className="text-sm font-medium">
+                        {selectedDocument.name}
+                      </div>
                     </div>
                     <div className="text-xs text-gray-500">
                       {t.page} {currentDocumentPage} {t.of}{" "}
@@ -1217,28 +1414,21 @@ export default function Index() {
                 </div>
               )}
 
-              {/* Document Content */}
+              {/* Enhanced Document Content */}
               <ScrollArea className="flex-1">
                 <div className="p-4">
                   {selectedDocument ? (
                     <div
-                      className="prose prose-sm max-w-none"
+                      className="max-w-none"
                       style={{
                         transform: `scale(${documentZoom / 100})`,
                         transformOrigin: "top left",
                       }}
                     >
-                      <div className="bg-white dark:bg-gray-900 p-6 rounded border shadow-sm min-h-96">
-                        <div className="text-gray-800 dark:text-gray-200 leading-relaxed">
-                          {renderHighlightedText(
-                            selectedDocument.content,
-                            documentSearchQuery,
-                          )}
-                        </div>
-                        <div className="mt-8 text-center text-gray-400 text-sm">
-                          {t.page} {currentDocumentPage} {t.of}{" "}
-                          {selectedDocument.pages}
-                        </div>
+                      {renderDocumentContent(selectedDocument)}
+                      <div className="mt-8 text-center text-gray-400 text-sm">
+                        {t.page} {currentDocumentPage} {t.of}{" "}
+                        {selectedDocument.pages}
                       </div>
                     </div>
                   ) : (
@@ -1252,7 +1442,7 @@ export default function Index() {
           )}
         </div>
 
-        {/* Column 3 - Enhanced Chat Interface */}
+        {/* Column 3 - Enhanced Chat Interface with Working Drag & Drop */}
         <div
           className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg"
           style={{ width: showColumn1 || showColumn2 ? "55%" : "100%" }}
@@ -1297,7 +1487,7 @@ export default function Index() {
                 </div>
 
                 {/* Enhanced Saved Chats */}
-                <DropdownMenu key="saved-chats-dropdown">
+                <DropdownMenu key={`saved-chats-dropdown-${Date.now()}`}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
@@ -1335,7 +1525,7 @@ export default function Index() {
                 </DropdownMenu>
 
                 {/* Enhanced Settings */}
-                <DropdownMenu key="settings-dropdown">
+                <DropdownMenu key={`settings-dropdown-${Date.now()}`}>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
@@ -1463,7 +1653,7 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Optimized Chat Messages */}
+          {/* Optimized Chat Messages with "Tia" instead of "T" */}
           <ScrollArea className="flex-1">
             <div className="p-4 space-y-3">
               {filteredMessages.map((message) => (
@@ -1475,8 +1665,8 @@ export default function Index() {
                   )}
                 >
                   {message.type === "bot" && (
-                    <div className="w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-xs">T</span>
+                    <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-bold text-xs">Tia</span>
                     </div>
                   )}
 
@@ -1537,7 +1727,7 @@ export default function Index() {
                   </div>
 
                   {message.type === "user" && (
-                    <Avatar className="flex-shrink-0 w-6 h-6">
+                    <Avatar className="flex-shrink-0 w-7 h-7">
                       <AvatarFallback className="bg-blue-600 text-white text-xs">
                         J
                       </AvatarFallback>
@@ -1549,11 +1739,12 @@ export default function Index() {
             </div>
           </ScrollArea>
 
-          {/* Enhanced Chat Input with Drag & Drop */}
+          {/* Enhanced Chat Input with Working Drag & Drop */}
           <div
             className={cn(
-              "p-4 border-t bg-gray-50 dark:bg-gray-700 transition-colors",
-              chatDragOver && "bg-blue-50 dark:bg-blue-900/20 border-blue-300",
+              "p-4 border-t bg-gray-50 dark:bg-gray-700 transition-all duration-200",
+              chatDragOver &&
+                "bg-blue-100 dark:bg-blue-900/30 border-blue-400 border-2",
             )}
             onDragOver={handleChatDragOver}
             onDragLeave={handleChatDragLeave}
@@ -1588,6 +1779,7 @@ export default function Index() {
                   multiple
                   className="hidden"
                   onChange={(e) => handleChatFileUpload(e.target.files)}
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.txt"
                 />
                 <Button
                   variant="outline"
@@ -1608,8 +1800,9 @@ export default function Index() {
               </div>
             </div>
             {chatDragOver && (
-              <div className="text-center text-blue-600 text-sm mt-2">
-                {t.dragDropHere}
+              <div className="text-center text-blue-600 dark:text-blue-400 text-sm mt-2 font-medium">
+                <Upload className="h-5 w-5 mx-auto mb-1" />
+                {t.dragDropHere} - {t.myDocuments}
               </div>
             )}
           </div>
@@ -1620,16 +1813,6 @@ export default function Index() {
       <footer className="bg-gray-800 text-white py-2 px-6 border-t-4 border-blue-600">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            {/* Tia Brand in Footer */}
-            <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded shadow-lg">
-              <div className="w-5 h-5 bg-white/20 rounded flex items-center justify-center">
-                <span className="font-bold text-xs">Tia</span>
-              </div>
-              <div>
-                <div className="font-semibold text-xs">Tia</div>
-                <div className="text-xs opacity-90">v2.1.0</div>
-              </div>
-            </div>
             <p className="text-xs text-gray-300">{t.footerText}</p>
           </div>
           <div className="text-xs text-gray-400">
@@ -1638,7 +1821,7 @@ export default function Index() {
         </div>
       </footer>
 
-      {/* Modal Components */}
+      {/* Enhanced Modal Components */}
       <UserProfileModal
         isOpen={modals.userProfile}
         onClose={() => closeModal("userProfile")}
