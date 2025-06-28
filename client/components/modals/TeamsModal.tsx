@@ -1092,40 +1092,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                     size="sm"
                                   />
                                 </TableCell>
-                                <TableCell className="text-center">
-                                  <Switch
-                                    checked={permission.canDelete}
-                                    onCheckedChange={(value) =>
-                                      handlePermissionChange(
-                                        team.id,
-                                        permission.databaseId,
-                                        "canDelete",
-                                        value,
-                                      )
-                                    }
-                                    disabled={
-                                      !permission.canWrite ||
-                                      !canManageTeam(team)
-                                    }
-                                  />
-                                </TableCell>
-                                <TableCell className="text-center">
-                                  <Switch
-                                    checked={permission.canManage}
-                                    onCheckedChange={(value) =>
-                                      handlePermissionChange(
-                                        team.id,
-                                        permission.databaseId,
-                                        "canManage",
-                                        value,
-                                      )
-                                    }
-                                    disabled={
-                                      !permission.canDelete ||
-                                      !canManageTeam(team)
-                                    }
-                                  />
-                                </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
