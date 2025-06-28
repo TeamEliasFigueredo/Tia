@@ -365,6 +365,6 @@ export default function Index() {
           }}
         />
       </div>
-    </React.ErrorBoundary>
+    </div>
   );
 }
