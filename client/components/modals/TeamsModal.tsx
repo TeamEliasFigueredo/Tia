@@ -1090,7 +1090,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                     }
                                     disabled={!canManageTeam(team)}
                                     size="sm"
-                                    }
                                   />
                                 </TableCell>
                                 <TableCell className="text-center">
