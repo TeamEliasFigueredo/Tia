@@ -273,28 +273,7 @@ export default function Index() {
     }
   }, [settings.theme]);
 
-  // Enhanced error boundary for better error handling
-  const ErrorFallback = React.memo(({ error }: { error: Error }) => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="text-center p-8">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">
-          Something went wrong
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
-          {error.message || "An unexpected error occurred"}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          Reload Page
-        </button>
-      </div>
-    </div>
-  ));
-
   return (
-    <React.ErrorBoundary fallback={ErrorFallback}>
       <div
         className={cn(
           "h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 transition-all duration-300",
