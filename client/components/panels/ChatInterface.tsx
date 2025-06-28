@@ -81,8 +81,9 @@ interface ChatInterfaceProps {
     onDragOver: (e: React.DragEvent) => void;
     onDragLeave: (e: React.DragEvent) => void;
     onDrop: (e: React.DragEvent) => void;
-    setChatDragOver: (value: boolean) => void;
+    setChatDragOver: (dragOver: boolean) => void;
   };
+  onSelectDocumentReference?: (documentName: string) => void;
   t: Translations;
 }
 
