@@ -229,6 +229,7 @@ export default function Index() {
         },
         setChatDragOver: dragAndDrop.setChatDragOver,
       },
+      onSelectDocumentReference: actions.selectDocumentByReference,
       t,
     }),
     [
