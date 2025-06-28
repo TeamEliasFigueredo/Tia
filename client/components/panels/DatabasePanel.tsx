@@ -162,6 +162,44 @@ const DatabasePanel = memo<DatabasePanelProps>(
       Set<string>
     >(new Set());
 
+    // Handle document highlighting from chat references
+    React.useEffect(() => {
+      const handleHighlightDocument = (event: CustomEvent) => {
+        const { documentId, databaseId } = event.detail;
+
+        // Expand the database if not already expanded
+        setExpandedDatabases((prev) => new Set(prev.add(databaseId)));
+
+        // Highlight the document
+        setTimeout(() => {
+          const documentElement = document.querySelector(
+            `[data-document-id="${documentId}"]`,
+          );
+          if (documentElement) {
+            documentElement.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+            documentElement.classList.add("highlight-document");
+            setTimeout(() => {
+              documentElement.classList.remove("highlight-document");
+            }, 3000);
+          }
+        }, 100);
+      };
+
+      window.addEventListener(
+        "highlightDocument",
+        handleHighlightDocument as EventListener,
+      );
+      return () => {
+        window.removeEventListener(
+          "highlightDocument",
+          handleHighlightDocument as EventListener,
+        );
+      };
+    }, []);
+
     const toggleDatabase = useCallback((databaseId: string) => {
       setExpandedDatabases((prev) => {
         const newSet = new Set(prev);
