@@ -135,7 +135,20 @@ const TiaHeader = memo<TiaHeaderProps>(
         </div>
 
         {/* Enhanced User Profile Section */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
+          {/* Tia Branding - moved to right side */}
+          <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+            <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
+              <span className="font-bold text-xs">Tia</span>
+            </div>
+            <div>
+              <div className="font-semibold text-sm">Tia</div>
+              <div className="text-xs opacity-90">v2.1.0</div>
+            </div>
+          </div>
+
+          <Separator orientation="vertical" className="h-6" />
+
           <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
             {currentUser.name}
           </span>
