@@ -496,7 +496,10 @@ const ChatInterface = memo<ChatInterfaceProps>(
                                   (docId, index) => (
                                     <button
                                       key={index}
-                                      className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-medium text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded"
+                                      onClick={() =>
+                                        onSelectDocumentReference?.(docId)
+                                      }
+                                      className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-medium text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded transition-colors hover:bg-blue-200 dark:hover:bg-blue-900/50"
                                     >
                                       [{docId}]
                                     </button>
