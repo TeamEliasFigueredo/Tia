@@ -650,6 +650,14 @@ export function useOptimizedTiaApp() {
             doc.name.toLowerCase().includes(documentName.toLowerCase()),
           );
           if (document) {
+            // Show document viewer and database panel
+            setLayout((prev) => ({
+              ...prev,
+              showColumn1: true, // Show database panel
+              showColumn2: true, // Show document viewer
+            }));
+
+            // Select the document
             setDocumentState((prev) => ({
               ...prev,
               selectedDocument: document,
