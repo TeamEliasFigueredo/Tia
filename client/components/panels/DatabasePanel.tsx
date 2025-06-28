@@ -26,7 +26,12 @@ interface DatabasePanelProps {
   isVisible: boolean;
   databases: DatabaseType[];
   selectedDatabase: string | null;
-  processing: { isProcessing: boolean; progress: number };
+  processing: {
+    isProcessing: boolean;
+    progress: number;
+    documentsToProcess: number;
+    processedDocuments: number;
+  };
   dragState: {
     draggedDocument: { docId: string; fromDbId: string } | null;
     dragOver: string | null;
@@ -42,6 +47,7 @@ interface DatabasePanelProps {
     onDragOver: (e: React.DragEvent, dbId?: string) => void;
     onDragLeave: (e: React.DragEvent) => void;
     onDrop: (e: React.DragEvent, dbId?: string) => void;
+    processDocuments: () => Promise<void>;
   };
   t: Translations;
 }
