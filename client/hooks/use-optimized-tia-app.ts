@@ -663,10 +663,24 @@ export function useOptimizedTiaApp() {
 
       // Document reference selection from chat
       selectDocumentByReference: (documentName: string) => {
+        // Clean the document name (remove brackets and extra spaces)
+        const cleanDocName = documentName.replace(/[\[\]]/g, "").trim();
+
         for (const db of databases) {
-          const document = db.documents.find((doc) =>
-            doc.name.toLowerCase().includes(documentName.toLowerCase()),
+          // Try exact match first, then partial match
+          let document = db.documents.find(
+            (doc) => doc.name.toLowerCase() === cleanDocName.toLowerCase(),
           );
+
+          if (!document) {
+            // Try partial match if exact match fails
+            document = db.documents.find(
+              (doc) =>
+                doc.name.toLowerCase().includes(cleanDocName.toLowerCase()) ||
+                cleanDocName.toLowerCase().includes(doc.name.toLowerCase()),
+            );
+          }
+
           if (document) {
             // Show document viewer and database panel
             setLayout((prev) => ({
@@ -689,7 +703,7 @@ export function useOptimizedTiaApp() {
                 detail: { documentId: document.id, databaseId: db.id },
               });
               window.dispatchEvent(event);
-            }, 100);
+            }, 200);
             break;
           }
         }
