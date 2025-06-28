@@ -1,15 +1,13 @@
-import React, { Suspense, lazy, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/lib/i18n";
 import { useOptimizedTiaApp } from "@/hooks/use-optimized-tia-app";
-
-// Lazy load components for better performance
-const TiaHeader = lazy(() => import("@/components/layout/TiaHeader"));
-const DatabasePanel = lazy(() => import("@/components/panels/DatabasePanel"));
-const DocumentViewer = lazy(() => import("@/components/panels/DocumentViewer"));
-const ChatInterface = lazy(() => import("@/components/panels/ChatInterface"));
-const TiaFooter = lazy(() => import("@/components/layout/TiaFooter"));
-const ModalContainer = lazy(() => import("@/components/modals/ModalContainer"));
+import TiaHeader from "@/components/layout/TiaHeader";
+import DatabasePanel from "@/components/panels/DatabasePanel";
+import DocumentViewer from "@/components/panels/DocumentViewer";
+import ChatInterface from "@/components/panels/ChatInterface";
+import TiaFooter from "@/components/layout/TiaFooter";
+import ModalContainer from "@/components/modals/ModalContainer";
 
 // Loading skeleton component
 const LoadingSkeleton = React.memo(() => (
