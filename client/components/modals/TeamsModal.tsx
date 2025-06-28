@@ -960,15 +960,22 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
           {activeTab === "permissions" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">
-                  Team Database Access Permissions
-                </h3>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    Team Database Access Permissions
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Configure database access permissions for each team
+                  </p>
+                </div>
                 <Button
-                  onClick={() => console.log("Save permissions")}
-                  className="bg-green-600 hover:bg-green-700"
+                  onClick={saveAllChanges}
+                  disabled={!hasUnsavedChanges}
+                  className="bg-green-600 hover:bg-green-700 disabled:opacity-50"
                 >
                   <Save className="mr-2 h-4 w-4" />
                   Save All Changes
+                  {hasUnsavedChanges && <span className="ml-2 w-2 h-2 bg-orange-400 rounded-full"></span>}
                 </Button>
               </div>
 
@@ -1010,20 +1017,20 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                           </TableHeader>
                           <TableBody>
                             {teamPerms.permissions.map((permission) => (
-                              <TableRow key={permission.databaseId}>
-                                <TableCell>
+                              <TableRow key={permission.databaseId} className="h-12">
+                                <TableCell className="py-2">
                                   <div className="flex items-center gap-2">
                                     <Database className="h-4 w-4 text-blue-500" />
-                                    <span className="font-medium">
+                                    <span className="font-medium text-sm">
                                       {permission.databaseName}
                                     </span>
                                   </div>
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-center py-2">
                                   <Switch
                                     checked={permission.canRead}
                                     onCheckedChange={(value) =>
-                                      handlePermissionChange(
+                                      updateTeamPermissions(
                                         team.id,
                                         permission.databaseId,
                                         "canRead",
@@ -1031,13 +1038,14 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                       )
                                     }
                                     disabled={!canManageTeam(team)}
+                                    size="sm"
                                   />
                                 </TableCell>
-                                <TableCell className="text-center">
+                                <TableCell className="text-center py-2">
                                   <Switch
                                     checked={permission.canWrite}
                                     onCheckedChange={(value) =>
-                                      handlePermissionChange(
+                                      updateTeamPermissions(
                                         team.id,
                                         permission.databaseId,
                                         "canWrite",
@@ -1047,6 +1055,41 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                     disabled={
                                       !permission.canRead ||
                                       !canManageTeam(team)
+                                    }
+                                    size="sm"
+                                  />
+                                </TableCell>
+                                <TableCell className="text-center py-2">
+                                  <Switch
+                                    checked={permission.canDelete}
+                                    onCheckedChange={(value) =>
+                                      updateTeamPermissions(
+                                        team.id,
+                                        permission.databaseId,
+                                        "canDelete",
+                                        value,
+                                      )
+                                    }
+                                    disabled={
+                                      !permission.canRead ||
+                                      !canManageTeam(team)
+                                    }
+                                    size="sm"
+                                  />
+                                </TableCell>
+                                <TableCell className="text-center py-2">
+                                  <Switch
+                                    checked={permission.canManage}
+                                    onCheckedChange={(value) =>
+                                      updateTeamPermissions(
+                                        team.id,
+                                        permission.databaseId,
+                                        "canManage",
+                                        value,
+                                      )
+                                    }
+                                    disabled={!canManageTeam(team)}
+                                    size="sm"
                                     }
                                   />
                                 </TableCell>
