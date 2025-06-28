@@ -338,7 +338,15 @@ const DatabasePanel = memo<DatabasePanelProps>(
                       {database.documents.map((doc) => (
                         <div
                           key={doc.id}
-                          className="p-2 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-xs"
+                          data-document-id={doc.id}
+                          className={cn(
+                            "p-2 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-xs",
+                            selectedDatabase === database.id &&
+                              "bg-blue-100 dark:bg-blue-900/30 border-blue-300",
+                            doc.processingStatus === "processing" &&
+                              "bg-yellow-50 border-yellow-300",
+                            doc.isProcessed && "bg-green-50 border-green-300",
+                          )}
                           draggable
                           onDragStart={() =>
                             onDragHandlers.onDragStart(doc.id, database.id)
@@ -400,8 +408,27 @@ const DatabasePanel = memo<DatabasePanelProps>(
                               </Button>
                             </div>
                           </div>
-                          <div className="text-xs text-gray-400 mt-1">
-                            {doc.type} • {doc.pages} {t.pages} • {doc.size}
+                          <div className="flex justify-between text-xs text-gray-400 mt-1">
+                            <span>
+                              {doc.type} • {doc.pages} {t.pages} • {doc.size}
+                            </span>
+                            {doc.processingStatus === "processing" && (
+                              <span className="text-yellow-600 flex items-center">
+                                <Loader2 className="h-2 w-2 animate-spin mr-1" />
+                                Processing
+                              </span>
+                            )}
+                            {doc.isProcessed && (
+                              <span className="text-green-600">
+                                ✓ Processed
+                              </span>
+                            )}
+                            {!doc.isProcessed &&
+                              doc.processingStatus !== "processing" && (
+                                <span className="text-gray-500">
+                                  Not processed
+                                </span>
+                              )}
                           </div>
                         </div>
                       ))}
