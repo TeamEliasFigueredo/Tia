@@ -52,9 +52,10 @@ interface DatabasePanelProps {
   onFileUpload: (files: FileList | null, targetDbId: string) => void;
   onDragHandlers: {
     onDragStart: (docId: string, fromDbId: string) => void;
-    onDragOver: (e: React.DragEvent, dbId?: string) => void;
+    onDragOver: (e: React.DragEvent, dbId?: string, folderId?: string) => void;
     onDragLeave: (e: React.DragEvent) => void;
-    onDrop: (e: React.DragEvent, dbId?: string) => void;
+    onDrop: (e: React.DragEvent, dbId?: string, folderId?: string) => void;
+    onFileDrop: (e: React.DragEvent, dbId: string, folderId?: string) => void;
     processDocuments: () => Promise<void>;
   };
   t: Translations;
