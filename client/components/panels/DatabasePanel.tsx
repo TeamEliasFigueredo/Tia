@@ -591,9 +591,54 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                   <ChevronRight className="h-3 w-3" />
                                 )}
                                 <Folder className="h-3 w-3 text-blue-600" />
-                                <span className="font-medium text-xs">
-                                  {folder.name}
-                                </span>
+                                {editingFolder === folder.id ? (
+                                  <div className="flex gap-1 flex-1">
+                                    <Input
+                                      value={editingFolderName}
+                                      onChange={(e) =>
+                                        setEditingFolderName(e.target.value)
+                                      }
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter")
+                                          saveEditFolder(
+                                            database.id,
+                                            folder.id,
+                                          );
+                                        if (e.key === "Escape")
+                                          cancelEditFolder();
+                                      }}
+                                      autoFocus
+                                      className="h-5 text-xs"
+                                      onClick={(e) => e.stopPropagation()}
+                                    />
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-5 w-5 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        saveEditFolder(database.id, folder.id);
+                                      }}
+                                    >
+                                      <Check className="h-2 w-2" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-5 w-5 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        cancelEditFolder();
+                                      }}
+                                    >
+                                      <X className="h-2 w-2" />
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <span className="font-medium text-xs">
+                                    {folder.name}
+                                  </span>
+                                )}
                               </div>
                               <div className="flex space-x-1">
                                 <Button
