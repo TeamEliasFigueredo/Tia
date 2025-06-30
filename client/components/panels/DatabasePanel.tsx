@@ -42,6 +42,7 @@ interface DatabasePanelProps {
   dragState: {
     draggedDocument: { docId: string; fromDbId: string } | null;
     dragOver: string | null;
+    dragOverFolder: string | null;
     chatDragOver: boolean;
     isDraggingFiles: boolean;
   };
