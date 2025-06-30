@@ -77,6 +77,8 @@ export interface Translations {
   // Footer
   footerText: string;
   rightsReserved: string;
+  tiaIsCreation: string;
+  softiaLink: string;
 
   // File upload
   uploadFiles: string;
