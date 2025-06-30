@@ -100,6 +100,7 @@ export default {
       },
       width: {
         "120": "30rem", // 480px - 25% increase from w-96 (384px)
+        "144": "36rem", // 576px - 50% increase from w-96 (384px)
       },
     },
   },
