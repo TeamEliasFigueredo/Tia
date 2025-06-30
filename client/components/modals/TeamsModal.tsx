@@ -354,21 +354,28 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   };
 
   const saveEditMember = () => {
-    if (!editingMember || !editMemberForm.firstName || !editMemberForm.lastName || !editMemberForm.email) {
+    if (
+      !editingMember ||
+      !editMemberForm.firstName ||
+      !editMemberForm.lastName ||
+      !editMemberForm.email
+    ) {
       return;
     }
 
-    setTeamMembers(prev => prev.map(member =>
-      member.id === editingMember
-        ? {
-            ...member,
-            name: `${editMemberForm.firstName} ${editMemberForm.lastName}`,
-            email: editMemberForm.email,
-            isAdmin: editMemberForm.role === "admin",
-            role: editMemberForm.role === "admin" ? "Admin" : "User",
-          }
-        : member
-    ));
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === editingMember
+          ? {
+              ...member,
+              name: `${editMemberForm.firstName} ${editMemberForm.lastName}`,
+              email: editMemberForm.email,
+              isAdmin: editMemberForm.role === "admin",
+              role: editMemberForm.role === "admin" ? "Admin" : "User",
+            }
+          : member,
+      ),
+    );
     setEditingMember(null);
     setHasUnsavedChanges(true);
   };
@@ -384,20 +391,24 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   };
 
   const addMemberToTeam = (memberId: string, teamId: string) => {
-    setTeamMembers(prev => prev.map(member =>
-      member.id === memberId
-        ? { ...member, teams: [...member.teams, teamId] }
-        : member
-    ));
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId
+          ? { ...member, teams: [...member.teams, teamId] }
+          : member,
+      ),
+    );
     setHasUnsavedChanges(true);
   };
 
   const removeMemberFromTeam = (memberId: string, teamId: string) => {
-    setTeamMembers(prev => prev.map(member =>
-      member.id === memberId
-        ? { ...member, teams: member.teams.filter(t => t !== teamId) }
-        : member
-    ));
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId
+          ? { ...member, teams: member.teams.filter((t) => t !== teamId) }
+          : member,
+      ),
+    );
     setHasUnsavedChanges(true);
   };
 
@@ -486,12 +497,14 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     setTeams((prev) => [...prev, newTeam]);
     setNewTeamName("");
     setNewTeamDescription("");
+    setHasUnsavedChanges(true);
   };
 
   const deleteTeam = (teamId: string) => {
     if (confirm("Are you sure you want to delete this team?")) {
       setTeams((prev) => prev.filter((team) => team.id !== teamId));
       setTeamPermissions((prev) => prev.filter((tp) => tp.teamId !== teamId));
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -500,6 +513,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
       prev.map((team) => (team.id === teamId ? { ...team, ...updates } : team)),
     );
     setEditingTeamId(null);
+    setHasUnsavedChanges(true);
   };
 
   const canManageTeam = (team: Team) => {
@@ -522,8 +536,6 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   const filteredTeams = teams.filter((team) =>
     team.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-
-  const selectedTeam = teams.find((t) => t.id === selectedTeamId);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -807,9 +819,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                 </div>
               )}
 
-              {/* Member Edit Modal */}
+              {/* Member Edit Form */}
               {editingMember && (
-                <div className="border rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20 mb-4">
+                <div className="border rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20">
                   <h3 className="font-semibold mb-4 flex items-center gap-2">
                     <Edit3 className="h-4 w-4" />
                     Edit Team Member
@@ -820,10 +832,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Input
                         id="editFirstName"
                         value={editMemberForm.firstName}
-                        onChange={(e) => setEditMemberForm(prev => ({
-                          ...prev,
-                          firstName: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setEditMemberForm((prev) => ({
+                            ...prev,
+                            firstName: e.target.value,
+                          }))
+                        }
                         placeholder="Enter first name"
                       />
                     </div>
@@ -832,10 +846,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Input
                         id="editLastName"
                         value={editMemberForm.lastName}
-                        onChange={(e) => setEditMemberForm(prev => ({
-                          ...prev,
-                          lastName: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setEditMemberForm((prev) => ({
+                            ...prev,
+                            lastName: e.target.value,
+                          }))
+                        }
                         placeholder="Enter last name"
                       />
                     </div>
@@ -845,10 +861,12 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                         id="editEmail"
                         type="email"
                         value={editMemberForm.email}
-                        onChange={(e) => setEditMemberForm(prev => ({
-                          ...prev,
-                          email: e.target.value
-                        }))}
+                        onChange={(e) =>
+                          setEditMemberForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
                         placeholder="Enter email address"
                       />
                     </div>
@@ -856,23 +874,34 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       <Label htmlFor="editRole">Role</Label>
                       <Select
                         value={editMemberForm.role}
-                        onValueChange={(value) => setEditMemberForm(prev => ({
-                          ...prev,
-                          role: value
-                        }))}
+                        onValueChange={(value) =>
+                          setEditMemberForm((prev) => ({
+                            ...prev,
+                            role: value,
+                          }))
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="member">Member</SelectItem>
-                          <SelectItem value="admin">Team Administrator</SelectItem>
+                          <SelectItem value="admin">
+                            Team Administrator
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   <div className="flex gap-2 mt-4">
-                    <Button onClick={saveEditMember} disabled={!editMemberForm.email || !editMemberForm.firstName || !editMemberForm.lastName}>
+                    <Button
+                      onClick={saveEditMember}
+                      disabled={
+                        !editMemberForm.email ||
+                        !editMemberForm.firstName ||
+                        !editMemberForm.lastName
+                      }
+                    >
                       <Check className="h-4 w-4 mr-2" />
                       Save Changes
                     </Button>
@@ -967,10 +996,7 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => {
-                                // Edit member functionality
-                                console.log("Edit member:", member.id);
-                              }}
+                              onClick={() => startEditMember(member)}
                               title="Edit Member"
                             >
                               <Edit3 className="h-4 w-4" />
@@ -980,7 +1006,9 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                               size="sm"
                               onClick={() => {
                                 if (
-                                  confirm("Remove this member from the team?")
+                                  confirm(
+                                    "Remove this member from the organization?",
+                                  )
                                 ) {
                                   setTeamMembers((prev) =>
                                     prev.filter((m) => m.id !== member.id),
@@ -1045,31 +1073,86 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       </h4>
 
                       <div className="overflow-x-auto">
-                        <TableCell>
-                          <div className="flex gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => startEditMember(member)}
-                              title="Edit Member"
-                            >
-                              <Edit3 className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => {
-                                if (confirm("Remove this member from the organization?")) {
-                                  setTeamMembers(prev => prev.filter(m => m.id !== member.id));
-                                  setHasUnsavedChanges(true);
-                                }
-                              }}
-                              title="Remove Member"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Database</TableHead>
+                              <TableHead className="text-center">
+                                Read
+                              </TableHead>
+                              <TableHead className="text-center">
+                                Write
+                              </TableHead>
+                              <TableHead className="text-center">
+                                Delete
+                              </TableHead>
+                              <TableHead className="text-center">
+                                Manage
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {teamPerms.permissions.map((permission) => (
+                              <TableRow
+                                key={permission.databaseId}
+                                className="h-12"
+                              >
+                                <TableCell className="py-2">
+                                  <div className="flex items-center gap-2">
+                                    <Database className="h-4 w-4 text-blue-500" />
+                                    <span className="font-medium text-sm">
+                                      {permission.databaseName}
+                                    </span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-center py-2">
+                                  <Switch
+                                    checked={permission.canRead}
+                                    onCheckedChange={(value) =>
+                                      updateTeamPermissions(
+                                        team.id,
+                                        permission.databaseId,
+                                        "canRead",
+                                        value,
+                                      )
+                                    }
+                                    disabled={!canManageTeam(team)}
+                                  />
+                                </TableCell>
+                                <TableCell className="text-center py-2">
+                                  <Switch
+                                    checked={permission.canWrite}
+                                    onCheckedChange={(value) =>
+                                      updateTeamPermissions(
+                                        team.id,
+                                        permission.databaseId,
+                                        "canWrite",
+                                        value,
+                                      )
+                                    }
+                                    disabled={
+                                      !permission.canRead ||
+                                      !canManageTeam(team)
+                                    }
+                                  />
+                                </TableCell>
+                                <TableCell className="text-center py-2">
+                                  <Switch
+                                    checked={permission.canDelete}
+                                    onCheckedChange={(value) =>
+                                      updateTeamPermissions(
+                                        team.id,
+                                        permission.databaseId,
+                                        "canDelete",
+                                        value,
+                                      )
+                                    }
+                                    disabled={
+                                      !permission.canRead ||
+                                      !canManageTeam(team)
+                                    }
+                                  />
+                                </TableCell>
                                 <TableCell className="text-center py-2">
                                   <Switch
                                     checked={permission.canManage}
