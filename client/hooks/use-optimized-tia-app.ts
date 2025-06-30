@@ -10,6 +10,7 @@ export interface Database {
   createdDate: string;
   lastModified: string;
   documents: Document[];
+  folders: Folder[];
 }
 
 export interface Folder {
