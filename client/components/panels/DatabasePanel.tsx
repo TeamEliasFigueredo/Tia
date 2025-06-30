@@ -817,6 +817,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                         {/* Documents not in folders */}
                         {database.documents
                           .filter((doc) => !doc.folderId)
+                          .sort((a, b) => a.name.localeCompare(b.name))
                           .map((doc) => (
                             <div
                               key={doc.id}
@@ -829,11 +830,14 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                   "bg-yellow-50 border-yellow-300",
                                 doc.isProcessed &&
                                   "bg-green-50 border-green-300",
+                                dragState.draggedDocument?.docId === doc.id &&
+                                  "opacity-50",
                               )}
                               draggable
-                              onDragStart={() =>
-                                onDragHandlers.onDragStart(doc.id, database.id)
-                              }
+                              onDragStart={(e) => {
+                                onDragHandlers.onDragStart(doc.id, database.id);
+                                e.dataTransfer.effectAllowed = "move";
+                              }}
                               onClick={() => onSelectDocument(doc, database.id)}
                             >
                               <div className="flex items-center justify-between">
