@@ -6,6 +6,7 @@ import {
   SavedChat,
 } from "./use-optimized-tia-app";
 import { Translations } from "@/lib/i18n";
+import { createDragDropHandlers } from "@/utils/drag-drop-handlers";
 
 interface ComponentPropsHookParams {
   layout: {
