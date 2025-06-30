@@ -647,7 +647,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                   className="h-4 w-4 p-0"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    setEditingFolder(folder.id);
+                                    startEditFolder(folder);
                                   }}
                                 >
                                   <Edit3 className="h-2 w-2" />
