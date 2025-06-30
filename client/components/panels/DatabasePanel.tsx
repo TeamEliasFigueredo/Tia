@@ -82,6 +82,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
     const [editingFolder, setEditingFolder] = React.useState<string | null>(
       null,
     );
+    const [editingFolderName, setEditingFolderName] = React.useState("");
     const [newDatabaseName, setNewDatabaseName] = React.useState("");
     const [newFolderName, setNewFolderName] = React.useState("");
     const [showNewFolderInput, setShowNewFolderInput] = React.useState<
