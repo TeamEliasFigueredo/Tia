@@ -481,7 +481,10 @@ const ChatInterface = memo<ChatInterfaceProps>(
                       : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
                   )}
                 >
-                  <div className="mb-1">
+                  <div
+                    className="mb-1"
+                    style={{ fontSize: `${settings.fontSize}px` }}
+                  >
                     {message.type === "bot" ? (
                       <div>
                         <div>{message.content.split(". References:")[0]}.</div>
@@ -510,7 +513,9 @@ const ChatInterface = memo<ChatInterfaceProps>(
                           )}
                       </div>
                     ) : (
-                      message.content
+                      <div style={{ fontSize: `${settings.fontSize}px` }}>
+                        {message.content}
+                      </div>
                     )}
                   </div>
 
