@@ -449,7 +449,13 @@ const DatabasePanel = memo<DatabasePanelProps>(
                       onDragHandlers.onDragOver(e, database.id)
                     }
                     onDragLeave={onDragHandlers.onDragLeave}
-                    onDrop={(e) => onDragHandlers.onDrop(e, database.id)}
+                    onDrop={(e) => {
+                      if (e.dataTransfer.files.length > 0) {
+                        onDragHandlers.onFileDrop(e, database.id);
+                      } else {
+                        onDragHandlers.onDrop(e, database.id);
+                      }
+                    }}
                   >
                     <div
                       className="flex items-center justify-between cursor-pointer"
