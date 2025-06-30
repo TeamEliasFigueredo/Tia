@@ -173,6 +173,74 @@ const DatabasePanel = memo<DatabasePanelProps>(
       [onDatabaseAction],
     );
 
+    const createFolder = useCallback(
+      (dbId: string, folderName: string) => {
+        if (!folderName.trim()) return;
+
+        const newFolder = {
+          id: `folder-${Date.now()}`,
+          name: folderName,
+          parentId: null,
+          createdDate: new Date().toISOString().split("T")[0],
+          documents: [],
+          subfolders: [],
+        };
+
+        onDatabaseAction((prev) =>
+          prev.map((db) =>
+            db.id === dbId
+              ? {
+                  ...db,
+                  folders: [...(db.folders || []), newFolder],
+                  lastModified: new Date().toISOString().split("T")[0],
+                }
+              : db,
+          ),
+        );
+        setNewFolderName("");
+        setShowNewFolderInput(null);
+      },
+      [onDatabaseAction],
+    );
+
+    const deleteFolder = useCallback(
+      (dbId: string, folderId: string) => {
+        if (confirm(t.confirmDelete)) {
+          onDatabaseAction((prev) =>
+            prev.map((db) =>
+              db.id === dbId
+                ? {
+                    ...db,
+                    folders: (db.folders || []).filter(
+                      (f) => f.id !== folderId,
+                    ),
+                    documents: db.documents.map((doc) =>
+                      doc.folderId === folderId
+                        ? { ...doc, folderId: null }
+                        : doc,
+                    ),
+                    lastModified: new Date().toISOString().split("T")[0],
+                  }
+                : db,
+            ),
+          );
+        }
+      },
+      [onDatabaseAction, t.confirmDelete],
+    );
+
+    const toggleFolder = useCallback((folderId: string) => {
+      setExpandedFolders((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(folderId)) {
+          newSet.delete(folderId);
+        } else {
+          newSet.add(folderId);
+        }
+        return newSet;
+      });
+    }, []);
+
     const [expandedDatabases, setExpandedDatabases] = React.useState<
       Set<string>
     >(new Set());
