@@ -451,6 +451,24 @@ export function useOptimizedTiaApp() {
       documentCount: 28,
       createdDate: "2024-01-10",
       lastModified: "2024-01-22",
+      folders: [
+        {
+          id: "folder3",
+          name: "API Docs",
+          parentId: null,
+          createdDate: "2024-01-10",
+          documents: [],
+          subfolders: [],
+        },
+        {
+          id: "folder4",
+          name: "Project Management",
+          parentId: null,
+          createdDate: "2024-01-20",
+          documents: [],
+          subfolders: [],
+        },
+      ],
       documents: [
         {
           id: "doc3",
@@ -463,6 +481,7 @@ export function useOptimizedTiaApp() {
           content:
             "Complete API documentation including endpoints, authentication methods, request/response formats, and integration examples for developers. REST API Endpoints: GET /api/users - Retrieve user list. POST /api/users - Create new user. PUT /api/users/{id} - Update user. DELETE /api/users/{id} - Delete user. Authentication: Bearer token required in Authorization header.",
           fileType: "PDF",
+          folderId: "folder3",
         },
         {
           id: "doc4",
@@ -475,6 +494,7 @@ export function useOptimizedTiaApp() {
           content:
             "Project timeline and milestone tracking spreadsheet. Contains task assignments, deadlines, progress tracking, and resource allocation for the Q1 2024 development cycle.",
           fileType: "Excel",
+          folderId: "folder4",
         },
       ],
     },
