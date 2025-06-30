@@ -116,6 +116,7 @@ export function useDragAndDrop() {
   const [dragState, setDragState] = useState({
     draggedDocument: null as { docId: string; fromDbId: string } | null,
     dragOver: null as string | null,
+    dragOverFolder: null as string | null,
     chatDragOver: false,
     isDraggingFiles: false,
   });
@@ -127,15 +128,19 @@ export function useDragAndDrop() {
     }));
   }, []);
 
-  const handleDragOver = useCallback((e: React.DragEvent, dbId?: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragState((prev) => ({
-      ...prev,
-      isDraggingFiles: e.dataTransfer.types.includes("Files"),
-      dragOver: dbId || null,
-    }));
-  }, []);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, dbId?: string, folderId?: string) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragState((prev) => ({
+        ...prev,
+        isDraggingFiles: e.dataTransfer.types.includes("Files"),
+        dragOver: dbId || null,
+        dragOverFolder: folderId || null,
+      }));
+    },
+    [],
+  );
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -143,6 +148,7 @@ export function useDragAndDrop() {
     setDragState((prev) => ({
       ...prev,
       dragOver: null,
+      dragOverFolder: null,
       isDraggingFiles: false,
     }));
   }, []);
@@ -151,6 +157,7 @@ export function useDragAndDrop() {
     setDragState({
       draggedDocument: null,
       dragOver: null,
+      dragOverFolder: null,
       chatDragOver: false,
       isDraggingFiles: false,
     });
