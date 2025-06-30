@@ -258,6 +258,8 @@ export const translations: Record<Language, Translations> = {
     // Footer
     footerText: "Tia es una creación de Softia.ca",
     rightsReserved: "Todos los derechos reservados",
+    tiaIsCreation: "Tia es una creación de",
+    softiaLink: "Softia.ca",
 
     // File upload
     uploadFiles: "Subir Archivos",
