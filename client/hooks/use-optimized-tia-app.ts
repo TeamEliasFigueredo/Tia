@@ -341,10 +341,48 @@ export function useFileOperations() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }, []);
 
+  const processFiles = useCallback(
+    async (files: FileList): Promise<Document[]> => {
+      const processedFiles: Document[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        if (!validateFileType(file)) {
+          console.warn(
+            `File ${file.name} is not a supported type or is too large`,
+          );
+          continue;
+        }
+
+        const newDocument: Document = {
+          id: `doc-${Date.now()}-${i}`,
+          name: file.name,
+          type: file.type,
+          size: formatFileSize(file.size),
+          pages: 1, // Will be updated when processed
+          createdDate: new Date().toISOString().split("T")[0],
+          addedDate: new Date().toISOString().split("T")[0],
+          content: `Content from ${file.name}. This file was uploaded and will be processed to extract searchable content.`,
+          fileType: getFileType(file.name),
+          isProcessed: false,
+          processingStatus: "pending",
+          folderId: null,
+        };
+
+        processedFiles.push(newDocument);
+      }
+
+      return processedFiles;
+    },
+    [validateFileType, formatFileSize, getFileType],
+  );
+
   return {
     getFileType,
     validateFileType,
     formatFileSize,
+    processFiles,
   };
 }
 
