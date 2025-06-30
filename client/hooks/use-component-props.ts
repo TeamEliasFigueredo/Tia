@@ -87,12 +87,24 @@ export function useComponentProps({
         onDragStart: dragAndDrop.handleDragStart,
         onDragOver: dragAndDrop.handleDragOver,
         onDragLeave: dragAndDrop.handleDragLeave,
-        onDrop: (e: React.DragEvent, dbId?: string) => {
+        onDrop: (e: React.DragEvent, dbId?: string, folderId?: string) => {
           e.preventDefault();
-          dragAndDrop.resetDragState();
-          if (e.dataTransfer.files.length > 0 && dbId) {
-            handleFileUpload(e.dataTransfer.files, dbId);
+          if (dragAndDrop.dragState.draggedDocument) {
+            actions.handleDocumentDrop(
+              e,
+              dbId!,
+              folderId,
+              dragAndDrop.dragState,
+            );
           }
+          dragAndDrop.resetDragState();
+        },
+        onFileDrop: (e: React.DragEvent, dbId: string, folderId?: string) => {
+          e.preventDefault();
+          if (e.dataTransfer.files.length > 0) {
+            actions.handleFileDrop(e, dbId, folderId);
+          }
+          dragAndDrop.resetDragState();
         },
         processDocuments: actions.processDocuments,
       },
