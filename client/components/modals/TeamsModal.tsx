@@ -807,6 +807,83 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                 </div>
               )}
 
+              {/* Member Edit Modal */}
+              {editingMember && (
+                <div className="border rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20 mb-4">
+                  <h3 className="font-semibold mb-4 flex items-center gap-2">
+                    <Edit3 className="h-4 w-4" />
+                    Edit Team Member
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="editFirstName">First Name</Label>
+                      <Input
+                        id="editFirstName"
+                        value={editMemberForm.firstName}
+                        onChange={(e) => setEditMemberForm(prev => ({
+                          ...prev,
+                          firstName: e.target.value
+                        }))}
+                        placeholder="Enter first name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="editLastName">Last Name</Label>
+                      <Input
+                        id="editLastName"
+                        value={editMemberForm.lastName}
+                        onChange={(e) => setEditMemberForm(prev => ({
+                          ...prev,
+                          lastName: e.target.value
+                        }))}
+                        placeholder="Enter last name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="editEmail">Email Address</Label>
+                      <Input
+                        id="editEmail"
+                        type="email"
+                        value={editMemberForm.email}
+                        onChange={(e) => setEditMemberForm(prev => ({
+                          ...prev,
+                          email: e.target.value
+                        }))}
+                        placeholder="Enter email address"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="editRole">Role</Label>
+                      <Select
+                        value={editMemberForm.role}
+                        onValueChange={(value) => setEditMemberForm(prev => ({
+                          ...prev,
+                          role: value
+                        }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="member">Member</SelectItem>
+                          <SelectItem value="admin">Team Administrator</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button onClick={saveEditMember} disabled={!editMemberForm.email || !editMemberForm.firstName || !editMemberForm.lastName}>
+                      <Check className="h-4 w-4 mr-2" />
+                      Save Changes
+                    </Button>
+                    <Button variant="outline" onClick={cancelEditMember}>
+                      <X className="h-4 w-4 mr-2" />
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+
               {/* Members List */}
               <div className="border rounded-lg overflow-hidden">
                 <Table>
