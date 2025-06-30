@@ -820,9 +820,36 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Button variant="ghost" size="sm">
-                            <Edit3 className="h-4 w-4" />
-                          </Button>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                // Edit member functionality
+                                console.log("Edit member:", member.id);
+                              }}
+                              title="Edit Member"
+                            >
+                              <Edit3 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                if (
+                                  confirm("Remove this member from the team?")
+                                ) {
+                                  setTeamMembers((prev) =>
+                                    prev.filter((m) => m.id !== member.id),
+                                  );
+                                  setHasUnsavedChanges(true);
+                                }
+                              }}
+                              title="Remove Member"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
