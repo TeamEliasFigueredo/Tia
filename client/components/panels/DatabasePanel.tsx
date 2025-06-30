@@ -727,14 +727,17 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                             "bg-yellow-50 border-yellow-300",
                                           doc.isProcessed &&
                                             "bg-green-50 border-green-300",
+                                          dragState.draggedDocument?.docId ===
+                                            doc.id && "opacity-50",
                                         )}
                                         draggable
-                                        onDragStart={() =>
+                                        onDragStart={(e) => {
                                           onDragHandlers.onDragStart(
                                             doc.id,
                                             database.id,
-                                          )
-                                        }
+                                          );
+                                          e.dataTransfer.effectAllowed = "move";
+                                        }}
                                         onClick={() =>
                                           onSelectDocument(doc, database.id)
                                         }
