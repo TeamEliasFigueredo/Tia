@@ -342,6 +342,76 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     setHasUnsavedChanges(true);
   };
 
+  const startEditMember = (member: TeamMember) => {
+    const [firstName, lastName] = member.name.split(" ");
+    setEditMemberForm({
+      firstName: firstName || "",
+      lastName: lastName || "",
+      email: member.email,
+      role: member.isAdmin ? "admin" : "member",
+    });
+    setEditingMember(member.id);
+  };
+
+  const saveEditMember = () => {
+    if (
+      !editingMember ||
+      !editMemberForm.firstName ||
+      !editMemberForm.lastName ||
+      !editMemberForm.email
+    ) {
+      return;
+    }
+
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === editingMember
+          ? {
+              ...member,
+              name: `${editMemberForm.firstName} ${editMemberForm.lastName}`,
+              email: editMemberForm.email,
+              isAdmin: editMemberForm.role === "admin",
+              role: editMemberForm.role === "admin" ? "Admin" : "User",
+            }
+          : member,
+      ),
+    );
+    setEditingMember(null);
+    setHasUnsavedChanges(true);
+  };
+
+  const cancelEditMember = () => {
+    setEditingMember(null);
+    setEditMemberForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "member",
+    });
+  };
+
+  const addMemberToTeam = (memberId: string, teamId: string) => {
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId
+          ? { ...member, teams: [...member.teams, teamId] }
+          : member,
+      ),
+    );
+    setHasUnsavedChanges(true);
+  };
+
+  const removeMemberFromTeam = (memberId: string, teamId: string) => {
+    setTeamMembers((prev) =>
+      prev.map((member) =>
+        member.id === memberId
+          ? { ...member, teams: member.teams.filter((t) => t !== teamId) }
+          : member,
+      ),
+    );
+    setHasUnsavedChanges(true);
+  };
+
   // Enhanced permission management
   const updateTeamPermissions = (
     teamId: string,
