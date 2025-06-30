@@ -238,7 +238,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         style={{
           width:
             columnStates.showColumn1 || columnStates.showColumn2
-              ? "55%"
+              ? "calc(100% - 50rem)" // Adjusted for database panel (20rem) + document viewer (30rem)
               : "100%",
         }}
       >
