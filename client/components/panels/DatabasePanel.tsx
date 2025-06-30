@@ -437,8 +437,33 @@ const DatabasePanel = memo<DatabasePanelProps>(
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
+                          setShowNewFolderInput(database.id);
+                        }}
+                        title="Create Folder"
+                      >
+                        <FolderPlus className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          document
+                            .getElementById(`file-upload-${database.id}`)
+                            ?.click();
+                        }}
+                        title="Upload Documents"
+                      >
+                        <Upload className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setEditingDatabase(database.id);
                         }}
+                        title="Edit Database"
                       >
                         <Edit3 className="h-3 w-3" />
                       </Button>
@@ -449,6 +474,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                           e.stopPropagation();
                           deleteDatabase(database.id);
                         }}
+                        title="Delete Database"
                       >
                         <Trash2 className="h-3 w-3" />
                       </Button>
