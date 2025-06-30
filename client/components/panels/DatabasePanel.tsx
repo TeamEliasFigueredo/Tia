@@ -581,16 +581,36 @@ const DatabasePanel = memo<DatabasePanelProps>(
                           .map((folder) => (
                             <div key={folder.id} className="space-y-1">
                               <div
-                                className="p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                                className={cn(
+                                  "p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all",
+                                  dragState.dragOverFolder === folder.id &&
+                                    "border-blue-400 bg-blue-100 dark:bg-blue-900/30",
+                                  dragState.isDraggingFiles &&
+                                    "border-dashed border-blue-400",
+                                )}
                                 onClick={() => toggleFolder(folder.id)}
-                                onDragOver={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                }}
+                                onDragOver={(e) =>
+                                  onDragHandlers.onDragOver(
+                                    e,
+                                    database.id,
+                                    folder.id,
+                                  )
+                                }
+                                onDragLeave={onDragHandlers.onDragLeave}
                                 onDrop={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  // Handle folder drop logic
+                                  if (e.dataTransfer.files.length > 0) {
+                                    onDragHandlers.onFileDrop(
+                                      e,
+                                      database.id,
+                                      folder.id,
+                                    );
+                                  } else {
+                                    onDragHandlers.onDrop(
+                                      e,
+                                      database.id,
+                                      folder.id,
+                                    );
+                                  }
                                 }}
                               >
                                 <div className="flex items-center justify-between">
