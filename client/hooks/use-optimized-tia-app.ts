@@ -713,6 +713,108 @@ export function useOptimizedTiaApp() {
         }, 500);
       },
 
+      // Folder management actions
+      createFolder: (
+        databaseId: string,
+        folderName: string,
+        parentId: string | null = null,
+      ) => {
+        const newFolder: Folder = {
+          id: `folder-${Date.now()}`,
+          name: folderName,
+          parentId,
+          createdDate: new Date().toISOString().split("T")[0],
+          documents: [],
+          subfolders: [],
+        };
+
+        setDatabases((prev) =>
+          prev.map((db) =>
+            db.id === databaseId
+              ? { ...db, folders: [...db.folders, newFolder] }
+              : db,
+          ),
+        );
+      },
+
+      deleteFolder: (databaseId: string, folderId: string) => {
+        setDatabases((prev) =>
+          prev.map((db) =>
+            db.id === databaseId
+              ? {
+                  ...db,
+                  folders: db.folders.filter((f) => f.id !== folderId),
+                  // Move documents out of deleted folder
+                  documents: db.documents.map((doc) =>
+                    doc.folderId === folderId
+                      ? { ...doc, folderId: null }
+                      : doc,
+                  ),
+                }
+              : db,
+          ),
+        );
+      },
+
+      moveDocument: (
+        fromDbId: string,
+        toDbId: string,
+        docId: string,
+        toFolderId: string | null = null,
+      ) => {
+        let documentToMove: Document | null = null;
+
+        // Remove from source
+        setDatabases((prev) =>
+          prev.map((db) => {
+            if (db.id === fromDbId) {
+              const doc = db.documents.find((d) => d.id === docId);
+              if (doc) documentToMove = { ...doc, folderId: toFolderId };
+              return {
+                ...db,
+                documents: db.documents.filter((d) => d.id !== docId),
+                documentCount: db.documentCount - 1,
+              };
+            }
+            return db;
+          }),
+        );
+
+        // Add to destination
+        if (documentToMove) {
+          setDatabases((prev) =>
+            prev.map((db) =>
+              db.id === toDbId
+                ? {
+                    ...db,
+                    documents: [...db.documents, documentToMove!],
+                    documentCount: db.documentCount + 1,
+                  }
+                : db,
+            ),
+          );
+        }
+      },
+
+      moveDocumentToFolder: (
+        databaseId: string,
+        docId: string,
+        folderId: string | null,
+      ) => {
+        setDatabases((prev) =>
+          prev.map((db) =>
+            db.id === databaseId
+              ? {
+                  ...db,
+                  documents: db.documents.map((doc) =>
+                    doc.id === docId ? { ...doc, folderId } : doc,
+                  ),
+                }
+              : db,
+          ),
+        );
+      },
+
       // Document reference selection from chat
       selectDocumentByReference: (documentName: string) => {
         // Clean the document name (remove brackets and extra spaces)
