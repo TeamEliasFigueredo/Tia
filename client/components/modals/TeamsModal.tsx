@@ -552,7 +552,25 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                     className="border rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-lg">{team.name}</h3>
+                      {editingTeamId === team.id ? (
+                        <div className="flex-1 mr-2">
+                          <Input
+                            value={team.name}
+                            onChange={(e) =>
+                              updateTeam(team.id, { name: e.target.value })
+                            }
+                            onBlur={() => setEditingTeamId(null)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") setEditingTeamId(null);
+                              if (e.key === "Escape") setEditingTeamId(null);
+                            }}
+                            autoFocus
+                            className="text-lg font-semibold"
+                          />
+                        </div>
+                      ) : (
+                        <h3 className="font-semibold text-lg">{team.name}</h3>
+                      )}
                       {canManageTeam(team) && (
                         <div className="flex gap-1">
                           <Button
