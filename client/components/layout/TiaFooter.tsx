@@ -18,8 +18,8 @@ const TiaFooter = memo<TiaFooterProps>(({ t }) => {
               className="text-blue-400 hover:text-blue-300 transition-colors"
             >
               Tia
-            </a>{" "}
-            {t.tiaIsCreation}{" "}
+            </a>
+            &nbsp;is a Creation of&nbsp;
             <a
               href="https://softia.ca"
               target="_blank"
