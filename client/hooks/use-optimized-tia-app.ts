@@ -12,6 +12,15 @@ export interface Database {
   documents: Document[];
 }
 
+export interface Folder {
+  id: string;
+  name: string;
+  parentId: string | null;
+  createdDate: string;
+  documents: Document[];
+  subfolders: Folder[];
+}
+
 export interface Document {
   id: string;
   name: string;
@@ -24,6 +33,7 @@ export interface Document {
   fileType: "PDF" | "Word" | "Excel" | "PowerPoint" | "Image" | "Text";
   isProcessed?: boolean;
   processingStatus?: keyof typeof PROCESSING_STATUS;
+  folderId?: string | null;
 }
 
 export interface ChatMessage {
