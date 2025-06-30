@@ -574,208 +574,211 @@ const DatabasePanel = memo<DatabasePanelProps>(
                         )}
 
                         {/* Folders */}
-                        {(database.folders || []).map((folder) => (
-                          <div key={folder.id} className="space-y-1">
-                            <div
-                              className="p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
-                              onClick={() => toggleFolder(folder.id)}
-                              onDragOver={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
-                              onDrop={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                // Handle folder drop logic
-                              }}
-                            >
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-1 flex-1">
-                                  {expandedFolders.has(folder.id) ? (
-                                    <ChevronDown className="h-3 w-3" />
-                                  ) : (
-                                    <ChevronRight className="h-3 w-3" />
-                                  )}
-                                  <Folder className="h-3 w-3 text-blue-600" />
-                                  {editingFolder === folder.id ? (
-                                    <div className="flex gap-1 flex-1">
-                                      <Input
-                                        value={editingFolderName}
-                                        onChange={(e) =>
-                                          setEditingFolderName(e.target.value)
-                                        }
-                                        onKeyDown={(e) => {
-                                          if (e.key === "Enter")
+                        {(database.folders || [])
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((folder) => (
+                            <div key={folder.id} className="space-y-1">
+                              <div
+                                className="p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                                onClick={() => toggleFolder(folder.id)}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  // Handle folder drop logic
+                                }}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-1 flex-1">
+                                    {expandedFolders.has(folder.id) ? (
+                                      <ChevronDown className="h-3 w-3" />
+                                    ) : (
+                                      <ChevronRight className="h-3 w-3" />
+                                    )}
+                                    <Folder className="h-3 w-3 text-blue-600" />
+                                    {editingFolder === folder.id ? (
+                                      <div className="flex gap-1 flex-1">
+                                        <Input
+                                          value={editingFolderName}
+                                          onChange={(e) =>
+                                            setEditingFolderName(e.target.value)
+                                          }
+                                          onKeyDown={(e) => {
+                                            if (e.key === "Enter")
+                                              saveEditFolder(
+                                                database.id,
+                                                folder.id,
+                                              );
+                                            if (e.key === "Escape")
+                                              cancelEditFolder();
+                                          }}
+                                          autoFocus
+                                          className="h-5 text-xs"
+                                          onClick={(e) => e.stopPropagation()}
+                                        />
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="h-5 w-5 p-0"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
                                             saveEditFolder(
                                               database.id,
                                               folder.id,
                                             );
-                                          if (e.key === "Escape")
+                                          }}
+                                        >
+                                          <Check className="h-2 w-2" />
+                                        </Button>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="h-5 w-5 p-0"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
                                             cancelEditFolder();
-                                        }}
-                                        autoFocus
-                                        className="h-5 text-xs"
-                                        onClick={(e) => e.stopPropagation()}
-                                      />
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-5 w-5 p-0"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          saveEditFolder(
-                                            database.id,
-                                            folder.id,
-                                          );
-                                        }}
-                                      >
-                                        <Check className="h-2 w-2" />
-                                      </Button>
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-5 w-5 p-0"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          cancelEditFolder();
-                                        }}
-                                      >
-                                        <X className="h-2 w-2" />
-                                      </Button>
-                                    </div>
-                                  ) : (
-                                    <span className="font-medium text-xs">
-                                      {folder.name}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="flex space-x-1">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-4 w-4 p-0"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      startEditFolder(folder);
-                                    }}
-                                  >
-                                    <Edit3 className="h-2 w-2" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-4 w-4 p-0"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      deleteFolder(database.id, folder.id);
-                                    }}
-                                  >
-                                    <Trash2 className="h-2 w-2" />
-                                  </Button>
+                                          }}
+                                        >
+                                          <X className="h-2 w-2" />
+                                        </Button>
+                                      </div>
+                                    ) : (
+                                      <span className="font-medium text-xs">
+                                        {folder.name}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex space-x-1">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-4 w-4 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        startEditFolder(folder);
+                                      }}
+                                    >
+                                      <Edit3 className="h-2 w-2" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-4 w-4 p-0"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        deleteFolder(database.id, folder.id);
+                                      }}
+                                    >
+                                      <Trash2 className="h-2 w-2" />
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
 
-                            {/* Documents in folder */}
-                            {expandedFolders.has(folder.id) && (
-                              <div className="ml-4 space-y-1">
-                                {database.documents
-                                  .filter((doc) => doc.folderId === folder.id)
-                                  .map((doc) => (
-                                    <div
-                                      key={doc.id}
-                                      data-document-id={doc.id}
-                                      className={cn(
-                                        "p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-xs",
-                                        selectedDatabase === database.id &&
-                                          "bg-blue-100 dark:bg-blue-900/30 border-blue-300",
-                                        doc.processingStatus === "processing" &&
-                                          "bg-yellow-50 border-yellow-300",
-                                        doc.isProcessed &&
-                                          "bg-green-50 border-green-300",
-                                      )}
-                                      draggable
-                                      onDragStart={() =>
-                                        onDragHandlers.onDragStart(
-                                          doc.id,
-                                          database.id,
-                                        )
-                                      }
-                                      onClick={() =>
-                                        onSelectDocument(doc, database.id)
-                                      }
-                                    >
-                                      <div className="flex items-center justify-between">
-                                        <div className="flex items-center space-x-2 flex-1">
-                                          {getFileTypeIcon(doc.fileType)}
-                                          {editingDocument === doc.id ? (
-                                            <Input
-                                              value={doc.name}
-                                              onChange={(e) =>
-                                                renameDocument(
+                              {/* Documents in folder */}
+                              {expandedFolders.has(folder.id) && (
+                                <div className="ml-4 space-y-1">
+                                  {database.documents
+                                    .filter((doc) => doc.folderId === folder.id)
+                                    .map((doc) => (
+                                      <div
+                                        key={doc.id}
+                                        data-document-id={doc.id}
+                                        className={cn(
+                                          "p-1.5 rounded border cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-xs",
+                                          selectedDatabase === database.id &&
+                                            "bg-blue-100 dark:bg-blue-900/30 border-blue-300",
+                                          doc.processingStatus ===
+                                            "processing" &&
+                                            "bg-yellow-50 border-yellow-300",
+                                          doc.isProcessed &&
+                                            "bg-green-50 border-green-300",
+                                        )}
+                                        draggable
+                                        onDragStart={() =>
+                                          onDragHandlers.onDragStart(
+                                            doc.id,
+                                            database.id,
+                                          )
+                                        }
+                                        onClick={() =>
+                                          onSelectDocument(doc, database.id)
+                                        }
+                                      >
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center space-x-2 flex-1">
+                                            {getFileTypeIcon(doc.fileType)}
+                                            {editingDocument === doc.id ? (
+                                              <Input
+                                                value={doc.name}
+                                                onChange={(e) =>
+                                                  renameDocument(
+                                                    database.id,
+                                                    doc.id,
+                                                    e.target.value,
+                                                  )
+                                                }
+                                                onBlur={() =>
+                                                  setEditingDocument(null)
+                                                }
+                                                onKeyDown={(e) => {
+                                                  if (e.key === "Enter")
+                                                    setEditingDocument(null);
+                                                  if (e.key === "Escape")
+                                                    setEditingDocument(null);
+                                                }}
+                                                autoFocus
+                                                className="h-5 text-xs"
+                                                onClick={(e) =>
+                                                  e.stopPropagation()
+                                                }
+                                              />
+                                            ) : (
+                                              <span className="font-medium truncate text-xs">
+                                                {doc.name}
+                                              </span>
+                                            )}
+                                          </div>
+                                          <div className="flex space-x-1">
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-4 w-4 p-0"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setEditingDocument(doc.id);
+                                              }}
+                                            >
+                                              <Edit3 className="h-2 w-2" />
+                                            </Button>
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-4 w-4 p-0"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteDocument(
                                                   database.id,
                                                   doc.id,
-                                                  e.target.value,
-                                                )
-                                              }
-                                              onBlur={() =>
-                                                setEditingDocument(null)
-                                              }
-                                              onKeyDown={(e) => {
-                                                if (e.key === "Enter")
-                                                  setEditingDocument(null);
-                                                if (e.key === "Escape")
-                                                  setEditingDocument(null);
+                                                );
                                               }}
-                                              autoFocus
-                                              className="h-5 text-xs"
-                                              onClick={(e) =>
-                                                e.stopPropagation()
-                                              }
-                                            />
-                                          ) : (
-                                            <span className="font-medium truncate text-xs">
-                                              {doc.name}
-                                            </span>
-                                          )}
+                                            >
+                                              <Trash2 className="h-2 w-2" />
+                                            </Button>
+                                          </div>
                                         </div>
-                                        <div className="flex space-x-1">
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="h-4 w-4 p-0"
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setEditingDocument(doc.id);
-                                            }}
-                                          >
-                                            <Edit3 className="h-2 w-2" />
-                                          </Button>
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="h-4 w-4 p-0"
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              deleteDocument(
-                                                database.id,
-                                                doc.id,
-                                              );
-                                            }}
-                                          >
-                                            <Trash2 className="h-2 w-2" />
-                                          </Button>
+                                        <div className="text-xs text-gray-400 mt-0.5 truncate">
+                                          {doc.type} • {doc.size}
                                         </div>
                                       </div>
-                                      <div className="text-xs text-gray-400 mt-0.5 truncate">
-                                        {doc.type} • {doc.size}
-                                      </div>
-                                    </div>
-                                  ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
+                                    ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
 
                         {/* Documents not in folders */}
                         {database.documents
