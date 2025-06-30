@@ -354,28 +354,21 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   };
 
   const saveEditMember = () => {
-    if (
-      !editingMember ||
-      !editMemberForm.firstName ||
-      !editMemberForm.lastName ||
-      !editMemberForm.email
-    ) {
+    if (!editingMember || !editMemberForm.firstName || !editMemberForm.lastName || !editMemberForm.email) {
       return;
     }
 
-    setTeamMembers((prev) =>
-      prev.map((member) =>
-        member.id === editingMember
-          ? {
-              ...member,
-              name: `${editMemberForm.firstName} ${editMemberForm.lastName}`,
-              email: editMemberForm.email,
-              isAdmin: editMemberForm.role === "admin",
-              role: editMemberForm.role === "admin" ? "Admin" : "User",
-            }
-          : member,
-      ),
-    );
+    setTeamMembers(prev => prev.map(member =>
+      member.id === editingMember
+        ? {
+            ...member,
+            name: `${editMemberForm.firstName} ${editMemberForm.lastName}`,
+            email: editMemberForm.email,
+            isAdmin: editMemberForm.role === "admin",
+            role: editMemberForm.role === "admin" ? "Admin" : "User",
+          }
+        : member
+    ));
     setEditingMember(null);
     setHasUnsavedChanges(true);
   };
@@ -391,24 +384,20 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
   };
 
   const addMemberToTeam = (memberId: string, teamId: string) => {
-    setTeamMembers((prev) =>
-      prev.map((member) =>
-        member.id === memberId
-          ? { ...member, teams: [...member.teams, teamId] }
-          : member,
-      ),
-    );
+    setTeamMembers(prev => prev.map(member =>
+      member.id === memberId
+        ? { ...member, teams: [...member.teams, teamId] }
+        : member
+    ));
     setHasUnsavedChanges(true);
   };
 
   const removeMemberFromTeam = (memberId: string, teamId: string) => {
-    setTeamMembers((prev) =>
-      prev.map((member) =>
-        member.id === memberId
-          ? { ...member, teams: member.teams.filter((t) => t !== teamId) }
-          : member,
-      ),
-    );
+    setTeamMembers(prev => prev.map(member =>
+      member.id === memberId
+        ? { ...member, teams: member.teams.filter(t => t !== teamId) }
+        : member
+    ));
     setHasUnsavedChanges(true);
   };
 
@@ -979,86 +968,31 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                       </h4>
 
                       <div className="overflow-x-auto">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Database</TableHead>
-                              <TableHead className="text-center">
-                                Read
-                              </TableHead>
-                              <TableHead className="text-center">
-                                Write
-                              </TableHead>
-                              <TableHead className="text-center">
-                                Delete
-                              </TableHead>
-                              <TableHead className="text-center">
-                                Manage
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {teamPerms.permissions.map((permission) => (
-                              <TableRow
-                                key={permission.databaseId}
-                                className="h-12"
-                              >
-                                <TableCell className="py-2">
-                                  <div className="flex items-center gap-2">
-                                    <Database className="h-4 w-4 text-blue-500" />
-                                    <span className="font-medium text-sm">
-                                      {permission.databaseName}
-                                    </span>
-                                  </div>
-                                </TableCell>
-                                <TableCell className="text-center py-2">
-                                  <Switch
-                                    checked={permission.canRead}
-                                    onCheckedChange={(value) =>
-                                      updateTeamPermissions(
-                                        team.id,
-                                        permission.databaseId,
-                                        "canRead",
-                                        value,
-                                      )
-                                    }
-                                    disabled={!canManageTeam(team)}
-                                  />
-                                </TableCell>
-                                <TableCell className="text-center py-2">
-                                  <Switch
-                                    checked={permission.canWrite}
-                                    onCheckedChange={(value) =>
-                                      updateTeamPermissions(
-                                        team.id,
-                                        permission.databaseId,
-                                        "canWrite",
-                                        value,
-                                      )
-                                    }
-                                    disabled={
-                                      !permission.canRead ||
-                                      !canManageTeam(team)
-                                    }
-                                  />
-                                </TableCell>
-                                <TableCell className="text-center py-2">
-                                  <Switch
-                                    checked={permission.canDelete}
-                                    onCheckedChange={(value) =>
-                                      updateTeamPermissions(
-                                        team.id,
-                                        permission.databaseId,
-                                        "canDelete",
-                                        value,
-                                      )
-                                    }
-                                    disabled={
-                                      !permission.canRead ||
-                                      !canManageTeam(team)
-                                    }
-                                  />
-                                </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => startEditMember(member)}
+                              title="Edit Member"
+                            >
+                              <Edit3 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                if (confirm("Remove this member from the organization?")) {
+                                  setTeamMembers(prev => prev.filter(m => m.id !== member.id));
+                                  setHasUnsavedChanges(true);
+                                }
+                              }}
+                              title="Remove Member"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
                                 <TableCell className="text-center py-2">
                                   <Switch
                                     checked={permission.canManage}
