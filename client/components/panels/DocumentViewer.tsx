@@ -276,7 +276,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
     if (!isVisible) return null;
 
     return (
-      <div className="w-120 bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg">
+      <div className="w-144 bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg">
         <div className="h-full flex flex-col">
           {/* Header */}
           <div className="p-4 border-b bg-gray-50 dark:bg-gray-700">
