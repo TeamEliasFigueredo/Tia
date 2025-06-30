@@ -77,7 +77,17 @@ const DatabasePanel = memo<DatabasePanelProps>(
     const [editingDocument, setEditingDocument] = React.useState<string | null>(
       null,
     );
+    const [editingFolder, setEditingFolder] = React.useState<string | null>(
+      null,
+    );
     const [newDatabaseName, setNewDatabaseName] = React.useState("");
+    const [newFolderName, setNewFolderName] = React.useState("");
+    const [showNewFolderInput, setShowNewFolderInput] = React.useState<
+      string | null
+    >(null);
+    const [expandedFolders, setExpandedFolders] = React.useState<Set<string>>(
+      new Set(),
+    );
 
     const createDatabase = useCallback(() => {
       if (!newDatabaseName.trim()) return;
