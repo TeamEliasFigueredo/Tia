@@ -962,9 +962,20 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                 <Badge
                                   key={teamId}
                                   variant="outline"
-                                  className="text-xs"
+                                  className="text-xs cursor-pointer hover:bg-red-100 dark:hover:bg-red-900"
+                                  onClick={() => {
+                                    if (
+                                      confirm(
+                                        `Remove ${member.name} from ${team.name}?`,
+                                      )
+                                    ) {
+                                      removeMemberFromTeam(member.id, teamId);
+                                    }
+                                  }}
+                                  title="Click to remove from team"
                                 >
                                   {team.name}
+                                  <X className="ml-1 h-2 w-2" />
                                 </Badge>
                               ) : null;
                             })}
@@ -973,6 +984,28 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
                                 +{member.teams.length - 2} more
                               </Badge>
                             )}
+                            <Select
+                              onValueChange={(teamId) => {
+                                if (!member.teams.includes(teamId)) {
+                                  addMemberToTeam(member.id, teamId);
+                                }
+                              }}
+                            >
+                              <SelectTrigger className="w-8 h-6 p-0 border-dashed">
+                                <Plus className="h-3 w-3" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {teams
+                                  .filter(
+                                    (team) => !member.teams.includes(team.id),
+                                  )
+                                  .map((team) => (
+                                    <SelectItem key={team.id} value={team.id}>
+                                      {team.name}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
                           </div>
                         </TableCell>
                         <TableCell className="text-sm text-gray-500">
