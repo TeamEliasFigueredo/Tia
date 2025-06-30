@@ -244,6 +244,43 @@ const DatabasePanel = memo<DatabasePanelProps>(
       });
     }, []);
 
+    const startEditFolder = useCallback((folder: any) => {
+      setEditingFolder(folder.id);
+      setEditingFolderName(folder.name);
+    }, []);
+
+    const saveEditFolder = useCallback(
+      (dbId: string, folderId: string) => {
+        if (!editingFolderName.trim()) return;
+
+        onDatabaseAction((prev) =>
+          prev.map((db) =>
+            db.id === dbId
+              ? {
+                  ...db,
+                  folders: (db.folders || []).map((f) =>
+                    f.id === folderId ? { ...f, name: editingFolderName } : f,
+                  ),
+                  lastModified: new Date().toISOString().split("T")[0],
+                }
+              : db,
+          ),
+        );
+        setEditingFolder(null);
+        setEditingFolderName("");
+      },
+      [editingFolderName, onDatabaseAction],
+    );
+
+    const cancelEditFolder = useCallback(() => {
+      setEditingFolder(null);
+      setEditingFolderName("");
+    }, []);
+
+    const startEditDocument = useCallback((docId: string) => {
+      setEditingDocument(docId);
+    }, []);
+
     const [expandedDatabases, setExpandedDatabases] = React.useState<
       Set<string>
     >(new Set());
