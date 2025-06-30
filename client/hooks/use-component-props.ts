@@ -73,8 +73,34 @@ export function useComponentProps({
     [modalManager.openModal, settings.language, t],
   );
 
-  const databasePanelProps = useMemo(
-    () => ({
+  const databasePanelProps = useMemo(() => {
+    const handleFileUploadWithFolder = async (
+      files: FileList,
+      targetDbId: string,
+      folderId?: string,
+    ): Promise<void> => {
+      // Convert FileList to regular array and call existing handler
+      const fileArray = Array.from(files);
+      return handleFileUpload(files, targetDbId);
+    };
+
+    const dragDropHandlers = createDragDropHandlers(
+      dragAndDrop.dragState,
+      (state) => {
+        if (typeof state === "function") {
+          const newState = state(dragAndDrop.dragState);
+          Object.assign(dragAndDrop.dragState, newState);
+        } else {
+          Object.assign(dragAndDrop.dragState, state);
+        }
+      },
+      databases,
+      setDatabases,
+      handleFileUploadWithFolder,
+      actions.processDocuments,
+    );
+
+    return {
       isVisible: layout.showColumn1,
       databases,
       selectedDatabase: documentState.selectedDatabase,
@@ -84,47 +110,22 @@ export function useComponentProps({
       onDatabaseAction: setDatabases,
       onSelectDocument: actions.selectDocument,
       onFileUpload: handleFileUpload,
-      onDragHandlers: {
-        onDragStart: dragAndDrop.handleDragStart,
-        onDragOver: dragAndDrop.handleDragOver,
-        onDragLeave: dragAndDrop.handleDragLeave,
-        onDrop: (e: React.DragEvent, dbId?: string, folderId?: string) => {
-          e.preventDefault();
-          if (dragAndDrop.dragState.draggedDocument) {
-            actions.handleDocumentDrop(
-              e,
-              dbId!,
-              folderId,
-              dragAndDrop.dragState,
-            );
-          }
-          dragAndDrop.resetDragState();
-        },
-        onFileDrop: (e: React.DragEvent, dbId: string, folderId?: string) => {
-          e.preventDefault();
-          if (e.dataTransfer.files.length > 0) {
-            actions.handleFileDrop(e, dbId, folderId);
-          }
-          dragAndDrop.resetDragState();
-        },
-        processDocuments: actions.processDocuments,
-      },
+      onDragHandlers: dragDropHandlers,
       t,
-    }),
-    [
-      layout.showColumn1,
-      databases,
-      documentState.selectedDatabase,
-      processing,
-      dragAndDrop,
-      actions.toggleColumn1,
-      actions.selectDocument,
-      actions.processDocuments,
-      handleFileUpload,
-      setDatabases,
-      t,
-    ],
-  );
+    };
+  }, [
+    layout.showColumn1,
+    databases,
+    documentState.selectedDatabase,
+    processing,
+    dragAndDrop,
+    actions.toggleColumn1,
+    actions.selectDocument,
+    actions.processDocuments,
+    handleFileUpload,
+    setDatabases,
+    t,
+  ]);
 
   const documentViewerProps = useMemo(
     () => ({
