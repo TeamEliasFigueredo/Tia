@@ -787,9 +787,32 @@ const DatabasePanel = memo<DatabasePanelProps>(
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-2 flex-1">
                                 {getFileTypeIcon(doc.fileType)}
-                                <span className="font-medium truncate text-xs">
-                                  {doc.name}
-                                </span>
+                                {editingDocument === doc.id ? (
+                                  <Input
+                                    value={doc.name}
+                                    onChange={(e) =>
+                                      renameDocument(
+                                        database.id,
+                                        doc.id,
+                                        e.target.value,
+                                      )
+                                    }
+                                    onBlur={() => setEditingDocument(null)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter")
+                                        setEditingDocument(null);
+                                      if (e.key === "Escape")
+                                        setEditingDocument(null);
+                                    }}
+                                    autoFocus
+                                    className="h-5 text-xs"
+                                    onClick={(e) => e.stopPropagation()}
+                                  />
+                                ) : (
+                                  <span className="font-medium truncate text-xs">
+                                    {doc.name}
+                                  </span>
+                                )}
                               </div>
                               <div className="flex space-x-1">
                                 <Button
