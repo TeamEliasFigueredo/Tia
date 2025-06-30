@@ -397,6 +397,24 @@ export function useOptimizedTiaApp() {
       documentCount: 12,
       createdDate: "2024-01-15",
       lastModified: "2024-01-20",
+      folders: [
+        {
+          id: "folder1",
+          name: "HR Policies",
+          parentId: null,
+          createdDate: "2024-01-15",
+          documents: [],
+          subfolders: [],
+        },
+        {
+          id: "folder2",
+          name: "Security",
+          parentId: null,
+          createdDate: "2024-01-16",
+          documents: [],
+          subfolders: [],
+        },
+      ],
       documents: [
         {
           id: "doc1",
@@ -409,6 +427,7 @@ export function useOptimizedTiaApp() {
           content:
             "This comprehensive employee handbook outlines company policies, procedures, and guidelines for all staff members. It covers workplace conduct, benefits, time-off policies, and professional development opportunities. Section 1: Introduction to Company Culture. Our company values integrity, innovation, and collaboration. We believe in creating an inclusive environment where every employee can thrive. Section 2: Code of Conduct. All employees are expected to maintain professional behavior at all times. This includes respectful communication, punctuality, and adherence to company policies.",
           fileType: "PDF",
+          folderId: "folder1",
         },
         {
           id: "doc2",
@@ -421,6 +440,7 @@ export function useOptimizedTiaApp() {
           content:
             "Security guidelines and protocols for maintaining information security and data protection within the organization. This document covers password policies, data handling procedures, and incident response protocols. Password Requirements: Minimum 12 characters, mix of uppercase, lowercase, numbers, and special characters. Two-factor authentication is mandatory for all accounts.",
           fileType: "Word",
+          folderId: "folder2",
         },
       ],
     },
