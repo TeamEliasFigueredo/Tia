@@ -10,7 +10,25 @@ const TiaFooter = memo<TiaFooterProps>(({ t }) => {
     <footer className="bg-gray-800 text-white py-2 px-6 border-t-4 border-blue-600">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <p className="text-xs text-gray-300">{t.footerText}</p>
+          <p className="text-xs text-gray-300">
+            <a
+              href="https://softiabot.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              Tia
+            </a>{" "}
+            {t.tiaIsCreation}{" "}
+            <a
+              href="https://softia.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              {t.softiaLink}
+            </a>
+          </p>
         </div>
         <div className="text-xs text-gray-400">
           © 2024 Softia.ca - {t.rightsReserved}
