@@ -142,7 +142,6 @@ const TiaHeader = memo<TiaHeaderProps>(
               <span className="font-bold text-xs">Tia</span>
             </div>
             <div>
-              <div className="font-semibold text-sm">Tia</div>
               <div className="text-xs opacity-90">v2.1.0</div>
             </div>
           </div>
