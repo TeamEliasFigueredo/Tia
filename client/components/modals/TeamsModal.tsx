@@ -97,6 +97,13 @@ export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
     teams: [] as string[],
   });
   const [showAddMember, setShowAddMember] = useState(false);
+  const [editingMember, setEditingMember] = useState<string | null>(null);
+  const [editMemberForm, setEditMemberForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "member",
+  });
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Team and member state
