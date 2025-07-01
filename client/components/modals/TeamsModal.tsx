@@ -710,10 +710,10 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-lg font-semibold">
-                    Team Members Management
+                    {t.teamMembersManagement}
                   </Label>
                   <p className="text-sm text-gray-600 mt-1">
-                    Add new members and manage team administrator roles
+                    {t.configurePermissions}
                   </p>
                 </div>
                 <Button
@@ -721,7 +721,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                   className="flex items-center gap-2"
                 >
                   <UserPlus className="h-4 w-4" />
-                  Add New Member
+                  {t.addNewMember}
                 </Button>
               </div>
 
