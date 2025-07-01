@@ -40,72 +40,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-  }
-
-  /* Document viewer enhancements */
-  .document-content {
-    line-height: 1.6;
-    font-size: 14px;
-  }
-
-  .document-content mark {
-    animation: highlight-pulse 2s ease-in-out;
-  }
-
-  @keyframes highlight-pulse {
-    0%, 100% { background-color: rgb(253 224 71); }
-    50% { background-color: rgb(254 240 138); }
-  }
-
-  /* Smooth scrolling for document navigation */
-  .scroll-smooth {
-    scroll-behavior: smooth;
-  }
-
-  /* Mobile responsive improvements */
-  @media (max-width: 768px) {
-    .document-viewer-mobile {
-      width: 100vw !important;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 50;
-    }
-
-    .document-controls-mobile {
-      padding: 0.5rem;
-      gap: 0.25rem;
-    }
-
-    .document-controls-mobile .text-xs {
-      font-size: 0.65rem;
-    }
-  }
-
-  /* Improved focus states for accessibility */
-  .focus-ring:focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-  }
-
-  /* Document zoom transitions */
-  .zoom-transition {
-    transition: transform 0.2s ease-out;
-  }
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -155,6 +95,63 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Document viewer enhancements */
+  .document-content {
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  .document-content mark {
+    animation: highlight-pulse 2s ease-in-out;
+  }
+
+  @keyframes highlight-pulse {
+    0%,
+    100% {
+      background-color: rgb(253 224 71);
+    }
+    50% {
+      background-color: rgb(254 240 138);
+    }
+  }
+
+  /* Smooth scrolling for document navigation */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile responsive improvements */
+  @media (max-width: 768px) {
+    .document-viewer-mobile {
+      width: 100vw !important;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+    }
+
+    .document-controls-mobile {
+      padding: 0.5rem;
+      gap: 0.25rem;
+    }
+
+    .document-controls-mobile .text-xs {
+      font-size: 0.65rem;
+    }
+  }
+
+  /* Improved focus states for accessibility */
+  .focus-ring:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Document zoom transitions */
+  .zoom-transition {
+    transition: transform 0.2s ease-out;
   }
 }
 
@@ -230,6 +227,61 @@
     100% {
       background-color: rgba(59, 130, 246, 0.1);
       transform: scale(1);
+    }
+  }
+
+  /* Document viewer specific styles */
+  .document-viewer-header {
+    @apply bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600;
+  }
+
+  .document-viewer-content {
+    @apply bg-gray-50 dark:bg-gray-800;
+  }
+
+  .document-page {
+    @apply bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .document-controls {
+    @apply flex items-center gap-1 px-2 py-1 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-600 shadow-sm;
+  }
+
+  .search-highlight {
+    @apply bg-yellow-300 dark:bg-yellow-600 text-gray-900 dark:text-gray-100 px-1 rounded;
+    animation: search-highlight-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes search-highlight-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Responsive document viewer */
+  @media (max-width: 1024px) {
+    .document-viewer-lg {
+      width: 100%;
+      position: relative;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .document-controls {
+      @apply text-xs gap-0.5 px-1 py-0.5;
+    }
+
+    .document-controls button {
+      @apply h-6 w-6 p-0;
+    }
+
+    .document-controls input {
+      @apply h-6 text-xs;
     }
   }
 }
