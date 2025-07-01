@@ -19,7 +19,11 @@ interface UserProfileModalProps {
   t: Translations;
 }
 
-export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
+export function UserProfileModal({
+  isOpen,
+  onClose,
+  t,
+}: UserProfileModalProps) {
   const [formData, setFormData] = useState({
     fullName: "John Doe",
     email: "john.doe@softia.ca",
