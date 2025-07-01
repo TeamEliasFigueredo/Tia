@@ -424,9 +424,10 @@ export function CurrentPlanModal({
 
               {parseFloat(newStorageLimit) > 2 && (
                 <div className="mt-3 p-3 bg-green-200 rounded text-sm text-green-800">
-                  <strong>Summary:</strong> Adding{" "}
-                  {parseFloat(newStorageLimit) - 2} TB at $25/TB/month. Total
-                  additional cost: ${calculateStorageIncreaseCost()}/month.
+                  <strong>{t.summary}</strong> {t.addingStorage}{" "}
+                  {parseFloat(newStorageLimit) - 2} TB {t.perTBPerMonth}.{" "}
+                  {t.totalAdditionalCost}: ${calculateStorageIncreaseCost()}
+                  /month.
                 </div>
               )}
             </div>
