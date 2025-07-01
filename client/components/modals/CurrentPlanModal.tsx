@@ -384,7 +384,7 @@ export function CurrentPlanModal({
               <div className="flex items-end gap-4">
                 <div className="flex-1">
                   <Label htmlFor="storageLimit" className="text-sm">
-                    New Storage Limit (TB)
+                    {t.newStorageLimit}
                   </Label>
                   <Input
                     id="storageLimit"
