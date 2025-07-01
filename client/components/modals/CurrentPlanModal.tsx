@@ -372,10 +372,10 @@ export function CurrentPlanModal({
                     htmlFor="storageLimit"
                     className="font-medium text-green-900"
                   >
-                    Increase Storage Limit
+                    {t.increaseStorageLimit}
                   </Label>
                   <p className="text-sm text-green-700">
-                    Current limit: {planData.storageLimit}
+                    {t.currentLimit}: {planData.storageLimit}
                   </p>
                 </div>
                 <ArrowUp className="h-5 w-5 text-green-600" />
