@@ -270,11 +270,11 @@ export function CurrentPlanModal({
           <div className="border rounded-lg p-4">
             <div className="flex items-center gap-2 mb-3">
               <Calendar className="h-4 w-4 text-blue-600" />
-              <h4 className="font-medium">Renewal Information</h4>
+              <h4 className="font-medium">{t.renewalInformation}</h4>
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Next renewal date:</p>
+                <p className="text-sm text-gray-600">{t.nextRenewalDate}</p>
                 <p className="font-medium">{planData.renewalDate}</p>
               </div>
               <Button
@@ -282,7 +282,7 @@ export function CurrentPlanModal({
                 className="bg-green-600 hover:bg-green-700"
               >
                 <CreditCard className="mr-2 h-4 w-4" />
-                Renew Now
+                {t.renewNow}
               </Button>
             </div>
           </div>
