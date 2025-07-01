@@ -451,15 +451,14 @@ const DocumentViewer = memo<DocumentViewerProps>(
           )}
 
           {/* Document Content - Maximized Reading Area */}
-          <ScrollArea className="flex-1">
+          <ScrollArea className="flex-1 document-viewer-content">
             {selectedDocument ? (
-              <div className="p-4">
+              <div className={cn("p-4", isMobile && "p-2")}>
                 <div
-                  className="transform-gpu"
+                  className="transform-gpu zoom-transition"
                   style={{
                     transform: `scale(${zoom / 100})`,
                     transformOrigin: "top center",
-                    transition: "transform 0.2s ease-out",
                   }}
                 >
                   {renderDocumentContent(selectedDocument)}
