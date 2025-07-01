@@ -42,10 +42,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Translations } from "@/lib/i18n";
 
 interface TeamsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  t: Translations;
 }
 
 interface Team {
