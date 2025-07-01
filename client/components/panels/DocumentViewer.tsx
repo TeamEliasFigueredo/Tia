@@ -89,7 +89,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
         const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
         return parts.map((part, index) =>
           part.toLowerCase() === searchQuery.toLowerCase() ? (
-            <mark key={index} className="bg-yellow-300 dark:bg-yellow-600">
+            <mark key={index} className="search-highlight">
               {part}
             </mark>
           ) : (
