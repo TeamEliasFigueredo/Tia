@@ -595,31 +595,31 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
 
               {/* Create New Team Form */}
               <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
-                <h3 className="font-semibold mb-4">Create New Team</h3>
+                <h3 className="font-semibold mb-4">{t.createNewTeam}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="teamName">Team Name</Label>
+                    <Label htmlFor="teamName">{t.teamName}</Label>
                     <Input
                       id="teamName"
                       value={newTeamName}
                       onChange={(e) => setNewTeamName(e.target.value)}
-                      placeholder="Enter team name"
+                      placeholder={t.teamName}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="teamDescription">Description</Label>
+                    <Label htmlFor="teamDescription">{t.teamDescription}</Label>
                     <Input
                       id="teamDescription"
                       value={newTeamDescription}
                       onChange={(e) => setNewTeamDescription(e.target.value)}
-                      placeholder="Enter team description"
+                      placeholder={t.teamDescription}
                     />
                   </div>
                 </div>
                 <div className="flex gap-2 mt-4">
                   <Button onClick={createTeam} disabled={!newTeamName.trim()}>
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Team
+                    {t.createTeam}
                   </Button>
                 </div>
               </div>
