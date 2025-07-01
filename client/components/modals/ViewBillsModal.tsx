@@ -143,7 +143,7 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Receipt className="h-5 w-5 text-blue-600" />
-            Billing History & Invoices
+            {t.billingHistory}
           </DialogTitle>
         </DialogHeader>
 
