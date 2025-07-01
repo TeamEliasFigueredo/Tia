@@ -255,8 +255,9 @@ const DocumentViewer = memo<DocumentViewerProps>(
     return (
       <div
         className={cn(
-          "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg",
+          "bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg column-transition",
           isFullWidth ? "w-full" : "w-144",
+          isMobile && "document-viewer-mobile",
         )}
       >
         <div className="h-full flex flex-col">
