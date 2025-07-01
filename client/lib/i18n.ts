@@ -595,7 +595,7 @@ export const translations: Record<Language, Translations> = {
     storage: "Almacenamiento",
     upgraded: "¡Actualizado!",
     currentLabel: "Actual",
-    limit: "L��mite",
+    limit: "Límite",
     used: "Usado",
     percentUsed: "% del límite de usuarios usado",
     renewalInformation: "Información de Renovación",
@@ -661,9 +661,14 @@ export const translations: Record<Language, Translations> = {
     download: "Descargar",
     billingPeriod: "Período de Facturación",
     paymentMethod: "Método de Pago",
-    creditCardEnding: "Tarjeta de crédito terminada en",
+    creditCardEnding: "Tarjeta de cr��dito terminada en",
     totalInvoices: "Total de Facturas",
     totalPaid: "Total Pagado",
+    features: "Características",
+    upgrade: "Actualizar",
+    contactSales: "Contactar Ventas",
+    needCustomSolution:
+      "¿Necesita una solución personalizada? Contacte a nuestro equipo de ventas para paquetes empresariales con límites de usuarios, almacenamiento y características especializadas adaptadas a las necesidades de su organización.",
   },
 
   fr: {
