@@ -124,11 +124,11 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Word":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-blue-200 rounded-lg min-h-[600px]">
+              <div className="document-page border-blue-200 min-h-[600px]">
                 <div className="p-6">
                   <div
                     className={cn(
-                      "prose prose-blue max-w-none",
+                      "prose prose-blue max-w-none document-content",
                       baseContentClass,
                     )}
                   >
