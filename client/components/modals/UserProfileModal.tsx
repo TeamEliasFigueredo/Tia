@@ -63,7 +63,7 @@ export function UserProfileModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <User className="h-5 w-5 text-blue-600" />
-            User Profile
+            {t.userProfile}
           </DialogTitle>
         </DialogHeader>
 
