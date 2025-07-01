@@ -170,13 +170,9 @@ export function AvailablePackagesModal({
           </div>
 
           <div className="mt-6 p-4 bg-gray-50 border rounded-lg">
-            <p className="text-sm text-gray-600">
-              <strong>Need a custom solution?</strong> Contact our sales team
-              for enterprise packages with custom user limits, storage, and
-              specialized features tailored to your organization's needs.
-            </p>
+            <p className="text-sm text-gray-600">{t.needCustomSolution}</p>
             <Button variant="outline" size="sm" className="mt-2">
-              Contact Sales
+              {t.contactSales}
             </Button>
           </div>
         </div>
