@@ -558,7 +558,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
               className="flex items-center gap-2"
             >
               <Users className="h-4 w-4" />
-              Teams
+              {t.teamsTab}
             </Button>
             <Button
               variant={activeTab === "members" ? "default" : "outline"}
@@ -566,7 +566,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
               className="flex items-center gap-2"
             >
               <UserPlus className="h-4 w-4" />
-              Team Members
+              {t.teamMembers}
             </Button>
             <Button
               variant={activeTab === "permissions" ? "default" : "outline"}
@@ -574,7 +574,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
               className="flex items-center gap-2"
             >
               <Shield className="h-4 w-4" />
-              Database Permissions
+              {t.databasePermissions}
             </Button>
           </div>
 
