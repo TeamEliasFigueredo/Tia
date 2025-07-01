@@ -317,7 +317,7 @@ export function CurrentPlanModal({
               <div className="flex items-end gap-4">
                 <div className="flex-1">
                   <Label htmlFor="userCount" className="text-sm">
-                    New User Limit
+                    {t.newUserLimit}
                   </Label>
                   <Input
                     id="userCount"
