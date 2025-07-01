@@ -164,7 +164,9 @@ export function CurrentPlanModal({
                   {planData.planName}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {planData.planType} Subscription
+                  {planData.planType === "Annual"
+                    ? t.annualSubscription
+                    : t.monthlySubscription}
                 </p>
               </div>
               <div className="text-right">
