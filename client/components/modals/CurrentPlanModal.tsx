@@ -179,7 +179,7 @@ export function CurrentPlanModal({
                   }
                   className="bg-green-600"
                 >
-                  {planData.status}
+                  {t.active}
                 </Badge>
               </div>
             </div>
