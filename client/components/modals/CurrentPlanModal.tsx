@@ -435,19 +435,21 @@ export function CurrentPlanModal({
 
           {/* Pricing Information */}
           <div className="bg-gray-50 border rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 mb-2">Pricing Details</h4>
+            <h4 className="font-medium text-gray-900 mb-2">
+              {t.pricingDetails}
+            </h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <strong>Additional Users:</strong> $12/user/month
+                <strong>{t.additionalUsers}</strong> $12/user/month
               </div>
               <div>
-                <strong>Additional Storage:</strong> $25/TB/month
+                <strong>{t.additionalStorage}</strong> $25/TB/month
               </div>
               <div>
-                <strong>Billing Cycle:</strong> Monthly
+                <strong>{t.billingCycle}</strong> {t.monthly}
               </div>
               <div>
-                <strong>Changes Take Effect:</strong> Immediately
+                <strong>{t.changesTakeEffect}</strong> {t.immediately}
               </div>
             </div>
           </div>
