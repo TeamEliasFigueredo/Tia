@@ -677,10 +677,10 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
 
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-500">
-                        {team.memberCount} members
+                        {team.memberCount} {t.members}
                       </div>
                       <div className="text-xs text-gray-400">
-                        Created: {team.createdDate}
+                        {t.created}: {team.createdDate}
                       </div>
                     </div>
 
@@ -695,7 +695,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                         }}
                       >
                         <Settings className="mr-2 h-3 w-3" />
-                        Manage Team
+                        {t.manageTeam}
                       </Button>
                     </div>
                   </div>
