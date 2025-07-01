@@ -46,6 +46,59 @@
     --sidebar-primary: 240 5.9% 10%;
 
     --sidebar-primary-foreground: 0 0% 98%;
+  }
+
+  /* Document viewer enhancements */
+  .document-content {
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  .document-content mark {
+    animation: highlight-pulse 2s ease-in-out;
+  }
+
+  @keyframes highlight-pulse {
+    0%, 100% { background-color: rgb(253 224 71); }
+    50% { background-color: rgb(254 240 138); }
+  }
+
+  /* Smooth scrolling for document navigation */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile responsive improvements */
+  @media (max-width: 768px) {
+    .document-viewer-mobile {
+      width: 100vw !important;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+    }
+
+    .document-controls-mobile {
+      padding: 0.5rem;
+      gap: 0.25rem;
+    }
+
+    .document-controls-mobile .text-xs {
+      font-size: 0.65rem;
+    }
+  }
+
+  /* Improved focus states for accessibility */
+  .focus-ring:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Document zoom transitions */
+  .zoom-transition {
+    transition: transform 0.2s ease-out;
+  }
 
     --sidebar-accent: 240 4.8% 95.9%;
 
