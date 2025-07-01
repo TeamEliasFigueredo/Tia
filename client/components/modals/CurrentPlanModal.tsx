@@ -230,11 +230,11 @@ export function CurrentPlanModal({
             <div className="border rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <HardDrive className="h-4 w-4 text-blue-600" />
-                <h4 className="font-medium">Storage</h4>
+                <h4 className="font-medium">{t.storage}</h4>
                 {upgradeSuccess.storage && (
                   <Badge className="bg-green-600">
                     <Check className="mr-1 h-3 w-3" />
-                    Upgraded!
+                    {t.upgraded}
                   </Badge>
                 )}
               </div>
