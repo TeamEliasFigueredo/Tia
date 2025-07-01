@@ -36,7 +36,7 @@ const ModalLoadingFallback = memo(() => (
   </div>
 ));
 
-const ModalContainer = memo<ModalContainerProps>(({ modals, onClose }) => {
+const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
   return (
     <>
       <Suspense fallback={<ModalLoadingFallback />}>
