@@ -675,6 +675,9 @@ export const translations: Record<Language, Translations> = {
     contactSales: "Contactar Ventas",
     needCustomSolution:
       "¿Necesita una solución personalizada? Contacte a nuestro equipo de ventas para paquetes empresariales con límites de usuarios, almacenamiento y características especializadas adaptadas a las necesidades de su organización.",
+    nextBilling: "Próxima Facturación",
+    expires: "Expira",
+    invoiceHistory: "Historial de Facturas",
   },
 
   fr: {
