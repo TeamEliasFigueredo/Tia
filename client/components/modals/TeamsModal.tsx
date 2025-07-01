@@ -920,12 +920,12 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Member</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Teams</TableHead>
-                      <TableHead>Last Active</TableHead>
-                      <TableHead>Admin Status</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>{t.member}</TableHead>
+                      <TableHead>{t.role}</TableHead>
+                      <TableHead>{t.teamsTab}</TableHead>
+                      <TableHead>{t.lastActive}</TableHead>
+                      <TableHead>{t.adminStatus}</TableHead>
+                      <TableHead>{t.actions}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
