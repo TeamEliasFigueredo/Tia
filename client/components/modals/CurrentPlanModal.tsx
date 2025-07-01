@@ -191,11 +191,11 @@ export function CurrentPlanModal({
             <div className="border rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Users className="h-4 w-4 text-blue-600" />
-                <h4 className="font-medium">Users</h4>
+                <h4 className="font-medium">{t.users}</h4>
                 {upgradeSuccess.users && (
                   <Badge className="bg-green-600">
                     <Check className="mr-1 h-3 w-3" />
-                    Upgraded!
+                    {t.upgraded}
                   </Badge>
                 )}
               </div>
