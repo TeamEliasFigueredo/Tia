@@ -98,7 +98,9 @@ export function AvailablePackagesModal({
                 <h3 className="font-medium text-blue-900">
                   {t.viewAllPackages}
                 </h3>
-                <p className="text-sm text-blue-700 mt-1">{t.viewOnWebsite}</p>
+                <p className="text-sm text-blue-700 mt-1">
+                  {t.availablePackages}
+                </p>
               </div>
               <Button
                 onClick={handleViewPackages}
