@@ -162,7 +162,7 @@ export function AvailablePackagesModal({
                       alert(`Upgrade to ${pkg.name} plan initiated`)
                     }
                   >
-                    Upgrade
+                    {t.upgrade}
                   </Button>
                 )}
               </div>
