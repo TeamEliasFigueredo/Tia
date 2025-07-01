@@ -142,7 +142,7 @@ export function AvailablePackagesModal({
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  <h4 className="font-medium text-sm">Features:</h4>
+                  <h4 className="font-medium text-sm">{t.features}:</h4>
                   <ul className="text-xs text-gray-600 space-y-1">
                     {pkg.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center">
