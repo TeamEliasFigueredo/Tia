@@ -45,7 +45,7 @@ interface Invoice {
   downloadUrl?: string;
 }
 
-export function ViewBillsModal({ isOpen, onClose }: ViewBillsModalProps) {
+export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
   const [invoices] = useState<Invoice[]>([
     {
       id: "INV-2024-001",
