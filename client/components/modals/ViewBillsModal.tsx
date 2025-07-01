@@ -238,7 +238,7 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
                             onClick={() => handleViewInvoice(invoice)}
                           >
                             <Eye className="h-3 w-3 mr-1" />
-                            View
+                            {t.view}
                           </Button>
                           {invoice.status === "paid" && (
                             <Button
@@ -247,7 +247,7 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
                               onClick={() => handleDownloadInvoice(invoice)}
                             >
                               <Download className="h-3 w-3 mr-1" />
-                              PDF
+                              {t.download}
                             </Button>
                           )}
                         </div>
