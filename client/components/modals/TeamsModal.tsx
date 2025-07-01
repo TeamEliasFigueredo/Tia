@@ -85,7 +85,7 @@ interface TeamDatabasePermission {
   permissions: DatabasePermission[];
 }
 
-export function TeamsModal({ isOpen, onClose }: TeamsModalProps) {
+export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
   const [activeTab, setActiveTab] = useState<
     "teams" | "members" | "permissions"
   >("teams");
