@@ -180,7 +180,7 @@ export function AvailablePackagesModal({
         <DialogFooter>
           <Button onClick={onClose} className="bg-blue-600 hover:bg-blue-700">
             <X className="mr-2 h-4 w-4" />
-            Close
+            {t.close}
           </Button>
         </DialogFooter>
       </DialogContent>
