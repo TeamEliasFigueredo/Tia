@@ -1,4 +1,5 @@
 import React, { memo, Suspense, lazy } from "react";
+import { Translations } from "@/lib/i18n";
 
 // Lazy load modals for better performance
 const UserProfileModal = lazy(() => import("./UserProfileModal"));
@@ -20,6 +21,7 @@ interface ModalContainerProps {
     teams: boolean;
   };
   onClose: (modalName: string) => void;
+  t: Translations;
 }
 
 // Simple loading component for modals
