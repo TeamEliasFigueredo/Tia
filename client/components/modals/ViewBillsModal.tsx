@@ -153,7 +153,7 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <h3 className="font-medium text-green-900">Total Paid</h3>
+                <h3 className="font-medium text-green-900">{t.totalPaid}</h3>
               </div>
               <p className="text-2xl font-bold text-green-600 mt-2">
                 ${totalPaid.toFixed(2)}
