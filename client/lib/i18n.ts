@@ -216,6 +216,10 @@ export interface Translations {
   creditCardEnding: string;
   totalInvoices: string;
   totalPaid: string;
+  features: string;
+  upgrade: string;
+  contactSales: string;
+  needCustomSolution: string;
 }
 
 export const translations: Record<Language, Translations> = {
