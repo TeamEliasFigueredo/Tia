@@ -27,10 +27,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Translations } from "@/lib/i18n";
 
 interface ViewBillsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  t: Translations;
 }
 
 interface Invoice {
