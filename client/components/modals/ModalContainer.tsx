@@ -78,6 +78,7 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
           <AvailablePackagesModal
             isOpen={modals.availablePackages}
             onClose={() => onClose("availablePackages")}
+            t={t}
           />
         )}
       </Suspense>
@@ -87,6 +88,7 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
           <ViewBillsModal
             isOpen={modals.viewBills}
             onClose={() => onClose("viewBills")}
+            t={t}
           />
         )}
       </Suspense>
