@@ -92,7 +92,11 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
 
       <Suspense fallback={<ModalLoadingFallback />}>
         {modals.teams && (
-          <TeamsModal isOpen={modals.teams} onClose={() => onClose("teams")} />
+          <TeamsModal
+            isOpen={modals.teams}
+            onClose={() => onClose("teams")}
+            t={t}
+          />
         )}
       </Suspense>
     </>
