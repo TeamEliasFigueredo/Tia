@@ -447,6 +447,9 @@ export const translations: Record<Language, Translations> = {
     contactSales: "Contact Sales",
     needCustomSolution:
       "Need a custom solution? Contact our sales team for enterprise packages with custom user limits, storage, and specialized features tailored to your organization's needs.",
+    nextBilling: "Next Billing",
+    expires: "Expires",
+    invoiceHistory: "Invoice History",
   },
 
   es: {
