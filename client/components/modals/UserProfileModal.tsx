@@ -11,10 +11,12 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Translations } from "@/lib/i18n";
 
 interface UserProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  t: Translations;
 }
 
 export function UserProfileModal({ isOpen, onClose }: UserProfileModalProps) {
