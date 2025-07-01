@@ -88,9 +88,7 @@ export function AvailablePackagesModal({
 
         <div className="py-4">
           <div className="mb-4">
-            <p className="text-sm text-gray-600">
-              Explore our available packages and upgrade options for your team.
-            </p>
+            <p className="text-sm text-gray-600">{t.viewAllPackages}</p>
           </div>
 
           {/* Quick Link to Full Packages Page */}
