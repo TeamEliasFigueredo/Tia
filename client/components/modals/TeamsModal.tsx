@@ -730,11 +730,11 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                 <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
                   <h3 className="font-semibold mb-4 flex items-center gap-2">
                     <UserPlus className="h-4 w-4" />
-                    Add New Team Member
+                    {t.addNewTeamMember}
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="firstName">{t.firstName}</Label>
                       <Input
                         id="firstName"
                         value={newMemberForm.firstName}
@@ -744,11 +744,11 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                             firstName: e.target.value,
                           }))
                         }
-                        placeholder="Enter first name"
+                        placeholder={t.firstName}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastName">{t.lastName}</Label>
                       <Input
                         id="lastName"
                         value={newMemberForm.lastName}
@@ -758,11 +758,11 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                             lastName: e.target.value,
                           }))
                         }
-                        placeholder="Enter last name"
+                        placeholder={t.lastName}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email Address</Label>
+                      <Label htmlFor="email">{t.emailAddress}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -773,11 +773,11 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                             email: e.target.value,
                           }))
                         }
-                        placeholder="Enter email address"
+                        placeholder={t.emailAddress}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="role">Role</Label>
+                      <Label htmlFor="role">{t.role}</Label>
                       <Select
                         value={newMemberForm.role}
                         onValueChange={(value) =>
@@ -791,9 +791,9 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="member">Member</SelectItem>
+                          <SelectItem value="member">{t.member}</SelectItem>
                           <SelectItem value="admin">
-                            Team Administrator
+                            {t.teamAdministrator}
                           </SelectItem>
                         </SelectContent>
                       </Select>
@@ -809,13 +809,13 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                       }
                     >
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Add Member
+                      {t.addMember}
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => setShowAddMember(false)}
                     >
-                      Cancel
+                      {t.cancel}
                     </Button>
                   </div>
                 </div>
