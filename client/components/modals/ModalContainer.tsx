@@ -68,6 +68,7 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
           <CurrentPlanModal
             isOpen={modals.currentPlan}
             onClose={() => onClose("currentPlan")}
+            t={t}
           />
         )}
       </Suspense>
