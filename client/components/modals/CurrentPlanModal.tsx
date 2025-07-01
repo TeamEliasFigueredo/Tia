@@ -304,10 +304,11 @@ export function CurrentPlanModal({
                     htmlFor="userCount"
                     className="font-medium text-blue-900"
                   >
-                    Increase User Limit
+                    {t.increaseUserLimit}
                   </Label>
                   <p className="text-sm text-blue-700">
-                    Current limit: {planData.maxUsers} users
+                    {t.currentLimit}: {planData.maxUsers}{" "}
+                    {t.users.toLowerCase()}
                   </p>
                 </div>
                 <ArrowUp className="h-5 w-5 text-blue-600" />
