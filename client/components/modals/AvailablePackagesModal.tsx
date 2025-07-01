@@ -19,6 +19,7 @@ interface AvailablePackagesModalProps {
 export function AvailablePackagesModal({
   isOpen,
   onClose,
+  t,
 }: AvailablePackagesModalProps) {
   const handleViewPackages = () => {
     // Open packages page in new tab
