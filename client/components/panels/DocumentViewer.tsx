@@ -108,11 +108,11 @@ const DocumentViewer = memo<DocumentViewerProps>(
         switch (document.fileType) {
           case "PDF":
             return (
-              <div className="bg-white dark:bg-gray-900 border rounded-lg min-h-[600px]">
+              <div className="document-page min-h-[600px]">
                 <div className="p-6">
                   <div
                     className={cn(
-                      "prose prose-sm max-w-none",
+                      "prose prose-sm max-w-none document-content",
                       baseContentClass,
                     )}
                   >
