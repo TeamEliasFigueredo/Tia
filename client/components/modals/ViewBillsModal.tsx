@@ -173,14 +173,14 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
                 {paymentMethod.type} •••• {paymentMethod.lastFour}
               </p>
               <p className="text-sm text-blue-700">
-                Expires {paymentMethod.expiry}
+                {t.expires} {paymentMethod.expiry}
               </p>
             </div>
 
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
               <div className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-purple-600" />
-                <h3 className="font-medium text-purple-900">Next Billing</h3>
+                <h3 className="font-medium text-purple-900">{t.nextBilling}</h3>
               </div>
               <p className="text-lg font-semibold text-purple-600 mt-2">
                 Feb 15, 2024
