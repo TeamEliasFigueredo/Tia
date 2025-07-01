@@ -826,7 +826,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                 <div className="border rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/20">
                   <h3 className="font-semibold mb-4 flex items-center gap-2">
                     <Edit3 className="h-4 w-4" />
-                    Edit Team Member
+                    {t.editTeamMember}
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
