@@ -356,9 +356,10 @@ export function CurrentPlanModal({
 
               {newUserCount > planData.maxUsers && (
                 <div className="mt-3 p-3 bg-blue-200 rounded text-sm text-blue-800">
-                  <strong>Summary:</strong> Adding{" "}
-                  {newUserCount - planData.maxUsers} users at $12/user/month.
-                  Total additional cost: ${calculateUserIncreaseCost()}/month.
+                  <strong>{t.summary}</strong> {t.addingUsers}{" "}
+                  {newUserCount - planData.maxUsers} {t.users.toLowerCase()}{" "}
+                  {t.perUserPerMonth}.{t.totalAdditionalCost} $
+                  {calculateUserIncreaseCost()}/month.
                 </div>
               )}
             </div>
