@@ -457,6 +457,13 @@ export const translations: Record<Language, Translations> = {
     nextBilling: "Next Billing",
     expires: "Expires",
     invoiceHistory: "Invoice History",
+
+    // Profile modal
+    userProfile: "User Profile",
+    fullName: "Full Name",
+    profilePicture: "Profile Picture",
+    changeAvatar: "Change Avatar",
+    updateProfile: "Update Profile",
   },
 
   es: {
