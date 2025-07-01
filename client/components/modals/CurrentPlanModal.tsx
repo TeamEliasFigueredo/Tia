@@ -260,7 +260,8 @@ export function CurrentPlanModal({
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">
-                  {calculateStoragePercentage()}% of storage used
+                  {calculateStoragePercentage()}% {t.storage.toLowerCase()}{" "}
+                  {t.used.toLowerCase()}
                 </p>
               </div>
             </div>
