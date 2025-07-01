@@ -44,6 +44,18 @@ const DocumentViewer = memo<DocumentViewerProps>(
   }) => {
     const [isFullWidth, setIsFullWidth] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Mobile detection
+    useEffect(() => {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+      return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     const {
       searchQuery,
