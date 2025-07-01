@@ -293,7 +293,7 @@ export function CurrentPlanModal({
           <div className="space-y-4">
             <h4 className="font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-blue-600" />
-              Increase Plan Limits
+              {t.increasePlanLimits}
             </h4>
 
             {/* Increase Users */}
