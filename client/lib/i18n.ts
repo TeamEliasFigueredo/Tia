@@ -927,6 +927,13 @@ export const translations: Record<Language, Translations> = {
     nextBilling: "Prochaine Facturation",
     expires: "Expire",
     invoiceHistory: "Historique des Factures",
+
+    // Profile modal
+    userProfile: "Profil Utilisateur",
+    fullName: "Nom Complet",
+    profilePicture: "Photo de Profil",
+    changeAvatar: "Changer l'Avatar",
+    updateProfile: "Mettre à Jour le Profil",
   },
 };
 
