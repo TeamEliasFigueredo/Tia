@@ -661,7 +661,7 @@ export const translations: Record<Language, Translations> = {
     download: "Descargar",
     billingPeriod: "Período de Facturación",
     paymentMethod: "Método de Pago",
-    creditCardEnding: "Tarjeta de cr��dito terminada en",
+    creditCardEnding: "Tarjeta de crédito terminada en",
     totalInvoices: "Total de Facturas",
     totalPaid: "Total Pagado",
     features: "Características",
@@ -889,6 +889,11 @@ export const translations: Record<Language, Translations> = {
     creditCardEnding: "Carte de crédit se terminant par",
     totalInvoices: "Total des Factures",
     totalPaid: "Total Payé",
+    features: "Fonctionnalités",
+    upgrade: "Mettre à niveau",
+    contactSales: "Contacter les Ventes",
+    needCustomSolution:
+      "Besoin d'une solution personnalisée ? Contactez notre équipe de vente pour des forfaits d'entreprise avec des limites d'utilisateurs, de stockage et des fonctionnalités spécialisées adaptées aux besoins de votre organisation.",
   },
 };
 
