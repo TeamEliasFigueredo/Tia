@@ -119,15 +119,15 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "paid":
-        return <Badge className="bg-green-600">Paid</Badge>;
+        return <Badge className="bg-green-600">{t.paid}</Badge>;
       case "pending":
         return (
           <Badge variant="outline" className="text-yellow-600">
-            Pending
+            {t.pending}
           </Badge>
         );
       case "overdue":
-        return <Badge variant="destructive">Overdue</Badge>;
+        return <Badge variant="destructive">{t.overdue}</Badge>;
       default:
         return null;
     }
