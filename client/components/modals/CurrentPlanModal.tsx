@@ -221,7 +221,7 @@ export function CurrentPlanModal({
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">
-                  {calculateUserPercentage()}% of user limit used
+                  {calculateUserPercentage()}% {t.percentUsed}
                 </p>
               </div>
             </div>
