@@ -902,7 +902,10 @@ export const translations: Record<Language, Translations> = {
     upgrade: "Mettre à niveau",
     contactSales: "Contacter les Ventes",
     needCustomSolution:
-      "Besoin d'une solution personnalisée ? Contactez notre équipe de vente pour des forfaits d'entreprise avec des limites d'utilisateurs, de stockage et des fonctionnalités spécialisées adaptées aux besoins de votre organisation.",
+      "Besoin d'une solution personnalisée ? Contactez notre équipe de vente pour des forfaits d'entreprise avec des limites d'utilisateurs, de stockage et des fonctionnalit��s spécialisées adaptées aux besoins de votre organisation.",
+    nextBilling: "Prochaine Facturation",
+    expires: "Expire",
+    invoiceHistory: "Historique des Factures",
   },
 };
 
