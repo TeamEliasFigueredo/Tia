@@ -136,6 +136,86 @@ export interface Translations {
   viewer: string;
   removeFromTeam: string;
   addToTeam: string;
+
+  // Plan management
+  currentPlanDetails: string;
+  annualSubscription: string;
+  monthlySubscription: string;
+  subscription: string;
+  active: string;
+  users: string;
+  storage: string;
+  upgraded: string;
+  currentLabel: string;
+  limit: string;
+  used: string;
+  percentUsed: string;
+  renewalInformation: string;
+  nextRenewalDate: string;
+  renewNow: string;
+  increasePlanLimits: string;
+  increaseUserLimit: string;
+  currentLimit: string;
+  newUserLimit: string;
+  additionalCost: string;
+  increase: string;
+  processing: string;
+  increaseStorageLimit: string;
+  newStorageLimit: string;
+  summary: string;
+  addingUsers: string;
+  perUserPerMonth: string;
+  totalAdditionalCost: string;
+  addingStorage: string;
+  perTBPerMonth: string;
+  pricingDetails: string;
+  additionalUsers: string;
+  additionalStorage: string;
+  billingCycle: string;
+  monthly: string;
+  changesTakeEffect: string;
+  immediately: string;
+
+  // Available packages
+  availablePackages: string;
+  viewAllPackages: string;
+  viewOnWebsite: string;
+  starter: string;
+  professional: string;
+  enterprisePro: string;
+  upToUsers: string;
+  basicAISupport: string;
+  standardSecurity: string;
+  emailSupport: string;
+  advancedAISupport: string;
+  enhancedSecurity: string;
+  prioritySupport: string;
+  apiAccess: string;
+  customIntegrations: string;
+  dedicatedAccountManager: string;
+  slaSupport: string;
+  onPremiseDeployment: string;
+
+  // View bills
+  billingHistory: string;
+  invoiceHistory: string;
+  invoice: string;
+  date: string;
+  amount: string;
+  plan: string;
+  period: string;
+  status: string;
+  actions: string;
+  paid: string;
+  pending: string;
+  overdue: string;
+  view: string;
+  download: string;
+  billingPeriod: string;
+  paymentMethod: string;
+  creditCardEnding: string;
+  totalInvoices: string;
+  totalPaid: string;
 }
 
 export const translations: Record<Language, Translations> = {
