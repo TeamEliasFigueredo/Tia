@@ -201,8 +201,12 @@ export function CurrentPlanModal({
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Current: {planData.currentUsers}</span>
-                  <span>Limit: {planData.maxUsers}</span>
+                  <span>
+                    {t.currentLabel}: {planData.currentUsers}
+                  </span>
+                  <span>
+                    {t.limit}: {planData.maxUsers}
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
