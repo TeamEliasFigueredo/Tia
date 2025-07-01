@@ -196,8 +196,9 @@ export function useComponentProps({
     () => ({
       modals: modalManager.modals,
       onClose: modalManager.closeModal,
+      t,
     }),
-    [modalManager.modals, modalManager.closeModal],
+    [modalManager.modals, modalManager.closeModal, t],
   );
 
   return {
