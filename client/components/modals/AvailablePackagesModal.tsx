@@ -96,19 +96,16 @@ export function AvailablePackagesModal({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-medium text-blue-900">
-                  View Complete Package Details
+                  {t.viewAllPackages}
                 </h3>
-                <p className="text-sm text-blue-700 mt-1">
-                  See detailed comparisons, add-ons, and custom enterprise
-                  options
-                </p>
+                <p className="text-sm text-blue-700 mt-1">{t.viewOnWebsite}</p>
               </div>
               <Button
                 onClick={handleViewPackages}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 <ExternalLink className="mr-2 h-4 w-4" />
-                View All Packages
+                {t.viewOnWebsite}
               </Button>
             </div>
           </div>
