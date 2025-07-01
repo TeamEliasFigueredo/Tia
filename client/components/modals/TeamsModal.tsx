@@ -545,7 +545,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-blue-600" />
-            Team Management
+            {t.teamManagement}
           </DialogTitle>
         </DialogHeader>
 
