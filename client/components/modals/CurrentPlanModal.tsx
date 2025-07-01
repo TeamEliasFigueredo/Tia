@@ -32,7 +32,11 @@ interface CurrentPlanModalProps {
   t: Translations;
 }
 
-export function CurrentPlanModal({ isOpen, onClose }: CurrentPlanModalProps) {
+export function CurrentPlanModal({
+  isOpen,
+  onClose,
+  t,
+}: CurrentPlanModalProps) {
   const [planData, setPlanData] = useState({
     planName: "Enterprise Pro",
     planType: "Annual",
