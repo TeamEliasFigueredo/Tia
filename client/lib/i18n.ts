@@ -439,6 +439,11 @@ export const translations: Record<Language, Translations> = {
     creditCardEnding: "Credit card ending in",
     totalInvoices: "Total Invoices",
     totalPaid: "Total Paid",
+    features: "Features",
+    upgrade: "Upgrade",
+    contactSales: "Contact Sales",
+    needCustomSolution:
+      "Need a custom solution? Contact our sales team for enterprise packages with custom user limits, storage, and specialized features tailored to your organization's needs.",
   },
 
   es: {
@@ -590,7 +595,7 @@ export const translations: Record<Language, Translations> = {
     storage: "Almacenamiento",
     upgraded: "¡Actualizado!",
     currentLabel: "Actual",
-    limit: "Límite",
+    limit: "L��mite",
     used: "Usado",
     percentUsed: "% del límite de usuarios usado",
     renewalInformation: "Información de Renovación",
