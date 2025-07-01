@@ -220,6 +220,9 @@ export interface Translations {
   upgrade: string;
   contactSales: string;
   needCustomSolution: string;
+  nextBilling: string;
+  expires: string;
+  invoiceHistory: string;
 }
 
 export const translations: Record<Language, Translations> = {
