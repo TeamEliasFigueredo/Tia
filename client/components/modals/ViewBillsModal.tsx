@@ -194,19 +194,20 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
           {/* Invoice Table */}
           <div>
             <h3 className="font-medium text-gray-900 mb-4">
-              Invoice History ({invoices.length} invoices)
+              {t.invoiceHistory} ({invoices.length}{" "}
+              {t.totalInvoices.toLowerCase()})
             </h3>
             <div className="border rounded-lg overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Invoice ID</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Plan</TableHead>
-                    <TableHead>Period</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>{t.invoice} ID</TableHead>
+                    <TableHead>{t.date}</TableHead>
+                    <TableHead>{t.plan}</TableHead>
+                    <TableHead>{t.period}</TableHead>
+                    <TableHead>{t.amount}</TableHead>
+                    <TableHead>{t.status}</TableHead>
+                    <TableHead>{t.actions}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
