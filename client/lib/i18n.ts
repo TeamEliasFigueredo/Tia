@@ -223,6 +223,13 @@ export interface Translations {
   nextBilling: string;
   expires: string;
   invoiceHistory: string;
+
+  // Profile modal
+  userProfile: string;
+  fullName: string;
+  profilePicture: string;
+  changeAvatar: string;
+  updateProfile: string;
 }
 
 export const translations: Record<Language, Translations> = {
