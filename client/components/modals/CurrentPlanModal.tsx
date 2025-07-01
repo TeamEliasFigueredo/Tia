@@ -398,7 +398,7 @@ export function CurrentPlanModal({
                 </div>
 
                 <div className="text-sm text-green-700">
-                  <div className="font-medium">Additional Cost:</div>
+                  <div className="font-medium">{t.additionalCost}</div>
                   <div className="text-lg font-bold">
                     +${calculateStorageIncreaseCost()}/month
                   </div>
@@ -412,11 +412,11 @@ export function CurrentPlanModal({
                   className="bg-green-600 hover:bg-green-700"
                 >
                   {isProcessingIncrease ? (
-                    <>Processing...</>
+                    <>{t.processing}</>
                   ) : (
                     <>
                       <Plus className="mr-1 h-4 w-4" />
-                      Increase
+                      {t.increase}
                     </>
                   )}
                 </Button>
