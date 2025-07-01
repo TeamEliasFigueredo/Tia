@@ -160,14 +160,14 @@ export function ViewBillsModal({ isOpen, onClose, t }: ViewBillsModalProps) {
               </p>
               <p className="text-sm text-green-700">
                 {invoices.filter((inv) => inv.status === "paid").length}{" "}
-                invoices
+                {t.totalInvoices.toLowerCase()}
               </p>
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center gap-2">
                 <CreditCard className="h-5 w-5 text-blue-600" />
-                <h3 className="font-medium text-blue-900">Payment Method</h3>
+                <h3 className="font-medium text-blue-900">{t.paymentMethod}</h3>
               </div>
               <p className="text-lg font-semibold text-blue-600 mt-2">
                 {paymentMethod.type} •••• {paymentMethod.lastFour}
