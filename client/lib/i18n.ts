@@ -89,6 +89,53 @@ export interface Translations {
   timestamp: string;
   references: string;
   chatSessionName: string;
+
+  // Teams management
+  teamManagement: string;
+  teamsTab: string;
+  teamMembers: string;
+  databasePermissions: string;
+  createNewTeam: string;
+  teamName: string;
+  teamDescription: string;
+  createTeam: string;
+  searchTeams: string;
+  members: string;
+  created: string;
+  manageTeam: string;
+  teamMembersManagement: string;
+  addNewMember: string;
+  addNewTeamMember: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  role: string;
+  member: string;
+  teamAdministrator: string;
+  addMember: string;
+  editTeamMember: string;
+  saveChanges: string;
+  lastActive: string;
+  adminStatus: string;
+  admin: string;
+  actions: string;
+  removeMember: string;
+  teamDatabaseAccessPermissions: string;
+  configurePermissions: string;
+  database: string;
+  read: string;
+  write: string;
+  manage: string;
+  permissionHierarchy: string;
+  viewDatabaseContent: string;
+  addEditDocuments: string;
+  removeDocuments: string;
+  fullDatabaseControl: string;
+  saveAllChanges: string;
+  user: string;
+  viewer: string;
+  removeFromTeam: string;
+  addToTeam: string;
 }
 
 export const translations: Record<Language, Translations> = {
