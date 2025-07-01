@@ -44,6 +44,7 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
           <UserProfileModal
             isOpen={modals.userProfile}
             onClose={() => onClose("userProfile")}
+            t={t}
           />
         )}
       </Suspense>
@@ -53,13 +54,18 @@ const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
           <SecurityModal
             isOpen={modals.security}
             onClose={() => onClose("security")}
+            t={t}
           />
         )}
       </Suspense>
 
       <Suspense fallback={<ModalLoadingFallback />}>
         {modals.terms && (
-          <TermsModal isOpen={modals.terms} onClose={() => onClose("terms")} />
+          <TermsModal
+            isOpen={modals.terms}
+            onClose={() => onClose("terms")}
+            t={t}
+          />
         )}
       </Suspense>
 
