@@ -127,7 +127,7 @@ export function AvailablePackagesModal({
                   {pkg.current && (
                     <div className="mb-2">
                       <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                        Current Plan
+                        {t.currentPlanDetails}
                       </span>
                     </div>
                   )}
