@@ -262,7 +262,12 @@ const DocumentViewer = memo<DocumentViewerProps>(
       >
         <div className="h-full flex flex-col">
           {/* Compact Header with Essential Controls */}
-          <div className="px-3 py-2 border-b bg-gray-50 dark:bg-gray-700 flex items-center gap-2">
+          <div
+            className={cn(
+              "px-3 py-2 border-b document-viewer-header flex items-center gap-2",
+              isMobile && "document-controls-mobile",
+            )}
+          >
             {/* Document Info */}
             <div className="flex items-center gap-2 flex-1 min-w-0">
               {selectedDocument && (
