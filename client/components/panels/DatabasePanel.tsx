@@ -534,6 +534,12 @@ const DatabasePanel = memo<DatabasePanelProps>(
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
+                            // Ensure database is expanded before creating folder
+                            if (!expandedDatabases.has(database.id)) {
+                              setExpandedDatabases(
+                                (prev) => new Set([...prev, database.id]),
+                              );
+                            }
                             setShowNewFolderInput(database.id);
                           }}
                           title="Create Folder"
@@ -890,20 +896,34 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                   {getFileTypeIcon(doc.fileType)}
                                   {editingDocument === doc.id ? (
                                     <Input
-                                      value={doc.name}
+                                      value={editingDocumentName}
                                       onChange={(e) =>
-                                        renameDocument(
-                                          database.id,
-                                          doc.id,
-                                          e.target.value,
-                                        )
+                                        setEditingDocumentName(e.target.value)
                                       }
-                                      onBlur={() => setEditingDocument(null)}
+                                      onBlur={() => {
+                                        if (editingDocumentName.trim()) {
+                                          renameDocument(
+                                            database.id,
+                                            doc.id,
+                                            editingDocumentName,
+                                          );
+                                        }
+                                        setEditingDocument(null);
+                                      }}
                                       onKeyDown={(e) => {
-                                        if (e.key === "Enter")
+                                        if (e.key === "Enter") {
+                                          if (editingDocumentName.trim()) {
+                                            renameDocument(
+                                              database.id,
+                                              doc.id,
+                                              editingDocumentName,
+                                            );
+                                          }
                                           setEditingDocument(null);
-                                        if (e.key === "Escape")
+                                        }
+                                        if (e.key === "Escape") {
                                           setEditingDocument(null);
+                                        }
                                       }}
                                       autoFocus
                                       className="h-5 text-xs"
