@@ -480,7 +480,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
 
                 <div
                   className={cn(
-                    "max-w-lg rounded-lg p-3 shadow-md relative text-sm leading-relaxed",
+                    "max-w-[80%] min-w-[200px] rounded-lg p-3 shadow-md relative text-sm leading-relaxed",
                     message.type === "user"
                       ? "bg-blue-600 text-white ml-8"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
