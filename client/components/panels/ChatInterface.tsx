@@ -243,7 +243,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         }}
       >
         {/* Header */}
-        <div className="p-4 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div className="px-3 py-2 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {!columnStates.showColumn1 && (
