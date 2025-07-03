@@ -474,6 +474,7 @@ export const translations: Record<Language, Translations> = {
     // UI Elements
     documents: "Documents",
     openDocuments: "Open Documents",
+    openDocumentList: "Open document list",
     openDocumentViewer: "Open Document Viewer",
   },
 
@@ -714,6 +715,7 @@ export const translations: Record<Language, Translations> = {
     // UI Elements
     documents: "Documentos",
     openDocuments: "Abrir Documentos",
+    openDocumentList: "Abrir lista de documentos",
     openDocumentViewer: "Abrir Visor de Documentos",
   },
 
@@ -838,7 +840,7 @@ export const translations: Record<Language, Translations> = {
     actions: "Actions",
     removeMember: "Supprimer Membre",
     teamDatabaseAccessPermissions:
-      "Permissions d'Accès aux Bases de Données d'Équipe",
+      "Permissions d'Accès aux Bases de Donn��es d'Équipe",
     configurePermissions:
       "Configurer les permissions d'accès aux bases de données pour chaque équipe",
     database: "Base de Données",
@@ -954,6 +956,7 @@ export const translations: Record<Language, Translations> = {
     // UI Elements
     documents: "Documents",
     openDocuments: "Ouvrir Documents",
+    openDocumentList: "Ouvrir liste de documents",
     openDocumentViewer: "Ouvrir Visionneuse de Documents",
   },
 };
