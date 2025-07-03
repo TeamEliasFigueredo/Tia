@@ -494,6 +494,30 @@ export const translations: Record<Language, Translations> = {
     profilePicture: "Profile Picture",
     changeAvatar: "Change Avatar",
     updateProfile: "Update Profile",
+    accountInformation: "Account Information",
+    personalDetails: "Personal Details",
+    contactInformation: "Contact Information",
+    preferences: "Preferences",
+
+    // Security modal
+    securitySettings: "Security Settings",
+    changePassword: "Change Password",
+    currentPassword: "Current Password",
+    newPassword: "New Password",
+    confirmPassword: "Confirm Password",
+    twoFactorAuthentication: "Two-Factor Authentication",
+    enableTwoFactor: "Enable Two-Factor Authentication",
+    securityQuestions: "Security Questions",
+    loginHistory: "Login History",
+    activeSessions: "Active Sessions",
+
+    // Terms of Use modal
+    termsOfUseContent: "Terms of Use",
+    acceptTerms: "Accept Terms",
+    lastUpdated: "Last Updated",
+    dataPrivacy: "Data Privacy",
+    userRights: "User Rights",
+    serviceTerms: "Service Terms",
 
     // UI Elements
     documents: "Documents",
@@ -735,6 +759,30 @@ export const translations: Record<Language, Translations> = {
     profilePicture: "Foto de Perfil",
     changeAvatar: "Cambiar Avatar",
     updateProfile: "Actualizar Perfil",
+    accountInformation: "Información de la Cuenta",
+    personalDetails: "Detalles Personales",
+    contactInformation: "Información de Contacto",
+    preferences: "Preferencias",
+
+    // Security modal
+    securitySettings: "Configuración de Seguridad",
+    changePassword: "Cambiar Contraseña",
+    currentPassword: "Contraseña Actual",
+    newPassword: "Nueva Contraseña",
+    confirmPassword: "Confirmar Contraseña",
+    twoFactorAuthentication: "Autenticación de Dos Factores",
+    enableTwoFactor: "Habilitar Autenticación de Dos Factores",
+    securityQuestions: "Preguntas de Seguridad",
+    loginHistory: "Historial de Inicio de Sesión",
+    activeSessions: "Sesiones Activas",
+
+    // Terms of Use modal
+    termsOfUseContent: "Términos de Uso",
+    acceptTerms: "Aceptar Términos",
+    lastUpdated: "Última Actualización",
+    dataPrivacy: "Privacidad de Datos",
+    userRights: "Derechos del Usuario",
+    serviceTerms: "Términos del Servicio",
 
     // UI Elements
     documents: "Documentos",
@@ -976,6 +1024,30 @@ export const translations: Record<Language, Translations> = {
     profilePicture: "Photo de Profil",
     changeAvatar: "Changer l'Avatar",
     updateProfile: "Mettre à Jour le Profil",
+    accountInformation: "Informations du Compte",
+    personalDetails: "Détails Personnels",
+    contactInformation: "Informations de Contact",
+    preferences: "Préférences",
+
+    // Security modal
+    securitySettings: "Paramètres de Sécurité",
+    changePassword: "Changer le Mot de Passe",
+    currentPassword: "Mot de Passe Actuel",
+    newPassword: "Nouveau Mot de Passe",
+    confirmPassword: "Confirmer le Mot de Passe",
+    twoFactorAuthentication: "Authentification à Deux Facteurs",
+    enableTwoFactor: "Activer l'Authentification à Deux Facteurs",
+    securityQuestions: "Questions de Sécurité",
+    loginHistory: "Historique de Connexion",
+    activeSessions: "Sessions Actives",
+
+    // Terms of Use modal
+    termsOfUseContent: "Conditions d'Utilisation",
+    acceptTerms: "Accepter les Conditions",
+    lastUpdated: "Dernière Mise à Jour",
+    dataPrivacy: "Confidentialité des Données",
+    userRights: "Droits de l'Utilisateur",
+    serviceTerms: "Conditions de Service",
 
     // UI Elements
     documents: "Documents",
