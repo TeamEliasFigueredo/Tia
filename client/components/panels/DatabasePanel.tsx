@@ -798,22 +798,40 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                             {getFileTypeIcon(doc.fileType)}
                                             {editingDocument === doc.id ? (
                                               <Input
-                                                value={doc.name}
+                                                value={editingDocumentName}
                                                 onChange={(e) =>
-                                                  renameDocument(
-                                                    database.id,
-                                                    doc.id,
+                                                  setEditingDocumentName(
                                                     e.target.value,
                                                   )
                                                 }
-                                                onBlur={() =>
-                                                  setEditingDocument(null)
-                                                }
+                                                onBlur={() => {
+                                                  if (
+                                                    editingDocumentName.trim()
+                                                  ) {
+                                                    renameDocument(
+                                                      database.id,
+                                                      doc.id,
+                                                      editingDocumentName,
+                                                    );
+                                                  }
+                                                  setEditingDocument(null);
+                                                }}
                                                 onKeyDown={(e) => {
-                                                  if (e.key === "Enter")
+                                                  if (e.key === "Enter") {
+                                                    if (
+                                                      editingDocumentName.trim()
+                                                    ) {
+                                                      renameDocument(
+                                                        database.id,
+                                                        doc.id,
+                                                        editingDocumentName,
+                                                      );
+                                                    }
                                                     setEditingDocument(null);
-                                                  if (e.key === "Escape")
+                                                  }
+                                                  if (e.key === "Escape") {
                                                     setEditingDocument(null);
+                                                  }
                                                 }}
                                                 autoFocus
                                                 className="h-5 text-xs"
