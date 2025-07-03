@@ -494,7 +494,7 @@ export const translations: Record<Language, Translations> = {
     logOut: "Cerrar sesión",
 
     // Database management
-    databases: "Bases de Datos",
+    databases: "Documentos",
     newDatabase: "Nueva Base de Datos",
     databaseName: "Nombre de la base de datos",
     addDocument: "Agregar Documento",
