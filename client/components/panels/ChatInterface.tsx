@@ -252,7 +252,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   size="sm"
                   onClick={onToggleColumns.toggleColumn1}
                   className="text-white hover:bg-white/20"
-                  title={t.openDocuments}
+                  title={t.openDocumentList}
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
