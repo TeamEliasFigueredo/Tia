@@ -269,7 +269,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 </Button>
               )}
               <div className="flex items-center space-x-2">
-                <h2 className="font-semibold">Chat with</h2>
+                <h2 className="font-semibold">{t.chatWithTia}</h2>
                 <div className="w-5 h-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">
                   <span className="font-bold text-xs text-white">Tia</span>
                 </div>
