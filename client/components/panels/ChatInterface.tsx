@@ -603,7 +603,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 onClick={() => chatFileInputRef.current?.click()}
                 title={`${t.uploadFiles} ${t.myDocuments}`}
               >
-                <Upload className="h-4 w-4" />
+                <Upload className="h-3 w-3" />
               </Button>
 
               <Button
@@ -611,7 +611,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 size="sm"
                 onClick={handleSaveConversation}
               >
-                <Save className="h-4 w-4" />
+                <Save className="h-3 w-3" />
               </Button>
             </div>
           </div>
