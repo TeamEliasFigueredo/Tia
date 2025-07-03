@@ -26,6 +26,11 @@ export function AvailablePackagesModal({
     window.open("https://softia.ca/pricing-packages", "_blank");
   };
 
+  const handleContactSales = () => {
+    // Open contact sales page in new tab
+    window.open("https://softia.ca/contact-sales", "_blank");
+  };
+
   const packages = [
     {
       name: t.starter,
@@ -171,7 +176,12 @@ export function AvailablePackagesModal({
 
           <div className="mt-6 p-4 bg-gray-50 border rounded-lg">
             <p className="text-sm text-gray-600">{t.needCustomSolution}</p>
-            <Button variant="outline" size="sm" className="mt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={handleContactSales}
+            >
               {t.contactSales}
             </Button>
           </div>
