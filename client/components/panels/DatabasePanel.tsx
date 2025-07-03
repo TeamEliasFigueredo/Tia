@@ -834,7 +834,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                               className="h-4 w-4 p-0"
                                               onClick={(e) => {
                                                 e.stopPropagation();
-                                                setEditingDocument(doc.id);
+                                                startEditDocument(doc);
                                               }}
                                             >
                                               <Edit3 className="h-2 w-2" />
@@ -942,7 +942,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                                     className="h-4 w-4 p-0"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      setEditingDocument(doc.id);
+                                      startEditDocument(doc);
                                     }}
                                   >
                                     <Edit3 className="h-2 w-2" />
