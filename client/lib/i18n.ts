@@ -709,6 +709,11 @@ export const translations: Record<Language, Translations> = {
     profilePicture: "Foto de Perfil",
     changeAvatar: "Cambiar Avatar",
     updateProfile: "Actualizar Perfil",
+
+    // UI Elements
+    documents: "Documentos",
+    openDocuments: "Abrir Documentos",
+    openDocumentViewer: "Abrir Visor de Documentos",
   },
 
   fr: {
@@ -861,7 +866,7 @@ export const translations: Record<Language, Translations> = {
     upgraded: "Mis à niveau !",
     currentLabel: "Actuel",
     limit: "Limite",
-    used: "Utilisé",
+    used: "Utilis��",
     percentUsed: "% de la limite d'utilisateurs utilisée",
     renewalInformation: "Informations de Renouvellement",
     nextRenewalDate: "Prochaine date de renouvellement :",
