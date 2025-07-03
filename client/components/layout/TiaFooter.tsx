@@ -19,6 +19,7 @@ const TiaFooter = memo<TiaFooterProps>(({ t }) => {
             >
               Tia
             </a>
+            <span className="text-gray-400 text-xs ml-1">v2.1.0</span>
             &nbsp;is a Creation of&nbsp;
             <a
               href="https://softia.ca"
