@@ -388,15 +388,23 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
             {/* Close only when no document */}
             {!selectedDocument && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 w-7 p-0"
-                onClick={onToggleVisibility}
-                title="Close document viewer"
-              >
-                <ChevronLeft className="h-3 w-3" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 w-7 p-0"
+                      onClick={onToggleVisibility}
+                    >
+                      <ChevronLeft className="h-3 w-3" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t.openDocumentViewer}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
 
