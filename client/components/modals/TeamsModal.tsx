@@ -114,6 +114,8 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
   const [newTeamName, setNewTeamName] = useState("");
   const [newTeamDescription, setNewTeamDescription] = useState("");
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
+  const [editingTeamName, setEditingTeamName] = useState("");
+  const [editingTeamDescription, setEditingTeamDescription] = useState("");
 
   const [teams, setTeams] = useState<Team[]>([
     {
