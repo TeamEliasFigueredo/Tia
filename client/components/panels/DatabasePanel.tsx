@@ -84,9 +84,11 @@ const DatabasePanel = memo<DatabasePanelProps>(
     const [editingDatabase, setEditingDatabase] = React.useState<string | null>(
       null,
     );
+    const [editingDatabaseName, setEditingDatabaseName] = React.useState("");
     const [editingDocument, setEditingDocument] = React.useState<string | null>(
       null,
     );
+    const [editingDocumentName, setEditingDocumentName] = React.useState("");
     const [editingFolder, setEditingFolder] = React.useState<string | null>(
       null,
     );
@@ -285,8 +287,14 @@ const DatabasePanel = memo<DatabasePanelProps>(
       setEditingFolderName("");
     }, []);
 
-    const startEditDocument = useCallback((docId: string) => {
-      setEditingDocument(docId);
+    const startEditDocument = useCallback((doc: Document) => {
+      setEditingDocument(doc.id);
+      setEditingDocumentName(doc.name);
+    }, []);
+
+    const startEditDatabase = useCallback((database: DatabaseType) => {
+      setEditingDatabase(database.id);
+      setEditingDatabaseName(database.name);
     }, []);
 
     const [expandedDatabases, setExpandedDatabases] = React.useState<
@@ -484,14 +492,32 @@ const DatabasePanel = memo<DatabasePanelProps>(
                         <Database className="h-4 w-4 text-blue-500" />
                         {editingDatabase === database.id ? (
                           <Input
-                            value={database.name}
+                            value={editingDatabaseName}
                             onChange={(e) =>
-                              renameDatabase(database.id, e.target.value)
+                              setEditingDatabaseName(e.target.value)
                             }
-                            onBlur={() => setEditingDatabase(null)}
+                            onBlur={() => {
+                              if (editingDatabaseName.trim()) {
+                                renameDatabase(
+                                  database.id,
+                                  editingDatabaseName,
+                                );
+                              }
+                              setEditingDatabase(null);
+                            }}
                             onKeyDown={(e) => {
-                              if (e.key === "Enter") setEditingDatabase(null);
-                              if (e.key === "Escape") setEditingDatabase(null);
+                              if (e.key === "Enter") {
+                                if (editingDatabaseName.trim()) {
+                                  renameDatabase(
+                                    database.id,
+                                    editingDatabaseName,
+                                  );
+                                }
+                                setEditingDatabase(null);
+                              }
+                              if (e.key === "Escape") {
+                                setEditingDatabase(null);
+                              }
                             }}
                             autoFocus
                             className="h-6 text-sm"
@@ -532,7 +558,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            setEditingDatabase(database.id);
+                            startEditDatabase(database);
                           }}
                           title="Edit Database"
                         >
