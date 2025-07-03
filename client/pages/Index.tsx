@@ -84,13 +84,6 @@ export default function Index() {
 
   return (
     <div className={containerClasses} style={containerStyle}>
-      {/* Tia Branding - moved outside header */}
-      <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-        <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
-          <span className="font-bold text-xs">Tia</span>
-        </div>
-      </div>
-
       <TiaHeader {...headerProps} />
 
       <div className="flex-1 flex overflow-hidden">
