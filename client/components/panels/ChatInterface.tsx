@@ -579,13 +579,13 @@ const ChatInterface = memo<ChatInterfaceProps>(
               }}
               className="flex-1 min-h-[32px] max-h-[80px] resize-none text-sm"
             />
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-1">
               <Button
                 onClick={handleSendMessage}
                 className="bg-blue-600 hover:bg-blue-700"
                 size="sm"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-3 w-3" />
               </Button>
 
               {/* Chat File Upload */}
