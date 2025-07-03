@@ -586,6 +586,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 onClick={handleSendMessage}
                 className="bg-blue-600 hover:bg-blue-700"
                 size="sm"
+                title={t.send}
               >
                 <Send className="h-3 w-3" />
               </Button>
@@ -603,7 +604,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 variant="outline"
                 size="sm"
                 onClick={() => chatFileInputRef.current?.click()}
-                title={`${t.uploadFiles} ${t.myDocuments}`}
+                title={t.uploadFiles}
               >
                 <Upload className="h-3 w-3" />
               </Button>
@@ -612,6 +613,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 variant="outline"
                 size="sm"
                 onClick={handleSaveConversation}
+                title={t.saveCurrent}
               >
                 <Save className="h-3 w-3" />
               </Button>

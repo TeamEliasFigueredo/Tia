@@ -234,6 +234,7 @@ export interface Translations {
   // UI Elements
   documents: string;
   openDocuments: string;
+  openDocumentList: string;
   openDocumentViewer: string;
 }
 
