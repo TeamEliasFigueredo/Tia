@@ -553,7 +553,9 @@ const DatabasePanel = memo<DatabasePanelProps>(
                             e.stopPropagation();
                             // Ensure database is expanded before uploading files
                             if (!expandedDatabases.has(database.id)) {
-                              setExpandedDatabases(prev => new Set([...prev, database.id]));
+                              setExpandedDatabases(
+                                (prev) => new Set([...prev, database.id]),
+                              );
                             }
                             document
                               .getElementById(`file-upload-${database.id}`)
@@ -589,7 +591,8 @@ const DatabasePanel = memo<DatabasePanelProps>(
                     </div>
 
                     <div className="text-xs text-gray-500 mt-1">
-                      {database.documents.length} {t.documents} • {database.size}
+                      {database.documents.length} {t.documents} •{" "}
+                      {database.size}
                     </div>
 
                     {/* Folders and Documents List */}
@@ -1007,7 +1010,6 @@ const DatabasePanel = memo<DatabasePanelProps>(
           </ScrollArea>
         </div>
       </div>
-      </TooltipProvider>
     );
   },
 );
