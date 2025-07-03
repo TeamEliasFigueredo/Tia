@@ -32,7 +32,10 @@ const TiaFooter = memo<TiaFooterProps>(({ t }) => {
           </p>
         </div>
         <div className="text-xs text-gray-400">
-          © 2024 Softia.ca - {t.rightsReserved}
+          <span>
+            <p>© 2025 Softia.ca -</p>
+          </span>
+          <span>{t.rightsReserved}</span>
         </div>
       </div>
     </footer>
