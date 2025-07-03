@@ -379,9 +379,22 @@ const DatabasePanel = memo<DatabasePanelProps>(
                 <Database className="mr-2 h-5 w-5 text-blue-600" />
                 {t.documents}
               </h2>
-              <Button variant="ghost" size="sm" onClick={onToggleVisibility}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onToggleVisibility}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t.openDocuments}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             {/* New Database Input */}
