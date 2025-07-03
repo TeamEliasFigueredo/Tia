@@ -469,6 +469,11 @@ export const translations: Record<Language, Translations> = {
     profilePicture: "Profile Picture",
     changeAvatar: "Change Avatar",
     updateProfile: "Update Profile",
+
+    // UI Elements
+    documents: "Documents",
+    openDocuments: "Open Documents",
+    openDocumentViewer: "Open Document Viewer",
   },
 
   es: {
