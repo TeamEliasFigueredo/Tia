@@ -243,7 +243,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         }}
       >
         {/* Header */}
-        <div className="px-3 py-2 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div className="px-3 py-1 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {!columnStates.showColumn1 && (
@@ -252,6 +252,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   size="sm"
                   onClick={onToggleColumns.toggleColumn1}
                   className="text-white hover:bg-white/20"
+                  title={t.openDocuments}
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
@@ -262,12 +263,13 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   size="sm"
                   onClick={onToggleColumns.toggleColumn2}
                   className="text-white hover:bg-white/20"
+                  title={t.openDocumentViewer}
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
               )}
               <div className="flex items-center space-x-2">
-                <h2 className="font-semibold">{t.chatWithTia}</h2>
+                <h2 className="font-semibold">Chat with</h2>
                 <div className="w-5 h-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">
                   <span className="font-bold text-xs text-white">Tia</span>
                 </div>
@@ -553,7 +555,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         {/* Chat Input */}
         <div
           className={cn(
-            "p-2 border-t bg-gray-50 dark:bg-gray-700 transition-all duration-200",
+            "p-1 border-t bg-gray-50 dark:bg-gray-700 transition-all duration-200",
             dragState.chatDragOver &&
               "bg-blue-100 dark:bg-blue-900/30 border-blue-400 border-2",
           )}
@@ -577,9 +579,9 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   handleSendMessage();
                 }
               }}
-              className="flex-1 min-h-[32px] max-h-[80px] resize-none text-sm"
+              className="flex-1 min-h-[32px] max-h-[60px] resize-none text-sm"
             />
-            <div className="flex flex-col space-y-1">
+            <div className="flex space-x-1">
               <Button
                 onClick={handleSendMessage}
                 className="bg-blue-600 hover:bg-blue-700"
