@@ -390,8 +390,8 @@ export function useFileOperations() {
 export function useOptimizedTiaApp() {
   // Layout state
   const [layout, setLayout] = useState({
-    showColumn1: false,
-    showColumn2: false,
+    showColumn1: true, // Show Documents column by default
+    showColumn2: false, // Document Viewer hidden by default
   });
 
   // Settings with localStorage persistence
