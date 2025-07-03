@@ -553,7 +553,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         {/* Chat Input */}
         <div
           className={cn(
-            "p-4 border-t bg-gray-50 dark:bg-gray-700 transition-all duration-200",
+            "p-2 border-t bg-gray-50 dark:bg-gray-700 transition-all duration-200",
             dragState.chatDragOver &&
               "bg-blue-100 dark:bg-blue-900/30 border-blue-400 border-2",
           )}
@@ -561,7 +561,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
           onDragLeave={onDragHandlers.onDragLeave}
           onDrop={onDragHandlers.onDrop}
         >
-          <div className="flex space-x-3">
+          <div className="flex space-x-2">
             <Textarea
               placeholder={t.askQuestion}
               value={chatState.currentMessage}
@@ -577,7 +577,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   handleSendMessage();
                 }
               }}
-              className="flex-1 min-h-[50px] resize-none"
+              className="flex-1 min-h-[32px] max-h-[80px] resize-none text-sm"
             />
             <div className="flex flex-col space-y-2">
               <Button
