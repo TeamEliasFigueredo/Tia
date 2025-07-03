@@ -520,6 +520,12 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
     setHasUnsavedChanges(true);
   };
 
+  const startEditTeam = (team: Team) => {
+    setEditingTeamId(team.id);
+    setEditingTeamName(team.name);
+    setEditingTeamDescription(team.description);
+  };
+
   const canManageTeam = (team: Team) => {
     return isAdmin || team.adminId === currentUserId;
   };
@@ -637,14 +643,26 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                       {editingTeamId === team.id ? (
                         <div className="flex-1 mr-2">
                           <Input
-                            value={team.name}
-                            onChange={(e) =>
-                              updateTeam(team.id, { name: e.target.value })
-                            }
-                            onBlur={() => setEditingTeamId(null)}
+                            value={editingTeamName}
+                            onChange={(e) => setEditingTeamName(e.target.value)}
+                            onBlur={() => {
+                              if (editingTeamName.trim()) {
+                                updateTeam(team.id, { name: editingTeamName });
+                              }
+                              setEditingTeamId(null);
+                            }}
                             onKeyDown={(e) => {
-                              if (e.key === "Enter") setEditingTeamId(null);
-                              if (e.key === "Escape") setEditingTeamId(null);
+                              if (e.key === "Enter") {
+                                if (editingTeamName.trim()) {
+                                  updateTeam(team.id, {
+                                    name: editingTeamName,
+                                  });
+                                }
+                                setEditingTeamId(null);
+                              }
+                              if (e.key === "Escape") {
+                                setEditingTeamId(null);
+                              }
                             }}
                             autoFocus
                             className="text-lg font-semibold"
@@ -658,7 +676,7 @@ export function TeamsModal({ isOpen, onClose, t }: TeamsModalProps) {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setEditingTeamId(team.id)}
+                            onClick={() => startEditTeam(team)}
                           >
                             <Edit3 className="h-3 w-3" />
                           </Button>
