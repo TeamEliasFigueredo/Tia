@@ -551,6 +551,12 @@ const DatabasePanel = memo<DatabasePanelProps>(
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
+                            // Ensure database is expanded before uploading files
+                            if (!expandedDatabases.has(database.id)) {
+                              setExpandedDatabases(
+                                (prev) => new Set([...prev, database.id]),
+                              );
+                            }
                             document
                               .getElementById(`file-upload-${database.id}`)
                               ?.click();
@@ -585,7 +591,8 @@ const DatabasePanel = memo<DatabasePanelProps>(
                     </div>
 
                     <div className="text-xs text-gray-500 mt-1">
-                      {database.documentCount} {t.documents} • {database.size}
+                      {database.documents.length} {t.documents} •{" "}
+                      {database.size}
                     </div>
 
                     {/* Folders and Documents List */}
