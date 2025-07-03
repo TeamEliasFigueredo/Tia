@@ -97,7 +97,39 @@
     @apply bg-background text-foreground;
   }
 
-  /* Document viewer enhancements */
+  /* Dark Mode Modal Text Color Fixes */
+  .dark [data-radix-dialog-content] {
+    color: #f3f4f6 !important;
+  }
+
+  .dark [data-radix-dialog-content] p,
+  .dark [data-radix-dialog-content] span,
+  .dark [data-radix-dialog-content] div,
+  .dark [data-radix-dialog-content] label {
+    color: #f3f4f6 !important;
+  }
+
+  .dark [data-radix-dialog-content] .text-gray-600 {
+    color: #d1d5db !important;
+  }
+
+  .dark [data-radix-dialog-content] .text-gray-500 {
+    color: #9ca3af !important;
+  }
+
+  .dark [data-radix-dialog-content] .text-gray-700 {
+    color: #e5e7eb !important;
+  }
+
+  .dark [data-radix-dialog-content] .text-gray-800 {
+    color: #f3f4f6 !important;
+  }
+
+  .dark [data-radix-dialog-content] .text-gray-900 {
+    color: #ffffff !important;
+  }
+
+  /* Document Viewer Enhancements */
   .document-content {
     line-height: 1.6;
     font-size: 14px;
