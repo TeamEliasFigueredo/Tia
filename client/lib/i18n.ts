@@ -230,6 +230,30 @@ export interface Translations {
   profilePicture: string;
   changeAvatar: string;
   updateProfile: string;
+  accountInformation: string;
+  personalDetails: string;
+  contactInformation: string;
+  preferences: string;
+
+  // Security modal
+  securitySettings: string;
+  changePassword: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  twoFactorAuthentication: string;
+  enableTwoFactor: string;
+  securityQuestions: string;
+  loginHistory: string;
+  activeSessions: string;
+
+  // Terms of Use modal
+  termsOfUseContent: string;
+  acceptTerms: string;
+  lastUpdated: string;
+  dataPrivacy: string;
+  userRights: string;
+  serviceTerms: string;
 
   // UI Elements
   documents: string;
@@ -840,7 +864,7 @@ export const translations: Record<Language, Translations> = {
     actions: "Actions",
     removeMember: "Supprimer Membre",
     teamDatabaseAccessPermissions:
-      "Permissions d'Accès aux Bases de Donn��es d'Équipe",
+      "Permissions d'Accès aux Bases de Données d'Équipe",
     configurePermissions:
       "Configurer les permissions d'accès aux bases de données pour chaque équipe",
     database: "Base de Données",
