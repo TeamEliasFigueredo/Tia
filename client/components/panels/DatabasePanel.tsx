@@ -371,7 +371,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-gray-800 dark:text-white flex items-center">
                 <Database className="mr-2 h-5 w-5 text-blue-600" />
-                {t.databases}
+                {t.documents}
               </h2>
               <Button variant="ghost" size="sm" onClick={onToggleVisibility}>
                 <ChevronLeft className="h-4 w-4" />
