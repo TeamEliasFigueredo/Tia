@@ -230,6 +230,11 @@ export interface Translations {
   profilePicture: string;
   changeAvatar: string;
   updateProfile: string;
+
+  // UI Elements
+  documents: string;
+  openDocuments: string;
+  openDocumentViewer: string;
 }
 
 export const translations: Record<Language, Translations> = {
