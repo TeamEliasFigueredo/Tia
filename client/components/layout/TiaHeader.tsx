@@ -145,7 +145,7 @@ const TiaHeader = memo<TiaHeaderProps>(
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all duration-200 hover:scale-105">
                 <AvatarImage src="" alt={`${currentUser.name} avatar`} />
-                <AvatarFallback className="bg-blue-600 text-white font-semibold">
+                <AvatarFallback className="bg-gray-700 text-white font-semibold">
                   {currentUser.initials}
                 </AvatarFallback>
               </Avatar>

@@ -541,7 +541,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
 
                 {message.type === "user" && (
                   <Avatar className="flex-shrink-0 w-7 h-7">
-                    <AvatarFallback className="bg-blue-600 text-white text-xs">
+                    <AvatarFallback className="bg-gray-700 text-white text-xs">
                       J
                     </AvatarFallback>
                   </Avatar>
