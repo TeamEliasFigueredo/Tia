@@ -78,8 +78,9 @@ export default function Index() {
   };
 
   const containerClasses = cn(
-    "h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 transition-all duration-300",
-    settings.theme === "dark" && "dark:from-gray-900 dark:to-gray-800",
+    "h-screen flex flex-col bg-gradient-gray-light transition-all duration-300",
+    settings.theme === "dark" &&
+      "dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800",
   );
 
   return (
