@@ -378,7 +378,7 @@ const DatabasePanel = memo<DatabasePanelProps>(
     if (!isVisible) return null;
 
     return (
-      <div className="w-80 bg-white dark:bg-gray-800 border-r-2 border-blue-100 dark:border-blue-800 transition-all duration-300 shadow-lg">
+      <div className="w-80 bg-white dark:bg-gray-800 border-r-2 border-gray-200 dark:border-gray-700 transition-all duration-300 shadow-lg">
         <div className="h-full flex flex-col">
           {/* Header */}
           <div className="p-4 border-b bg-gray-50 dark:bg-gray-700">
