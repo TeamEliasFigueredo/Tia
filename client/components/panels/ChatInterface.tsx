@@ -484,7 +484,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   className={cn(
                     "max-w-[80%] min-w-[200px] rounded-lg p-3 shadow-md relative text-sm leading-relaxed",
                     message.type === "user"
-                      ? "bg-blue-600 text-white ml-8"
+                      ? "bg-gray-700 text-white ml-8"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
                   )}
                 >
@@ -584,7 +584,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
             <div className="flex space-x-1">
               <Button
                 onClick={handleSendMessage}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="btn-gray-primary"
                 size="sm"
                 title={t.send}
               >
