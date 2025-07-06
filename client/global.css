@@ -229,13 +229,131 @@
 }
 
 @layer components {
+  /* Light Gray Color Utilities */
+  .bg-primary-gray {
+    background-color: hsl(var(--gray-700));
+  }
+
+  .bg-secondary-gray {
+    background-color: hsl(var(--gray-100));
+  }
+
+  .bg-accent-gray {
+    background-color: hsl(var(--gray-200));
+  }
+
+  .text-primary-gray {
+    color: hsl(var(--gray-700));
+  }
+
+  .text-secondary-gray {
+    color: hsl(var(--gray-500));
+  }
+
+  .border-gray {
+    border-color: hsl(var(--gray-300));
+  }
+
+  /* Gradient Gray Styles */
+  .bg-gradient-gray {
+    background: linear-gradient(
+      to right,
+      hsl(var(--gray-600)),
+      hsl(var(--gray-700))
+    );
+  }
+
+  .bg-gradient-gray-light {
+    background: linear-gradient(
+      to right bottom,
+      hsl(var(--gray-50)),
+      hsl(var(--gray-100))
+    );
+  }
+
+  /* Button Gray Variants */
+  .btn-gray-primary {
+    background-color: hsl(var(--gray-700));
+    color: hsl(var(--gray-50));
+  }
+
+  .btn-gray-primary:hover {
+    background-color: hsl(var(--gray-800));
+  }
+
+  .btn-gray-secondary {
+    background-color: hsl(var(--gray-200));
+    color: hsl(var(--gray-700));
+  }
+
+  .btn-gray-secondary:hover {
+    background-color: hsl(var(--gray-300));
+  }
+
+  /* Override Blue References with Gray */
+  .text-blue-600 {
+    color: hsl(var(--gray-700)) !important;
+  }
+
+  .text-blue-500 {
+    color: hsl(var(--gray-600)) !important;
+  }
+
+  .text-blue-700 {
+    color: hsl(var(--gray-800)) !important;
+  }
+
+  .bg-blue-600 {
+    background-color: hsl(var(--gray-700)) !important;
+  }
+
+  .bg-blue-500 {
+    background-color: hsl(var(--gray-600)) !important;
+  }
+
+  .bg-blue-50 {
+    background-color: hsl(var(--gray-100)) !important;
+  }
+
+  .bg-blue-100 {
+    background-color: hsl(var(--gray-200)) !important;
+  }
+
+  .border-blue-600 {
+    border-color: hsl(var(--gray-700)) !important;
+  }
+
+  .border-blue-500 {
+    border-color: hsl(var(--gray-600)) !important;
+  }
+
+  .border-blue-100 {
+    border-color: hsl(var(--gray-200)) !important;
+  }
+
+  .border-blue-800 {
+    border-color: hsl(var(--gray-800)) !important;
+  }
+
+  .hover\:bg-blue-700:hover {
+    background-color: hsl(var(--gray-800)) !important;
+  }
+
+  .hover\:text-blue-600:hover {
+    color: hsl(var(--gray-700)) !important;
+  }
+
+  .hover\:text-blue-400:hover {
+    color: hsl(var(--gray-400)) !important;
+  }
+
   /* Custom scrollbar for chat area */
   .chat-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
 
   .chat-scrollbar::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: hsl(var(--gray-100));
     border-radius: 3px;
   }
 
