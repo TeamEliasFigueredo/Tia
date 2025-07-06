@@ -243,7 +243,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         }}
       >
         {/* Header */}
-        <div className="px-3 py-1 border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div className="px-3 py-1 border-b bg-gradient-gray text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {!columnStates.showColumn1 && (
@@ -270,7 +270,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
               )}
               <div className="flex items-center space-x-2">
                 <h2 className="font-semibold">{t.chatWithTia}</h2>
-                <div className="w-5 h-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded flex items-center justify-center">
+                <div className="w-5 h-5 bg-gradient-gray rounded flex items-center justify-center">
                   <span className="font-bold text-xs text-white">Tia</span>
                 </div>
               </div>
@@ -475,7 +475,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                 )}
               >
                 {message.type === "bot" && (
-                  <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-7 h-7 bg-gradient-gray rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white font-bold text-xs">Tia</span>
                   </div>
                 )}

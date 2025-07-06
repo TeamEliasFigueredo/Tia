@@ -62,14 +62,14 @@ const TiaHeader = memo<TiaHeaderProps>(
     );
 
     return (
-      <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-blue-100 dark:border-blue-800 px-6 py-2 flex items-center justify-between relative z-50 transition-colors duration-200">
+      <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2 flex items-center justify-between relative z-50 transition-colors duration-200">
         <div className="flex items-center space-x-6">
           {/* Company Logo - clickable */}
           <button
             onClick={() => window.open("https://softia.ca", "_blank")}
             className="flex items-center space-x-3 group hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
+            <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
               <span className="text-white font-bold">S</span>
             </div>
             <span className="text-lg font-semibold text-gray-800 dark:text-white">

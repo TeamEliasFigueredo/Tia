@@ -7,7 +7,7 @@ interface TiaFooterProps {
 
 const TiaFooter = memo<TiaFooterProps>(({ t }) => {
   return (
-    <footer className="bg-gray-800 text-white py-2 px-6 border-t-4 border-blue-600">
+    <footer className="bg-gray-800 text-white py-2 px-6 border-t-4 border-gray-600">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <p className="text-xs text-gray-300">
