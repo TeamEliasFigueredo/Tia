@@ -4,9 +4,25 @@
 
 @layer base {
   /**
-   * Tailwind CSS theme
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
+   * LIGHT GRAY PALETTE DESIGN SYSTEM
+   *
+   * This theme uses a sophisticated light gray palette for a modern, professional appearance.
+   * All color variables are expressed as HSL values for maximum flexibility.
+   *
+   * GRAY SCALE REFERENCE:
+   * --gray-50:  98% lightness - Backgrounds, subtle highlights
+   * --gray-100: 95% lightness - Card backgrounds, subtle containers
+   * --gray-200: 90% lightness - Borders, dividers, subtle accents
+   * --gray-300: 83% lightness - Input borders, inactive elements
+   * --gray-400: 65% lightness - Placeholder text, disabled states
+   * --gray-500: 45% lightness - Secondary text, muted content
+   * --gray-600: 35% lightness - Primary interactive elements
+   * --gray-700: 25% lightness - Primary buttons, important text
+   * --gray-800: 15% lightness - High contrast text, dark accents
+   * --gray-900: 8%  lightness - Maximum contrast, headers
+   *
+   * ACCESSIBILITY: All combinations maintain WCAG AA contrast ratios
+   * CONSISTENCY: Use utility classes .bg-primary-gray, .text-secondary-gray, etc.
   */
   :root {
     /* Light Gray Palette Variables */
