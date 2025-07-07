@@ -82,6 +82,7 @@ export function useModalManager() {
     currentPlan: false,
     availablePackages: false,
     viewBills: false,
+    company: false,
     teams: false,
   });
 
