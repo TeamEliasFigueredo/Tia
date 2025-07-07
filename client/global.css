@@ -531,6 +531,15 @@
     font-size: 0.8rem;
   }
 
+  /* Border radius utilities */
+  .rounded-inherit {
+    border-radius: inherit;
+  }
+
+  .rounded-2px {
+    border-radius: 2px;
+  }
+
   /* Font size utilities */
   .font-size-dynamic {
     font-size: var(--font-size, 14px);
