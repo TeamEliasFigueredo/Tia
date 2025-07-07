@@ -146,7 +146,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Excel":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-green-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-green-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="overflow-x-auto mb-4">
                     <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600 text-sm">
