@@ -562,7 +562,14 @@ export function useOptimizedTiaApp() {
   const [companies, setCompanies] = useState<Company[]>(() => {
     try {
       const saved = localStorage.getItem("tia-companies");
-      return saved ? JSON.parse(saved) : [];
+      const parsedCompanies = saved ? JSON.parse(saved) : [];
+
+      // Ensure companies have the new fields
+      return parsedCompanies.map((company: any) => ({
+        ...company,
+        taxId: company.taxId || "",
+        country: company.country || "",
+      }));
     } catch {
       return [];
     }
