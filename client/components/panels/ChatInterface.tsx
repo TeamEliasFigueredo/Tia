@@ -488,8 +488,12 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   )}
                 >
                   <div
-                    className="mb-1"
-                    style={{ fontSize: `${settings.fontSize}px` }}
+                    className="mb-1 chat-message-text"
+                    style={
+                      {
+                        "--font-size": `${settings.fontSize}px`,
+                      } as React.CSSProperties
+                    }
                   >
                     {message.type === "bot" ? (
                       <div>
