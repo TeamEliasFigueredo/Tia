@@ -42,81 +42,91 @@ const ModalLoadingFallback = memo(() => (
   </div>
 ));
 
-const ModalContainer = memo<ModalContainerProps>(({ modals, onClose, t }) => {
-  return (
-    <>
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.userProfile && (
-          <UserProfileModal
-            isOpen={modals.userProfile}
-            onClose={() => onClose("userProfile")}
-            t={t}
-          />
-        )}
-      </Suspense>
+const ModalContainer = memo<ModalContainerProps>(
+  ({
+    modals,
+    onClose,
+    companies,
+    setCompanies,
+    selectedCompany,
+    setSelectedCompany,
+    t,
+  }) => {
+    return (
+      <>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.userProfile && (
+            <UserProfileModal
+              isOpen={modals.userProfile}
+              onClose={() => onClose("userProfile")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.security && (
-          <SecurityModal
-            isOpen={modals.security}
-            onClose={() => onClose("security")}
-            t={t}
-          />
-        )}
-      </Suspense>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.security && (
+            <SecurityModal
+              isOpen={modals.security}
+              onClose={() => onClose("security")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.terms && (
-          <TermsModal
-            isOpen={modals.terms}
-            onClose={() => onClose("terms")}
-            t={t}
-          />
-        )}
-      </Suspense>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.terms && (
+            <TermsModal
+              isOpen={modals.terms}
+              onClose={() => onClose("terms")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.currentPlan && (
-          <CurrentPlanModal
-            isOpen={modals.currentPlan}
-            onClose={() => onClose("currentPlan")}
-            t={t}
-          />
-        )}
-      </Suspense>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.currentPlan && (
+            <CurrentPlanModal
+              isOpen={modals.currentPlan}
+              onClose={() => onClose("currentPlan")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.availablePackages && (
-          <AvailablePackagesModal
-            isOpen={modals.availablePackages}
-            onClose={() => onClose("availablePackages")}
-            t={t}
-          />
-        )}
-      </Suspense>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.availablePackages && (
+            <AvailablePackagesModal
+              isOpen={modals.availablePackages}
+              onClose={() => onClose("availablePackages")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.viewBills && (
-          <ViewBillsModal
-            isOpen={modals.viewBills}
-            onClose={() => onClose("viewBills")}
-            t={t}
-          />
-        )}
-      </Suspense>
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.viewBills && (
+            <ViewBillsModal
+              isOpen={modals.viewBills}
+              onClose={() => onClose("viewBills")}
+              t={t}
+            />
+          )}
+        </Suspense>
 
-      <Suspense fallback={<ModalLoadingFallback />}>
-        {modals.teams && (
-          <TeamsModal
-            isOpen={modals.teams}
-            onClose={() => onClose("teams")}
-            t={t}
-          />
-        )}
-      </Suspense>
-    </>
-  );
-});
+        <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.teams && (
+            <TeamsModal
+              isOpen={modals.teams}
+              onClose={() => onClose("teams")}
+              t={t}
+            />
+          )}
+        </Suspense>
+      </>
+    );
+  },
+);
 
 ModalContainer.displayName = "ModalContainer";
 
