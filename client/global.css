@@ -503,6 +503,11 @@
     transform: translateX(calc(-1 * var(--progress-value, 0%)));
   }
 
+  /* Progress bar utilities */
+  .progress-bar-width {
+    width: var(--progress-width, 0%);
+  }
+
   /* Font size utilities */
   .font-size-dynamic {
     font-size: var(--font-size, 14px);
