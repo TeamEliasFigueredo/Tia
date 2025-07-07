@@ -115,6 +115,20 @@ const ModalContainer = memo<ModalContainerProps>(
         </Suspense>
 
         <Suspense fallback={<ModalLoadingFallback />}>
+          {modals.company && (
+            <CompanyModal
+              isOpen={modals.company}
+              onClose={() => onClose("company")}
+              companies={companies}
+              setCompanies={setCompanies}
+              selectedCompany={selectedCompany}
+              setSelectedCompany={setSelectedCompany}
+              t={t}
+            />
+          )}
+        </Suspense>
+
+        <Suspense fallback={<ModalLoadingFallback />}>
           {modals.teams && (
             <TeamsModal
               isOpen={modals.teams}
