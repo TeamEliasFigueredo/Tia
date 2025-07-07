@@ -81,13 +81,32 @@ const TiaHeader = memo<TiaHeaderProps>(
         <div className="flex items-center space-x-6">
           {/* Company Logo - clickable */}
           <button
-            onClick={() => window.open("https://softia.ca", "_blank")}
+            onClick={() =>
+              window.open(
+                selectedCompany?.website || "https://softia.ca",
+                "_blank",
+              )
+            }
             className="logo-button group"
           >
             <div className="logo-icon">
-              <span className="text-white font-bold">S</span>
+              {selectedCompany?.logo ? (
+                <img
+                  src={selectedCompany.logo}
+                  alt={`${selectedCompany.name} logo`}
+                  className="company-header-logo"
+                />
+              ) : (
+                <span className="text-white font-bold">
+                  {selectedCompany?.name
+                    ? selectedCompany.name.charAt(0).toUpperCase()
+                    : "S"}
+                </span>
+              )}
             </div>
-            <span className="logo-text">Softia</span>
+            <span className="logo-text">
+              {selectedCompany?.name || "Softia"}
+            </span>
           </button>
 
           <Separator orientation="vertical" className="h-6" />
