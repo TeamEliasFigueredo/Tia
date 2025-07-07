@@ -136,14 +136,12 @@ const TiaHeader = memo<TiaHeaderProps>(
         <div className="flex items-center space-x-4">
           <Separator orientation="vertical" className="h-6" />
 
-          <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
-            {currentUser.name}
-          </span>
+          <span className="user-name">{currentUser.name}</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all duration-200 hover:scale-105">
+              <Avatar className="user-avatar">
                 <AvatarImage src="" alt={`${currentUser.name} avatar`} />
-                <AvatarFallback className="bg-gray-700 text-white font-semibold">
+                <AvatarFallback className="user-avatar-fallback">
                   {currentUser.initials}
                 </AvatarFallback>
               </Avatar>
