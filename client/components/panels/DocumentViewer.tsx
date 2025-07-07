@@ -202,7 +202,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "PowerPoint":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-orange-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-orange-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="bg-gradient-to-br from-orange-50 to-white dark:from-orange-900/20 dark:to-gray-800 border border-orange-200 dark:border-orange-700 rounded-lg p-6 mb-4 aspect-video flex items-center justify-center">
                     <div className="text-center">
