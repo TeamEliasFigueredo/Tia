@@ -130,7 +130,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Word":
             return (
-              <div className="document-page border-blue-200 min-h-[600px]">
+              <div className="document-page border-blue-200 min-h-600">
                 <div className="p-6">
                   <div
                     className={cn(
