@@ -47,6 +47,10 @@ interface TiaHeaderProps {
 const TiaHeader = memo<TiaHeaderProps>(
   ({ isAdmin, currentUser, selectedCompany, onOpenModal, language, t }) => {
     // Memoized event handlers to prevent unnecessary re-renders
+    const handleCompanyClick = useCallback(() => {
+      onOpenModal("company");
+    }, [onOpenModal]);
+
     const handleTeamsClick = useCallback(() => {
       onOpenModal("teams");
     }, [onOpenModal]);
