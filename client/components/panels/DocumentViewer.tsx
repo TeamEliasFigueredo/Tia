@@ -226,7 +226,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Image":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-purple-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-purple-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-gray-800 border border-purple-200 dark:border-purple-700 rounded-lg p-8 mb-4 aspect-video flex items-center justify-center">
                     <div className="text-center">
