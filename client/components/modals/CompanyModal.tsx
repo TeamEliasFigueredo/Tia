@@ -261,12 +261,17 @@ export default function CompanyModal({
                           </p>
                           {company.website && (
                             <a
-                              href={company.website}
+                              href={
+                                company.website.startsWith("http")
+                                  ? company.website
+                                  : `https://${company.website}`
+                              }
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                              className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                               onClick={(e) => e.stopPropagation()}
                             >
+                              <Globe className="h-3 w-3" />
                               {company.website}
                             </a>
                           )}
@@ -468,15 +473,14 @@ export default function CompanyModal({
 
             {!isCreating && !editingCompany && (
               <div className="company-empty-state">
-                <Plus className="company-empty-icon" />
-                <h4 className="company-empty-title">{t.createNewCompany}</h4>
+                <Building2 className="company-empty-icon" />
+                <h4 className="company-empty-title">
+                  {t.selectOrCreateCompany || "Select or Create Company"}
+                </h4>
                 <p className="company-empty-description">
-                  Create a new company profile to get started.
+                  {t.selectCompanyFromList ||
+                    "Select a company from the list or create a new one using the button above."}
                 </p>
-                <Button onClick={handleCreateNew} className="mt-4">
-                  <Plus className="h-4 w-4 mr-2" />
-                  {t.createCompany}
-                </Button>
               </div>
             )}
           </div>
