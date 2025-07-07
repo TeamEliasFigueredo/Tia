@@ -285,6 +285,7 @@ export interface Translations {
 export const translations: Record<Language, Translations> = {
   en: {
     // Header
+    company: "Company",
     teams: "Teams",
     yourPlan: "Your Plan",
 
@@ -618,7 +619,7 @@ export const translations: Record<Language, Translations> = {
     send: "Enviar",
     loading: "Cargando...",
     error: "Error",
-    success: "Éxito",
+    success: "��xito",
 
     // Footer
     footerText: "Tia es una creación de Softia.ca",
