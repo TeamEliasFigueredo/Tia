@@ -216,8 +216,12 @@ export function CurrentPlanModal({
                         : calculateUserPercentage() > 60
                           ? "bg-yellow-600"
                           : "bg-blue-600"
-                    }`}
-                    style={{ width: `${calculateUserPercentage()}%` }}
+                    } progress-bar-width`}
+                    style={
+                      {
+                        "--progress-width": `${calculateUserPercentage()}%`,
+                      } as React.CSSProperties
+                    }
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">
