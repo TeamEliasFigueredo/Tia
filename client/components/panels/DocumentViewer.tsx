@@ -469,11 +469,13 @@ const DocumentViewer = memo<DocumentViewerProps>(
             {selectedDocument ? (
               <div className={cn("p-4", isMobile && "p-2")}>
                 <div
-                  className="transform-gpu zoom-transition"
-                  style={{
-                    transform: `scale(${zoom / 100})`,
-                    transformOrigin: "top center",
-                  }}
+                  className="transform-gpu zoom-transition zoom-transform"
+                  style={
+                    {
+                      "--zoom-scale": zoom / 100,
+                      transformOrigin: "top center",
+                    } as React.CSSProperties
+                  }
                 >
                   {renderDocumentContent(selectedDocument)}
                 </div>
