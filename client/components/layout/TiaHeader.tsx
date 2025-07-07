@@ -67,7 +67,7 @@ const TiaHeader = memo<TiaHeaderProps>(
           {/* Company Logo - clickable */}
           <button
             onClick={() => window.open("https://softia.ca", "_blank")}
-            className="logo-button"
+            className="logo-button group"
           >
             <div className="logo-icon">
               <span className="text-white font-bold">S</span>
