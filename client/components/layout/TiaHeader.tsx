@@ -148,7 +148,7 @@ const TiaHeader = memo<TiaHeaderProps>(
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="z-50 min-w-[180px]"
+              className="z-50 dropdown-width-sm"
               sideOffset={5}
             >
               <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
