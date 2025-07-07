@@ -513,6 +513,24 @@
     background-color: var(--chart-color, currentColor);
   }
 
+  /* Dropdown and modal width utilities */
+  .dropdown-width-sm {
+    min-width: 180px;
+  }
+
+  .dropdown-width-md {
+    min-width: 200px;
+  }
+
+  .dropdown-width-lg {
+    min-width: 250px;
+  }
+
+  /* Calendar text sizing */
+  .calendar-small-text {
+    font-size: 0.8rem;
+  }
+
   /* Font size utilities */
   .font-size-dynamic {
     font-size: var(--font-size, 14px);
