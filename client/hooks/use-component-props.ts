@@ -16,6 +16,8 @@ interface ComponentPropsHookParams {
   };
   settings: AppSettings;
   databases: Database[];
+  companies: Company[];
+  selectedCompany: Company | null;
   documentState: {
     selectedDatabase: string | null;
     selectedDocument: any;
