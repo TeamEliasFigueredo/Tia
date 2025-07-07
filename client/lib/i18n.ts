@@ -274,6 +274,10 @@ export interface Translations {
   websiteUrl: string;
   updateCompany: string;
   createNewCompany: string;
+  taxId: string;
+  country: string;
+  selectCountry: string;
+  searchCountries: string;
 
   // UI Elements
   documents: string;
@@ -541,7 +545,7 @@ export const translations: Record<Language, Translations> = {
     serviceTerms: "Service Terms",
 
     // Company management
-    companyManagement: "Company Management",
+    companyManagement: "Company Profile",
     companyProfile: "Company Profile",
     createCompany: "Create Company",
     editCompany: "Edit Company",
@@ -558,6 +562,10 @@ export const translations: Record<Language, Translations> = {
     websiteUrl: "Website URL",
     updateCompany: "Update Company",
     createNewCompany: "Create New Company",
+    taxId: "Tax Identification Number",
+    country: "Country",
+    selectCountry: "Select country",
+    searchCountries: "Search countries...",
 
     // UI Elements
     documents: "Documents",
@@ -826,7 +834,7 @@ export const translations: Record<Language, Translations> = {
     serviceTerms: "Términos del Servicio",
 
     // Company management
-    companyManagement: "Gestión de Empresa",
+    companyManagement: "Perfil de Empresa",
     companyProfile: "Perfil de Empresa",
     createCompany: "Crear Empresa",
     editCompany: "Editar Empresa",
@@ -843,6 +851,10 @@ export const translations: Record<Language, Translations> = {
     websiteUrl: "URL del Sitio Web",
     updateCompany: "Actualizar Empresa",
     createNewCompany: "Crear Nueva Empresa",
+    taxId: "Número de Identificación Fiscal",
+    country: "País",
+    selectCountry: "Seleccionar país",
+    searchCountries: "Buscar países...",
 
     // UI Elements
     documents: "Documentos",
@@ -1111,7 +1123,7 @@ export const translations: Record<Language, Translations> = {
     serviceTerms: "Conditions de Service",
 
     // Company management
-    companyManagement: "Gestion d'Entreprise",
+    companyManagement: "Profil d'Entreprise",
     companyProfile: "Profil d'Entreprise",
     createCompany: "Créer Entreprise",
     editCompany: "Modifier Entreprise",
@@ -1128,6 +1140,10 @@ export const translations: Record<Language, Translations> = {
     websiteUrl: "URL du Site Web",
     updateCompany: "Mettre à Jour l'Entreprise",
     createNewCompany: "Créer Nouvelle Entreprise",
+    taxId: "Numéro d'Identification Fiscale",
+    country: "Pays",
+    selectCountry: "Sélectionner le pays",
+    searchCountries: "Rechercher des pays...",
 
     // UI Elements
     documents: "Documents",
