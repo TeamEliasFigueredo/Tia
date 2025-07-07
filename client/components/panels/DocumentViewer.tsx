@@ -114,7 +114,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
         switch (document.fileType) {
           case "PDF":
             return (
-              <div className="document-page min-h-[600px]">
+              <div className="document-page min-h-600">
                 <div className="p-6">
                   <div
                     className={cn(
