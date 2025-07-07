@@ -51,6 +51,8 @@ export function useComponentProps({
   layout,
   settings,
   databases,
+  companies,
+  selectedCompany,
   documentState,
   chatState,
   savedChats,
