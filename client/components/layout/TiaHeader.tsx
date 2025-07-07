@@ -102,7 +102,7 @@ const TiaHeader = memo<TiaHeaderProps>(
                     {t.yourPlan}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="z-50 min-w-[200px]">
+                <DropdownMenuContent className="z-50 dropdown-width-md">
                   <DropdownMenuLabel>Plan Management</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
