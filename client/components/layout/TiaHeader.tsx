@@ -177,7 +177,7 @@ const TiaHeader = memo<TiaHeaderProps>(
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => handleUserMenuClick("logout")}
-                className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50"
+                className="logout-menu-item"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 {t.logOut}
