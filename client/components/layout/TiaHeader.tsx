@@ -82,7 +82,7 @@ const TiaHeader = memo<TiaHeaderProps>(
             {isAdmin && (
               <Button
                 variant="ghost"
-                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 flex items-center gap-2 transition-colors duration-200"
+                className="nav-button"
                 onClick={handleTeamsClick}
                 aria-label={`Open ${t.teams} management`}
               >
