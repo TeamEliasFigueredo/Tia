@@ -500,6 +500,7 @@
   /* Progress component styles */
   .progress-transform {
     transition: transform 0.3s ease-out;
+    transform: translateX(calc(-1 * var(--progress-value, 0%)));
   }
 
   /* Font size utilities */
