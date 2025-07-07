@@ -57,6 +57,8 @@ export default function Index() {
     layout,
     settings,
     databases,
+    companies,
+    selectedCompany,
     documentState,
     chatState,
     savedChats,
