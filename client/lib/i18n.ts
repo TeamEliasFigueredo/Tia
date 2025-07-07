@@ -853,6 +853,7 @@ export const translations: Record<Language, Translations> = {
 
   fr: {
     // Header
+    company: "Entreprise",
     teams: "Équipes",
     yourPlan: "Votre Plan",
 
