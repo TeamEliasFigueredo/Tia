@@ -234,13 +234,12 @@ const ChatInterface = memo<ChatInterfaceProps>(
 
     return (
       <div
-        className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg"
-        style={{
-          width:
-            columnStates.showColumn1 || columnStates.showColumn2
-              ? "calc(100% - 56rem)" // Adjusted for database panel (20rem) + document viewer (36rem)
-              : "100%",
-        }}
+        className={cn(
+          "chat-panel",
+          columnStates.showColumn1 || columnStates.showColumn2
+            ? "panel-width-reduced"
+            : "panel-width-full",
+        )}
       >
         {/* Header */}
         <div className="px-3 py-1 border-b bg-gradient-gray text-white">
