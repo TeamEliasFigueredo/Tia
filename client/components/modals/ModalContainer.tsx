@@ -8,6 +8,7 @@ const TermsModal = lazy(() => import("./TermsModal"));
 const CurrentPlanModal = lazy(() => import("./CurrentPlanModal"));
 const AvailablePackagesModal = lazy(() => import("./AvailablePackagesModal"));
 const ViewBillsModal = lazy(() => import("./ViewBillsModal"));
+const CompanyModal = lazy(() => import("./CompanyModal"));
 const TeamsModal = lazy(() => import("./TeamsModal"));
 
 interface ModalContainerProps {
