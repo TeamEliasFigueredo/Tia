@@ -545,16 +545,11 @@ export default function CompanyModal({
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent className="max-h-64">
-                      {filteredCountries.slice(0, 50).map((country) => (
+                      {filteredCountries.map((country) => (
                         <SelectItem key={country} value={country}>
                           {country}
                         </SelectItem>
                       ))}
-                      {filteredCountries.length > 50 && (
-                        <SelectItem value="" disabled>
-                          ... and {filteredCountries.length - 50} more
-                        </SelectItem>
-                      )}
                     </SelectContent>
                   </Select>
                 </div>
