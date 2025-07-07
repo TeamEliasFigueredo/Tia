@@ -568,6 +568,7 @@ export const translations: Record<Language, Translations> = {
 
   es: {
     // Header
+    company: "Empresa",
     teams: "Equipos",
     yourPlan: "Tu Plan",
 
