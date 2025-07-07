@@ -259,8 +259,12 @@ export function CurrentPlanModal({
                         : calculateStoragePercentage() > 60
                           ? "bg-yellow-600"
                           : "bg-green-600"
-                    }`}
-                    style={{ width: `${calculateStoragePercentage()}%` }}
+                    } progress-bar-width`}
+                    style={
+                      {
+                        "--progress-width": `${calculateStoragePercentage()}%`,
+                      } as React.CSSProperties
+                    }
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">
