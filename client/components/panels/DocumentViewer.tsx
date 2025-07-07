@@ -245,7 +245,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           default:
             return (
-              <div className="bg-white dark:bg-gray-900 border rounded-lg min-h-[600px] p-6">
+              <div className="bg-white dark:bg-gray-900 border rounded-lg min-h-600 p-6">
                 <div className={cn("prose max-w-none", baseContentClass)}>
                   {renderHighlightedText(document.content, searchQuery)}
                 </div>
