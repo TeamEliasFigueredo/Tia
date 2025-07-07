@@ -19,9 +19,14 @@ interface ModalContainerProps {
     currentPlan: boolean;
     availablePackages: boolean;
     viewBills: boolean;
+    company: boolean;
     teams: boolean;
   };
   onClose: (modalName: string) => void;
+  companies: any[];
+  setCompanies: any;
+  selectedCompany: any;
+  setSelectedCompany: any;
   t: Translations;
 }
 
