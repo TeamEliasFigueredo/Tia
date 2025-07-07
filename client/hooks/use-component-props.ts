@@ -42,6 +42,8 @@ interface ComponentPropsHookParams {
   setChatState: any;
   setSavedChats: any;
   setDatabases: any;
+  setCompanies: any;
+  setSelectedCompany: any;
   handleFileUpload: (files: FileList | null, targetDbId: string) => void;
   handleChatFileUpload: (files: FileList | null) => void;
   t: Translations;
