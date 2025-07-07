@@ -69,6 +69,8 @@ export default function Index() {
     setChatState,
     setSavedChats,
     setDatabases,
+    setCompanies,
+    setSelectedCompany,
     handleFileUpload,
     handleChatFileUpload,
     t,
