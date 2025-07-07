@@ -202,9 +202,19 @@ export function useComponentProps({
     () => ({
       modals: modalManager.modals,
       onClose: modalManager.closeModal,
+      companies,
+      setCompanies: modalManager.setCompanies,
+      selectedCompany,
+      setSelectedCompany: modalManager.setSelectedCompany,
       t,
     }),
-    [modalManager.modals, modalManager.closeModal, t],
+    [
+      modalManager.modals,
+      modalManager.closeModal,
+      companies,
+      selectedCompany,
+      t,
+    ],
   );
 
   return {
