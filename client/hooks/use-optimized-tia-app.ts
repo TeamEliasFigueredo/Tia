@@ -556,6 +556,46 @@ export function useOptimizedTiaApp() {
     },
   ]);
 
+  // Company state with localStorage persistence
+  const [companies, setCompanies] = useState<Company[]>(() => {
+    try {
+      const saved = localStorage.getItem("tia-companies");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(() => {
+    try {
+      const saved = localStorage.getItem("tia-selected-company");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Persist companies to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem("tia-companies", JSON.stringify(companies));
+    } catch (error) {
+      console.warn("Failed to save companies to localStorage:", error);
+    }
+  }, [companies]);
+
+  // Persist selected company to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "tia-selected-company",
+        JSON.stringify(selectedCompany),
+      );
+    } catch (error) {
+      console.warn("Failed to save selected company to localStorage:", error);
+    }
+  }, [selectedCompany]);
+
   // Document state
   const [documentState, setDocumentState] = useState({
     selectedDatabase: null as string | null,
