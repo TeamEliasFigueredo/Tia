@@ -96,7 +96,7 @@ const TiaHeader = memo<TiaHeaderProps>(
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors duration-200"
+                    className="nav-button"
                     aria-label={`Open ${t.yourPlan} menu`}
                   >
                     {t.yourPlan}
