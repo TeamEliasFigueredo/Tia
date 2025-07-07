@@ -117,6 +117,18 @@ const TiaHeader = memo<TiaHeaderProps>(
               <Button
                 variant="ghost"
                 className="nav-button"
+                onClick={handleCompanyClick}
+                aria-label={`Open ${t.company} management`}
+              >
+                <Building2 className="h-4 w-4" />
+                {t.company}
+              </Button>
+            )}
+
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                className="nav-button"
                 onClick={handleTeamsClick}
                 aria-label={`Open ${t.teams} management`}
               >
