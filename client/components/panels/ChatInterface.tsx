@@ -234,16 +234,15 @@ const ChatInterface = memo<ChatInterfaceProps>(
 
     return (
       <div
-        className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg"
-        style={{
-          width:
-            columnStates.showColumn1 || columnStates.showColumn2
-              ? "calc(100% - 56rem)" // Adjusted for database panel (20rem) + document viewer (36rem)
-              : "100%",
-        }}
+        className={cn(
+          "chat-panel",
+          columnStates.showColumn1 || columnStates.showColumn2
+            ? "panel-width-reduced"
+            : "panel-width-full",
+        )}
       >
         {/* Header */}
-        <div className="px-3 py-1 border-b bg-gradient-gray text-white">
+        <div className="chat-panel-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {!columnStates.showColumn1 && (
@@ -489,8 +488,12 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   )}
                 >
                   <div
-                    className="mb-1"
-                    style={{ fontSize: `${settings.fontSize}px` }}
+                    className="mb-1 chat-message-text"
+                    style={
+                      {
+                        "--font-size": `${settings.fontSize}px`,
+                      } as React.CSSProperties
+                    }
                   >
                     {message.type === "bot" ? (
                       <div>
@@ -520,7 +523,14 @@ const ChatInterface = memo<ChatInterfaceProps>(
                           )}
                       </div>
                     ) : (
-                      <div style={{ fontSize: `${settings.fontSize}px` }}>
+                      <div
+                        className="chat-message-text"
+                        style={
+                          {
+                            "--font-size": `${settings.fontSize}px`,
+                          } as React.CSSProperties
+                        }
+                      >
                         {message.content}
                       </div>
                     )}
@@ -579,7 +589,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   handleSendMessage();
                 }
               }}
-              className="flex-1 min-h-[32px] max-h-[60px] resize-none text-sm"
+              className="flex-1 min-h-32px max-h-60px resize-none text-sm"
             />
             <div className="flex space-x-1">
               <Button

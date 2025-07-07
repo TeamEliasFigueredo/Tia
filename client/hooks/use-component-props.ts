@@ -4,6 +4,7 @@ import {
   AppSettings,
   ChatMessage,
   SavedChat,
+  Company,
 } from "./use-optimized-tia-app";
 import { Translations } from "@/lib/i18n";
 import { createDragDropHandlers } from "@/utils/drag-drop-handlers";
@@ -15,6 +16,8 @@ interface ComponentPropsHookParams {
   };
   settings: AppSettings;
   databases: Database[];
+  companies: Company[];
+  selectedCompany: Company | null;
   documentState: {
     selectedDatabase: string | null;
     selectedDocument: any;
@@ -39,6 +42,8 @@ interface ComponentPropsHookParams {
   setChatState: any;
   setSavedChats: any;
   setDatabases: any;
+  setCompanies: any;
+  setSelectedCompany: any;
   handleFileUpload: (files: FileList | null, targetDbId: string) => void;
   handleChatFileUpload: (files: FileList | null) => void;
   t: Translations;
@@ -48,6 +53,8 @@ export function useComponentProps({
   layout,
   settings,
   databases,
+  companies,
+  selectedCompany,
   documentState,
   chatState,
   savedChats,
@@ -58,6 +65,8 @@ export function useComponentProps({
   setChatState,
   setSavedChats,
   setDatabases,
+  setCompanies,
+  setSelectedCompany,
   handleFileUpload,
   handleChatFileUpload,
   t,
@@ -66,11 +75,12 @@ export function useComponentProps({
     () => ({
       isAdmin: true,
       currentUser: { name: "John Doe", initials: "JD" },
+      selectedCompany,
       onOpenModal: modalManager.openModal,
       language: settings.language,
       t,
     }),
-    [modalManager.openModal, settings.language, t],
+    [modalManager.openModal, settings.language, selectedCompany, t],
   );
 
   const databasePanelProps = useMemo(() => {
@@ -196,9 +206,21 @@ export function useComponentProps({
     () => ({
       modals: modalManager.modals,
       onClose: modalManager.closeModal,
+      companies,
+      setCompanies,
+      selectedCompany,
+      setSelectedCompany,
       t,
     }),
-    [modalManager.modals, modalManager.closeModal, t],
+    [
+      modalManager.modals,
+      modalManager.closeModal,
+      companies,
+      setCompanies,
+      selectedCompany,
+      setSelectedCompany,
+      t,
+    ],
   );
 
   return {

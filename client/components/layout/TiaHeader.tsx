@@ -8,6 +8,7 @@ import {
   Shield,
   FileCheck,
   LogOut,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,20 +23,35 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Language, Translations } from "@/lib/i18n";
 
+interface Company {
+  id: string;
+  name: string;
+  email: string;
+  website: string;
+  logo?: string;
+  createdDate: string;
+  updatedDate: string;
+}
+
 interface TiaHeaderProps {
   isAdmin: boolean;
   currentUser: {
     name: string;
     initials: string;
   };
+  selectedCompany: Company | null;
   onOpenModal: (modalName: string) => void;
   language: Language;
   t: Translations;
 }
 
 const TiaHeader = memo<TiaHeaderProps>(
-  ({ isAdmin, currentUser, onOpenModal, language, t }) => {
+  ({ isAdmin, currentUser, selectedCompany, onOpenModal, language, t }) => {
     // Memoized event handlers to prevent unnecessary re-renders
+    const handleCompanyClick = useCallback(() => {
+      onOpenModal("company");
+    }, [onOpenModal]);
+
     const handleTeamsClick = useCallback(() => {
       onOpenModal("teams");
     }, [onOpenModal]);
@@ -62,18 +78,35 @@ const TiaHeader = memo<TiaHeaderProps>(
     );
 
     return (
-      <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2 flex items-center justify-between relative z-50 transition-colors duration-200">
+      <header className="header-container">
         <div className="flex items-center space-x-6">
           {/* Company Logo - clickable */}
           <button
-            onClick={() => window.open("https://softia.ca", "_blank")}
-            className="flex items-center space-x-3 group hover:opacity-80 transition-opacity"
+            onClick={() =>
+              window.open(
+                selectedCompany?.website || "https://softia.ca",
+                "_blank",
+              )
+            }
+            className="logo-button group"
           >
-            <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
-              <span className="text-white font-bold">S</span>
+            <div className="logo-icon">
+              {selectedCompany?.logo ? (
+                <img
+                  src={selectedCompany.logo}
+                  alt={`${selectedCompany.name} logo`}
+                  className="company-header-logo"
+                />
+              ) : (
+                <span className="text-white font-bold">
+                  {selectedCompany?.name
+                    ? selectedCompany.name.charAt(0).toUpperCase()
+                    : "S"}
+                </span>
+              )}
             </div>
-            <span className="text-lg font-semibold text-gray-800 dark:text-white">
-              Softia
+            <span className="logo-text">
+              {selectedCompany?.name || "Softia"}
             </span>
           </button>
 
@@ -84,7 +117,19 @@ const TiaHeader = memo<TiaHeaderProps>(
             {isAdmin && (
               <Button
                 variant="ghost"
-                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 flex items-center gap-2 transition-colors duration-200"
+                className="nav-button"
+                onClick={handleCompanyClick}
+                aria-label={`Open ${t.company} management`}
+              >
+                <Building2 className="h-4 w-4" />
+                {t.company}
+              </Button>
+            )}
+
+            {isAdmin && (
+              <Button
+                variant="ghost"
+                className="nav-button"
                 onClick={handleTeamsClick}
                 aria-label={`Open ${t.teams} management`}
               >
@@ -98,13 +143,13 @@ const TiaHeader = memo<TiaHeaderProps>(
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors duration-200"
+                    className="nav-button"
                     aria-label={`Open ${t.yourPlan} menu`}
                   >
                     {t.yourPlan}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="z-50 min-w-[200px]">
+                <DropdownMenuContent className="z-50 dropdown-width-md">
                   <DropdownMenuLabel>Plan Management</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -138,21 +183,19 @@ const TiaHeader = memo<TiaHeaderProps>(
         <div className="flex items-center space-x-4">
           <Separator orientation="vertical" className="h-6" />
 
-          <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
-            {currentUser.name}
-          </span>
+          <span className="user-name">{currentUser.name}</span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar className="cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all duration-200 hover:scale-105">
+              <Avatar className="user-avatar">
                 <AvatarImage src="" alt={`${currentUser.name} avatar`} />
-                <AvatarFallback className="bg-gray-700 text-white font-semibold">
+                <AvatarFallback className="user-avatar-fallback">
                   {currentUser.initials}
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="z-50 min-w-[180px]"
+              className="z-50 dropdown-width-sm"
               sideOffset={5}
             >
               <DropdownMenuLabel>{t.myAccount}</DropdownMenuLabel>
@@ -181,7 +224,7 @@ const TiaHeader = memo<TiaHeaderProps>(
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => handleUserMenuClick("logout")}
-                className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50"
+                className="logout-menu-item"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 {t.logOut}

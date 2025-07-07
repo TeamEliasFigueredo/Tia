@@ -147,7 +147,7 @@ export function CurrentPlanModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl-responsive max-h-90vh overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="h-5 w-5 text-blue-600" />
@@ -216,8 +216,12 @@ export function CurrentPlanModal({
                         : calculateUserPercentage() > 60
                           ? "bg-yellow-600"
                           : "bg-blue-600"
-                    }`}
-                    style={{ width: `${calculateUserPercentage()}%` }}
+                    } progress-bar-width`}
+                    style={
+                      {
+                        "--progress-width": `${calculateUserPercentage()}%`,
+                      } as React.CSSProperties
+                    }
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -255,8 +259,12 @@ export function CurrentPlanModal({
                         : calculateStoragePercentage() > 60
                           ? "bg-yellow-600"
                           : "bg-green-600"
-                    }`}
-                    style={{ width: `${calculateStoragePercentage()}%` }}
+                    } progress-bar-width`}
+                    style={
+                      {
+                        "--progress-width": `${calculateStoragePercentage()}%`,
+                      } as React.CSSProperties
+                    }
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500">

@@ -23,6 +23,10 @@ export default function Index() {
     settings,
     databases,
     setDatabases,
+    companies,
+    setCompanies,
+    selectedCompany,
+    setSelectedCompany,
     documentState,
     chatState,
     setChatState,
@@ -57,6 +61,8 @@ export default function Index() {
     layout,
     settings,
     databases,
+    companies,
+    selectedCompany,
     documentState,
     chatState,
     savedChats,
@@ -67,27 +73,27 @@ export default function Index() {
     setChatState,
     setSavedChats,
     setDatabases,
+    setCompanies,
+    setSelectedCompany,
     handleFileUpload,
     handleChatFileUpload,
     t,
   });
 
-  const containerStyle = {
-    fontSize: `${settings.fontSize}px`,
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-  };
-
   const containerClasses = cn(
-    "h-screen flex flex-col bg-gradient-gray-light transition-all duration-300",
+    "app-container bg-gradient-gray-light",
     settings.theme === "dark" &&
       "dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800",
   );
 
   return (
-    <div className={containerClasses} style={containerStyle}>
+    <div
+      className={containerClasses}
+      style={{ "--font-size": `${settings.fontSize}px` } as React.CSSProperties}
+    >
       <TiaHeader {...headerProps} />
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="column-layout">
         <DatabasePanel {...databasePanelProps} />
         <DocumentViewer {...documentViewerProps} />
         <ChatInterface {...chatInterfaceProps} />

@@ -114,7 +114,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
         switch (document.fileType) {
           case "PDF":
             return (
-              <div className="document-page min-h-[600px]">
+              <div className="document-page min-h-600">
                 <div className="p-6">
                   <div
                     className={cn(
@@ -130,7 +130,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Word":
             return (
-              <div className="document-page border-blue-200 min-h-[600px]">
+              <div className="document-page border-blue-200 min-h-600">
                 <div className="p-6">
                   <div
                     className={cn(
@@ -146,7 +146,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Excel":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-green-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-green-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="overflow-x-auto mb-4">
                     <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600 text-sm">
@@ -202,7 +202,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "PowerPoint":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-orange-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-orange-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="bg-gradient-to-br from-orange-50 to-white dark:from-orange-900/20 dark:to-gray-800 border border-orange-200 dark:border-orange-700 rounded-lg p-6 mb-4 aspect-video flex items-center justify-center">
                     <div className="text-center">
@@ -226,7 +226,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           case "Image":
             return (
-              <div className="bg-white dark:bg-gray-900 border border-purple-200 rounded-lg min-h-[600px]">
+              <div className="bg-white dark:bg-gray-900 border border-purple-200 rounded-lg min-h-600">
                 <div className="p-4">
                   <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-gray-800 border border-purple-200 dark:border-purple-700 rounded-lg p-8 mb-4 aspect-video flex items-center justify-center">
                     <div className="text-center">
@@ -245,7 +245,7 @@ const DocumentViewer = memo<DocumentViewerProps>(
 
           default:
             return (
-              <div className="bg-white dark:bg-gray-900 border rounded-lg min-h-[600px] p-6">
+              <div className="bg-white dark:bg-gray-900 border rounded-lg min-h-600 p-6">
                 <div className={cn("prose max-w-none", baseContentClass)}>
                   {renderHighlightedText(document.content, searchQuery)}
                 </div>
@@ -469,11 +469,13 @@ const DocumentViewer = memo<DocumentViewerProps>(
             {selectedDocument ? (
               <div className={cn("p-4", isMobile && "p-2")}>
                 <div
-                  className="transform-gpu zoom-transition"
-                  style={{
-                    transform: `scale(${zoom / 100})`,
-                    transformOrigin: "top center",
-                  }}
+                  className="transform-gpu zoom-transition zoom-transform"
+                  style={
+                    {
+                      "--zoom-scale": zoom / 100,
+                      transformOrigin: "top center",
+                    } as React.CSSProperties
+                  }
                 >
                   {renderDocumentContent(selectedDocument)}
                 </div>

@@ -26,7 +26,7 @@
   */
   :root {
     /* Light Gray Palette Variables */
-    --background: #F8F8F0;
+    --background: 0 0% 98%;
     --foreground: 0 0% 15%;
 
     --card: 0 0% 98%;
@@ -87,61 +87,61 @@
 
   .dark {
     /* Dark Gray Palette for Dark Mode */
-    --background: 0 0% 8%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 12%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
 
     /* Primary colors - Light gray for dark mode */
-    --primary: 0 0% 85%;
-    --primary-foreground: 0 0% 15%;
+    --primary: 0 0% 90%;
+    --primary-foreground: 0 0% 12%;
 
     /* Secondary colors - Dark grays */
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 90%;
 
     /* Muted colors - Medium dark grays */
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 22%;
+    --muted-foreground: 0 0% 75%;
 
     /* Accent colors */
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 85%;
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 90%;
 
     /* Destructive colors */
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive: 0 62.8% 55%;
+    --destructive-foreground: 0 0% 98%;
 
     /* Borders and inputs */
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 70%;
+    --border: 0 0% 30%;
+    --input: 0 0% 25%;
+    --ring: 0 0% 75%;
 
     /* Sidebar colors */
-    --sidebar-background: 0 0% 12%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 0 0% 75%;
-    --sidebar-primary-foreground: 0 0% 15%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 0 0% 60%;
+    --sidebar-background: 0 0% 16%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 0 0% 80%;
+    --sidebar-primary-foreground: 0 0% 12%;
+    --sidebar-accent: 0 0% 22%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 30%;
+    --sidebar-ring: 0 0% 70%;
 
     /* Dark mode gray shades */
-    --gray-50: 0 0% 8%;
-    --gray-100: 0 0% 12%;
-    --gray-200: 0 0% 18%;
-    --gray-300: 0 0% 25%;
-    --gray-400: 0 0% 40%;
-    --gray-500: 0 0% 55%;
-    --gray-600: 0 0% 70%;
-    --gray-700: 0 0% 80%;
-    --gray-800: 0 0% 90%;
-    --gray-900: 0 0% 95%;
+    --gray-50: 0 0% 12%;
+    --gray-100: 0 0% 16%;
+    --gray-200: 0 0% 22%;
+    --gray-300: 0 0% 30%;
+    --gray-400: 0 0% 45%;
+    --gray-500: 0 0% 60%;
+    --gray-600: 0 0% 75%;
+    --gray-700: 0 0% 85%;
+    --gray-800: 0 0% 92%;
+    --gray-900: 0 0% 98%;
   }
 }
 
@@ -369,17 +369,17 @@
   }
 
   .chat-scrollbar::-webkit-scrollbar-track {
-    background: hsl(var(--gray-100));
+    background: hsl(var(--gray-200));
     border-radius: 3px;
   }
 
   .chat-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: hsl(var(--gray-400));
     border-radius: 3px;
   }
 
   .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: hsl(var(--gray-500));
   }
 
   /* Tia brand gradient */
@@ -398,6 +398,278 @@
 
   .doc-reference:hover {
     @apply bg-blue-200 text-blue-800 scale-105;
+  }
+
+  /* Layout and spacing utilities */
+  .app-container {
+    @apply h-screen flex flex-col transition-all duration-300;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
+  }
+
+  .header-container {
+    @apply bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gray-200 dark:border-gray-700 px-6 py-2 flex items-center justify-between relative z-50 transition-colors duration-200;
+  }
+
+  .logo-button {
+    @apply flex items-center space-x-3 hover:opacity-80 transition-opacity;
+  }
+
+  .logo-icon {
+    @apply w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105;
+  }
+
+  .logo-text {
+    @apply text-lg font-semibold text-gray-800 dark:text-white;
+  }
+
+  .nav-button {
+    @apply text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 flex items-center gap-2 transition-colors duration-200;
+  }
+
+  .user-name {
+    @apply text-sm text-gray-600 dark:text-gray-300 font-medium;
+  }
+
+  .user-avatar {
+    @apply cursor-pointer ring-2 ring-blue-200 hover:ring-blue-400 transition-all duration-200 hover:scale-105;
+  }
+
+  .user-avatar-fallback {
+    @apply bg-gray-700 text-white font-semibold;
+  }
+
+  .logout-menu-item {
+    @apply text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50;
+  }
+
+  /* Panel layouts */
+  .chat-panel {
+    @apply flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-lg;
+  }
+
+  .chat-panel-header {
+    @apply px-3 py-1 border-b bg-gradient-gray text-white;
+  }
+
+  .panel-width-full {
+    width: 100%;
+  }
+
+  .panel-width-reduced {
+    width: calc(100% - 56rem);
+  }
+
+  /* Processing overlay */
+  .processing-overlay {
+    @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center;
+  }
+
+  .processing-modal {
+    @apply bg-white dark:bg-gray-800 rounded-lg p-6 shadow-xl max-w-sm w-full mx-4;
+  }
+
+  .processing-spinner {
+    @apply animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4;
+  }
+
+  .processing-title {
+    @apply text-lg font-semibold mb-2;
+  }
+
+  .processing-description {
+    @apply text-gray-600 dark:text-gray-400 text-sm mb-4;
+  }
+
+  .progress-bar-container {
+    @apply w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2;
+  }
+
+  .progress-bar-fill {
+    @apply h-2 rounded-full transition-all duration-300;
+    background-color: hsl(var(--primary));
+  }
+
+  .processing-status {
+    @apply text-xs text-gray-500 mt-2;
+  }
+
+  /* Progress component styles */
+  .progress-transform {
+    transition: transform 0.3s ease-out;
+    transform: translateX(calc(-1 * var(--progress-value, 0%)));
+  }
+
+  /* Progress bar utilities */
+  .progress-bar-width {
+    width: var(--progress-width, 0%);
+  }
+
+  /* Chart utilities */
+  .chart-color {
+    background-color: var(--chart-color, currentColor);
+  }
+
+  /* Dropdown and modal width utilities */
+  .dropdown-width-sm {
+    min-width: 180px;
+  }
+
+  .dropdown-width-md {
+    min-width: 200px;
+  }
+
+  .dropdown-width-lg {
+    min-width: 250px;
+  }
+
+  /* Calendar text sizing */
+  .calendar-small-text {
+    font-size: 0.8rem;
+  }
+
+  /* Border radius utilities */
+  .rounded-inherit {
+    border-radius: inherit;
+  }
+
+  .rounded-2px {
+    border-radius: 2px;
+  }
+
+  /* Height utilities */
+  .min-h-600 {
+    min-height: 600px;
+  }
+
+  .min-h-32px {
+    min-height: 32px;
+  }
+
+  .max-h-60px {
+    max-height: 60px;
+  }
+
+  .max-h-300 {
+    max-height: 300px;
+  }
+
+  .max-h-400 {
+    max-height: 400px;
+  }
+
+  .max-h-90vh {
+    max-height: 90vh;
+  }
+
+  /* Width utilities */
+  .max-w-2xl-responsive {
+    max-width: 42rem;
+  }
+
+  .max-w-6xl-responsive {
+    max-width: 72rem;
+  }
+
+  .w-100 {
+    width: 100px;
+  }
+
+  /* Position utilities */
+  .top-1px {
+    top: 1px;
+  }
+
+  .top-60-percent {
+    top: 60%;
+  }
+
+  /* Company management styles */
+  .company-card {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .company-logo-container {
+    @apply w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-pointer;
+  }
+
+  .company-logo-preview {
+    @apply w-16 h-16 rounded-lg object-cover border border-gray-300 dark:border-gray-600;
+  }
+
+  .company-form-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .company-form-field {
+    @apply space-y-2;
+  }
+
+  .company-form-label {
+    @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+  }
+
+  .company-actions {
+    @apply flex items-center gap-2;
+  }
+
+  .company-empty-state {
+    @apply text-center py-12;
+  }
+
+  .company-empty-icon {
+    @apply w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4;
+  }
+
+  .company-empty-title {
+    @apply text-lg font-medium text-gray-900 dark:text-gray-100 mb-2;
+  }
+
+  .company-empty-description {
+    @apply text-gray-600 dark:text-gray-400 mb-6;
+  }
+
+  .company-header-logo {
+    @apply w-8 h-8 rounded-lg object-cover;
+  }
+
+  .company-header-name {
+    @apply text-lg font-semibold text-gray-800 dark:text-white;
+  }
+
+  /* Font size utilities */
+  .font-size-dynamic {
+    font-size: var(--font-size, 14px);
+  }
+
+  /* Chat message styles */
+  .chat-message-text {
+    @apply font-size-dynamic;
+  }
+
+  /* Zoom and transform utilities */
+  .zoom-transform {
+    transform: scale(var(--zoom-scale, 1));
+  }
+
+  /* Column layout utilities */
+  .column-layout {
+    @apply flex-1 flex overflow-hidden;
+  }
+
+  /* Dark mode text fixes */
+  .dark-modal-text {
+    color: #f3f4f6 !important;
+  }
+
+  .dark-modal-text p,
+  .dark-modal-text span,
+  .dark-modal-text div,
+  .dark-modal-text label {
+    color: #f3f4f6 !important;
   }
 
   /* Enhanced shadow for cards */

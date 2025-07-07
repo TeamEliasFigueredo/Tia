@@ -2,6 +2,7 @@ export type Language = "en" | "es" | "fr";
 
 export interface Translations {
   // Header
+  company: string;
   teams: string;
   yourPlan: string;
 
@@ -255,6 +256,25 @@ export interface Translations {
   userRights: string;
   serviceTerms: string;
 
+  // Company management
+  companyManagement: string;
+  companyProfile: string;
+  createCompany: string;
+  editCompany: string;
+  deleteCompany: string;
+  companyName: string;
+  companyEmail: string;
+  companyWebsite: string;
+  companyLogo: string;
+  uploadLogo: string;
+  changeLogo: string;
+  removeLogo: string;
+  noCompanySelected: string;
+  selectCompanyToView: string;
+  websiteUrl: string;
+  updateCompany: string;
+  createNewCompany: string;
+
   // UI Elements
   documents: string;
   openDocuments: string;
@@ -265,6 +285,7 @@ export interface Translations {
 export const translations: Record<Language, Translations> = {
   en: {
     // Header
+    company: "Company",
     teams: "Teams",
     yourPlan: "Your Plan",
 
@@ -519,6 +540,25 @@ export const translations: Record<Language, Translations> = {
     userRights: "User Rights",
     serviceTerms: "Service Terms",
 
+    // Company management
+    companyManagement: "Company Management",
+    companyProfile: "Company Profile",
+    createCompany: "Create Company",
+    editCompany: "Edit Company",
+    deleteCompany: "Delete Company",
+    companyName: "Company Name",
+    companyEmail: "Company Email",
+    companyWebsite: "Company Website",
+    companyLogo: "Company Logo",
+    uploadLogo: "Upload Logo",
+    changeLogo: "Change Logo",
+    removeLogo: "Remove Logo",
+    noCompanySelected: "No company selected",
+    selectCompanyToView: "Select a company to view its details",
+    websiteUrl: "Website URL",
+    updateCompany: "Update Company",
+    createNewCompany: "Create New Company",
+
     // UI Elements
     documents: "Documents",
     openDocuments: "Open Documents",
@@ -528,6 +568,7 @@ export const translations: Record<Language, Translations> = {
 
   es: {
     // Header
+    company: "Empresa",
     teams: "Equipos",
     yourPlan: "Tu Plan",
 
@@ -784,6 +825,25 @@ export const translations: Record<Language, Translations> = {
     userRights: "Derechos del Usuario",
     serviceTerms: "Términos del Servicio",
 
+    // Company management
+    companyManagement: "Gestión de Empresa",
+    companyProfile: "Perfil de Empresa",
+    createCompany: "Crear Empresa",
+    editCompany: "Editar Empresa",
+    deleteCompany: "Eliminar Empresa",
+    companyName: "Nombre de la Empresa",
+    companyEmail: "Email de la Empresa",
+    companyWebsite: "Sitio Web de la Empresa",
+    companyLogo: "Logo de la Empresa",
+    uploadLogo: "Subir Logo",
+    changeLogo: "Cambiar Logo",
+    removeLogo: "Eliminar Logo",
+    noCompanySelected: "Ninguna empresa seleccionada",
+    selectCompanyToView: "Seleccione una empresa para ver sus detalles",
+    websiteUrl: "URL del Sitio Web",
+    updateCompany: "Actualizar Empresa",
+    createNewCompany: "Crear Nueva Empresa",
+
     // UI Elements
     documents: "Documentos",
     openDocuments: "Abrir Documentos",
@@ -793,6 +853,7 @@ export const translations: Record<Language, Translations> = {
 
   fr: {
     // Header
+    company: "Entreprise",
     teams: "Équipes",
     yourPlan: "Votre Plan",
 
@@ -1048,6 +1109,25 @@ export const translations: Record<Language, Translations> = {
     dataPrivacy: "Confidentialité des Données",
     userRights: "Droits de l'Utilisateur",
     serviceTerms: "Conditions de Service",
+
+    // Company management
+    companyManagement: "Gestion d'Entreprise",
+    companyProfile: "Profil d'Entreprise",
+    createCompany: "Créer Entreprise",
+    editCompany: "Modifier Entreprise",
+    deleteCompany: "Supprimer Entreprise",
+    companyName: "Nom de l'Entreprise",
+    companyEmail: "Email de l'Entreprise",
+    companyWebsite: "Site Web de l'Entreprise",
+    companyLogo: "Logo de l'Entreprise",
+    uploadLogo: "Télécharger Logo",
+    changeLogo: "Changer Logo",
+    removeLogo: "Supprimer Logo",
+    noCompanySelected: "Aucune entreprise sélectionnée",
+    selectCompanyToView: "Sélectionnez une entreprise pour voir ses détails",
+    websiteUrl: "URL du Site Web",
+    updateCompany: "Mettre à Jour l'Entreprise",
+    createNewCompany: "Créer Nouvelle Entreprise",
 
     // UI Elements
     documents: "Documents",
