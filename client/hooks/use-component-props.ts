@@ -69,11 +69,12 @@ export function useComponentProps({
     () => ({
       isAdmin: true,
       currentUser: { name: "John Doe", initials: "JD" },
+      selectedCompany,
       onOpenModal: modalManager.openModal,
       language: settings.language,
       t,
     }),
-    [modalManager.openModal, settings.language, t],
+    [modalManager.openModal, settings.language, selectedCompany, t],
   );
 
   const databasePanelProps = useMemo(() => {
