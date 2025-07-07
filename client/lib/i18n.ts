@@ -1110,6 +1110,25 @@ export const translations: Record<Language, Translations> = {
     userRights: "Droits de l'Utilisateur",
     serviceTerms: "Conditions de Service",
 
+    // Company management
+    companyManagement: "Gestion d'Entreprise",
+    companyProfile: "Profil d'Entreprise",
+    createCompany: "Créer Entreprise",
+    editCompany: "Modifier Entreprise",
+    deleteCompany: "Supprimer Entreprise",
+    companyName: "Nom de l'Entreprise",
+    companyEmail: "Email de l'Entreprise",
+    companyWebsite: "Site Web de l'Entreprise",
+    companyLogo: "Logo de l'Entreprise",
+    uploadLogo: "Télécharger Logo",
+    changeLogo: "Changer Logo",
+    removeLogo: "Supprimer Logo",
+    noCompanySelected: "Aucune entreprise sélectionnée",
+    selectCompanyToView: "Sélectionnez une entreprise pour voir ses détails",
+    websiteUrl: "URL du Site Web",
+    updateCompany: "Mettre à Jour l'Entreprise",
+    createNewCompany: "Créer Nouvelle Entreprise",
+
     // UI Elements
     documents: "Documents",
     openDocuments: "Ouvrir Documents",
