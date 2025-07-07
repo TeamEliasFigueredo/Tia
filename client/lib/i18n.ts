@@ -2,6 +2,7 @@ export type Language = "en" | "es" | "fr";
 
 export interface Translations {
   // Header
+  company: string;
   teams: string;
   yourPlan: string;
 
