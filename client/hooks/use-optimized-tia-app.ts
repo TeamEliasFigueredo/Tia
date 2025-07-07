@@ -58,6 +58,8 @@ export interface Company {
   email: string;
   website: string;
   logo?: string;
+  taxId: string;
+  country: string;
   createdDate: string;
   updatedDate: string;
 }
