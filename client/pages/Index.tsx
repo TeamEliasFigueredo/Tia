@@ -85,7 +85,7 @@ export default function Index() {
     >
       <TiaHeader {...headerProps} />
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="column-layout">
         <DatabasePanel {...databasePanelProps} />
         <DocumentViewer {...documentViewerProps} />
         <ChatInterface {...chatInterfaceProps} />
