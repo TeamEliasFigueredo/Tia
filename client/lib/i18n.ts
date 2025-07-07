@@ -256,6 +256,25 @@ export interface Translations {
   userRights: string;
   serviceTerms: string;
 
+  // Company management
+  companyManagement: string;
+  companyProfile: string;
+  createCompany: string;
+  editCompany: string;
+  deleteCompany: string;
+  companyName: string;
+  companyEmail: string;
+  companyWebsite: string;
+  companyLogo: string;
+  uploadLogo: string;
+  changeLogo: string;
+  removeLogo: string;
+  noCompanySelected: string;
+  selectCompanyToView: string;
+  websiteUrl: string;
+  updateCompany: string;
+  createNewCompany: string;
+
   // UI Elements
   documents: string;
   openDocuments: string;
