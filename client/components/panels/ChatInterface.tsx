@@ -589,7 +589,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
                   handleSendMessage();
                 }
               }}
-              className="flex-1 min-h-32 max-h-60 resize-none text-sm"
+              className="flex-1 min-h-32px max-h-60px resize-none text-sm"
             />
             <div className="flex space-x-1">
               <Button
