@@ -26,7 +26,7 @@
   */
   :root {
     /* Light Gray Palette Variables */
-    --background: #f8f8f0;
+    --background: 0 0% 98%;
     --foreground: 0 0% 15%;
 
     --card: 0 0% 98%;
