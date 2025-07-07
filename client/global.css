@@ -508,6 +508,11 @@
     width: var(--progress-width, 0%);
   }
 
+  /* Chart utilities */
+  .chart-color {
+    background-color: var(--chart-color, currentColor);
+  }
+
   /* Font size utilities */
   .font-size-dynamic {
     font-size: var(--font-size, 14px);
