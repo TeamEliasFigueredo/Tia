@@ -4,6 +4,7 @@ import {
   AppSettings,
   ChatMessage,
   SavedChat,
+  Company,
 } from "./use-optimized-tia-app";
 import { Translations } from "@/lib/i18n";
 import { createDragDropHandlers } from "@/utils/drag-drop-handlers";
