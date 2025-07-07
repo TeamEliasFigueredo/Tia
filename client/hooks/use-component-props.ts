@@ -65,6 +65,8 @@ export function useComponentProps({
   setChatState,
   setSavedChats,
   setDatabases,
+  setCompanies,
+  setSelectedCompany,
   handleFileUpload,
   handleChatFileUpload,
   t,
