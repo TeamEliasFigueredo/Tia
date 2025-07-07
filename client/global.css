@@ -415,7 +415,7 @@
   }
 
   .logo-button {
-    @apply flex items-center space-x-3 group hover:opacity-80 transition-opacity;
+    @apply flex items-center space-x-3 hover:opacity-80 transition-opacity;
   }
 
   .logo-icon {
