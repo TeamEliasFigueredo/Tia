@@ -242,7 +242,7 @@ const ChatInterface = memo<ChatInterfaceProps>(
         )}
       >
         {/* Header */}
-        <div className="px-3 py-1 border-b bg-gradient-gray text-white">
+        <div className="chat-panel-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {!columnStates.showColumn1 && (
