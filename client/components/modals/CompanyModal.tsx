@@ -17,7 +17,6 @@ import {
   Image,
   Hash,
   MapPin,
-  Search,
 } from "lucide-react";
 import { Translations } from "@/lib/i18n";
 import { Company } from "@/hooks/use-optimized-tia-app";
@@ -250,7 +249,7 @@ export default function CompanyModal({
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
-  const [countrySearch, setCountrySearch] = useState("");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState(() => ({
@@ -357,13 +356,6 @@ export default function CompanyModal({
   ]);
 
   const isFormValid = formData.name.trim().length > 0;
-
-  const filteredCountries = useMemo(() => {
-    if (!countrySearch.trim()) return COUNTRIES;
-    return COUNTRIES.filter((country) =>
-      country.toLowerCase().includes(countrySearch.toLowerCase()),
-    );
-  }, [countrySearch]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -520,39 +512,28 @@ export default function CompanyModal({
               <Label htmlFor="country" className="company-form-label">
                 {t.country}
               </Label>
-              <div className="space-y-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
-                  <Input
-                    placeholder={t.searchCountries}
-                    value={countrySearch}
-                    onChange={(e) => setCountrySearch(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
-                  <Select
-                    value={formData.country}
-                    onValueChange={(value) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        country: value,
-                      }))
-                    }
-                  >
-                    <SelectTrigger className="pl-10">
-                      <SelectValue placeholder={t.selectCountry} />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-64">
-                      {filteredCountries.map((country) => (
-                        <SelectItem key={country} value={country}>
-                          {country}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
+                <Select
+                  value={formData.country}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      country: value,
+                    }))
+                  }
+                >
+                  <SelectTrigger className="pl-10">
+                    <SelectValue placeholder={t.selectCountry} />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-64">
+                    {COUNTRIES.map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
