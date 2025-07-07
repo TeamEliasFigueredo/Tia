@@ -540,6 +540,49 @@
     border-radius: 2px;
   }
 
+  /* Height utilities */
+  .min-h-600 {
+    min-height: 600px;
+  }
+
+  .min-h-32 {
+    min-height: 32px;
+  }
+
+  .max-h-60 {
+    max-height: 60px;
+  }
+
+  .max-h-300 {
+    max-height: 300px;
+  }
+
+  .max-h-90vh {
+    max-height: 90vh;
+  }
+
+  /* Width utilities */
+  .max-w-2xl-responsive {
+    max-width: 42rem;
+  }
+
+  .max-w-6xl-responsive {
+    max-width: 72rem;
+  }
+
+  .w-100 {
+    width: 100px;
+  }
+
+  /* Position utilities */
+  .top-1px {
+    top: 1px;
+  }
+
+  .top-60-percent {
+    top: 60%;
+  }
+
   /* Font size utilities */
   .font-size-dynamic {
     font-size: var(--font-size, 14px);
