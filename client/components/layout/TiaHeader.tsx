@@ -22,12 +22,23 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Language, Translations } from "@/lib/i18n";
 
+interface Company {
+  id: string;
+  name: string;
+  email: string;
+  website: string;
+  logo?: string;
+  createdDate: string;
+  updatedDate: string;
+}
+
 interface TiaHeaderProps {
   isAdmin: boolean;
   currentUser: {
     name: string;
     initials: string;
   };
+  selectedCompany: Company | null;
   onOpenModal: (modalName: string) => void;
   language: Language;
   t: Translations;
