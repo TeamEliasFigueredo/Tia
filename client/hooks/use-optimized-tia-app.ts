@@ -52,6 +52,16 @@ export interface SavedChat {
   createdDate: string;
 }
 
+export interface Company {
+  id: string;
+  name: string;
+  email: string;
+  website: string;
+  logo?: string;
+  createdDate: string;
+  updatedDate: string;
+}
+
 export interface AppSettings {
   fontSize: number;
   language: Language;
