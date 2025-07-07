@@ -26,8 +26,10 @@ export function ProcessingOverlay({
           </p>
           <div className="progress-bar-container">
             <div
-              className="progress-bar-fill"
-              style={{ width: `${progress}%` }}
+              className="progress-bar-fill progress-bar-width"
+              style={
+                { "--progress-width": `${progress}%` } as React.CSSProperties
+              }
             />
           </div>
           <p className="processing-status">
