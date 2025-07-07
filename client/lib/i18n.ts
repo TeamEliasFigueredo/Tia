@@ -540,6 +540,25 @@ export const translations: Record<Language, Translations> = {
     userRights: "User Rights",
     serviceTerms: "Service Terms",
 
+    // Company management
+    companyManagement: "Company Management",
+    companyProfile: "Company Profile",
+    createCompany: "Create Company",
+    editCompany: "Edit Company",
+    deleteCompany: "Delete Company",
+    companyName: "Company Name",
+    companyEmail: "Company Email",
+    companyWebsite: "Company Website",
+    companyLogo: "Company Logo",
+    uploadLogo: "Upload Logo",
+    changeLogo: "Change Logo",
+    removeLogo: "Remove Logo",
+    noCompanySelected: "No company selected",
+    selectCompanyToView: "Select a company to view its details",
+    websiteUrl: "Website URL",
+    updateCompany: "Update Company",
+    createNewCompany: "Create New Company",
+
     // UI Elements
     documents: "Documents",
     openDocuments: "Open Documents",
@@ -619,7 +638,7 @@ export const translations: Record<Language, Translations> = {
     send: "Enviar",
     loading: "Cargando...",
     error: "Error",
-    success: "��xito",
+    success: "Éxito",
 
     // Footer
     footerText: "Tia es una creación de Softia.ca",
