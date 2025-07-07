@@ -23,17 +23,12 @@ import { Translations } from "@/lib/i18n";
 import { Company } from "@/hooks/use-optimized-tia-app";
 import { cn } from "@/lib/utils";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CompanyModalProps {
   isOpen: boolean;
@@ -255,7 +250,7 @@ export default function CompanyModal({
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
-  const [countryOpen, setCountryOpen] = useState(false);
+  const [countrySearch, setCountrySearch] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState(() => ({
@@ -364,10 +359,11 @@ export default function CompanyModal({
   const isFormValid = formData.name.trim().length > 0;
 
   const filteredCountries = useMemo(() => {
+    if (!countrySearch.trim()) return COUNTRIES;
     return COUNTRIES.filter((country) =>
-      country.toLowerCase().includes(formData.country.toLowerCase()),
+      country.toLowerCase().includes(countrySearch.toLowerCase()),
     );
-  }, [formData.country]);
+  }, [countrySearch]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -524,53 +520,44 @@ export default function CompanyModal({
               <Label htmlFor="country" className="company-form-label">
                 {t.country}
               </Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
-                <Popover open={countryOpen} onOpenChange={setCountryOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={countryOpen}
-                      className="w-full justify-between pl-10 font-normal"
-                    >
-                      {formData.country || t.selectCountry}
-                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0" align="start">
-                    <Command>
-                      <CommandInput
-                        placeholder={t.searchCountries}
-                        value={formData.country}
-                        onValueChange={(value) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            country: value,
-                          }))
-                        }
-                      />
-                      <CommandEmpty>No country found.</CommandEmpty>
-                      <CommandGroup className="max-h-64 overflow-auto">
-                        {filteredCountries.map((country) => (
-                          <CommandItem
-                            key={country}
-                            value={country}
-                            onSelect={(value) => {
-                              setFormData((prev) => ({
-                                ...prev,
-                                country: value,
-                              }));
-                              setCountryOpen(false);
-                            }}
-                          >
-                            {country}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+              <div className="space-y-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
+                  <Input
+                    placeholder={t.searchCountries}
+                    value={countrySearch}
+                    onChange={(e) => setCountrySearch(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
+                  <Select
+                    value={formData.country}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        country: value,
+                      }))
+                    }
+                  >
+                    <SelectTrigger className="pl-10">
+                      <SelectValue placeholder={t.selectCountry} />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-64">
+                      {filteredCountries.slice(0, 50).map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                      {filteredCountries.length > 50 && (
+                        <SelectItem value="" disabled>
+                          ... and {filteredCountries.length - 50} more
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           </div>
